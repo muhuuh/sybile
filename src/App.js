@@ -1,4 +1,4 @@
-import VisualMain from "./components/VisualMain";
+import VisualMain from "./components/Visuals/VisualMain";
 
 const App = () => {
   return (
