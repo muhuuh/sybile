@@ -1,10 +1,13 @@
-import VisualMain from "./components/Visuals/VisualMain";
+import { Routes, Route } from "react-router-dom";
+import VisualMain from "./components/Main/VisualMain";
 
 const App = () => {
   return (
     <div className="App">
-      <div className="font-bold text-center">Main page</div>
-      <VisualMain />
+      <Routes>
+        <Route path="/" element={<VisualMain />} />
+        <Route path="/main" element={<VisualMain />} />
+      </Routes>
     </div>
   );
 };
