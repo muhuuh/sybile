@@ -39,11 +39,10 @@ const paymentSlice = createSlice({
       state.user = action.payload;
     },
   },
-  extraReducers: {
-    [updateAnalysisRequest.fulfilled]: (state, action) => {
-      // Handle the fulfilled state
+  extraReducers: (builder) => {
+    builder.addCase(updateAnalysisRequest.fulfilled, (state, action) => {
       state.user = action.payload;
-    },
+    });
   },
 });
 

@@ -2,6 +2,7 @@ import React, { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../UI/LoadingSpinner";
+import supabase from "../../Supabase/supabase";
 
 function Main() {
   const [isUploading, setIsUploading] = useState(false);
@@ -9,49 +10,59 @@ function Main() {
   const navigate = useNavigate();
 
   const onDrop = useCallback(
-    (acceptedFiles) => {
+    async (acceptedFiles) => {
       const file = acceptedFiles[0];
       setErrorMessage(""); // Clear previous errors
 
-      if (file) {
-        // Check the file type
-        if (file.type === "text/csv" || file.name.endsWith(".xlsx")) {
-          setIsUploading(true);
+      if (file && (file.type === "text/csv" || file.name.endsWith(".xlsx"))) {
+        setIsUploading(true);
 
-          const formData = new FormData();
-          formData.append("file", file);
+        const fileExtension = file.name.split(".").pop();
+        const filePath = `uploads/${Math.random()}.${fileExtension}`;
 
-          // Uncomment when backend is ready
-          /*
-          fetch('/api/upload', { // Replace with your actual backend endpoint
-            method: 'POST',
-            body: formData,
-          })
-          .then(response => response.json())
-          .then(data => {
-            setIsUploading(false);
-            navigate('/main/analysis');
-          })
-          .catch(error => {
-            setIsUploading(false);
-            setErrorMessage('An error occurred while uploading the file.');
-            console.error(error);
-          });
-          */
+        let { error: uploadError, data: fileData } = await supabase.storage
+          .from("sybile") // replace with your actual bucket name
+          .upload(filePath, file);
 
-          //simulate a successful upload, remove afterwards
+        if (uploadError) {
+          setIsUploading(false);
+          setErrorMessage("Failed to upload file.");
+          console.error(uploadError);
+          return;
+        }
+
+        // If upload is successful, store the file URL in the 'uploads' table
+        //const storageUrl = `${supabase.storageUrl}/object/public/${filePath}`;
+        const storageUrl = `https://${supabase.storageUrl}/storage/v1/object/public/sybile/${filePath}`;
+
+        //Insert storageUrl into 'uploads' table (See step 2 for details)
+        let { error: insertError } = await supabase
+          .from("uploads")
+          .insert([{ storage_url: storageUrl }]);
+
+        if (insertError) {
+          console.error(
+            "Failed to insert storage URL into uploads table",
+            insertError
+          );
+        }
+
+        setIsUploading(false);
+        navigate("/main/payment");
+      } else {
+        setErrorMessage("Please upload a CSV or XLSX file.");
+      }
+    },
+    [navigate]
+  );
+
+  /*          //simulate a successful upload, remove afterwards
           setTimeout(() => {
             setIsUploading(false);
             console.log(formData.get("file"));
             navigate("/main/payment");
           }, 1500);
-        } else {
-          setErrorMessage("Please upload a CSV or XLSX file.");
-        }
-      }
-    },
-    [navigate]
-  );
+          */
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
