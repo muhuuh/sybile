@@ -61,7 +61,7 @@ const VisualMain = () => {
   return (
     <div>
       <div className="mb-12">Visual Page</div>
-      <div className="flex justify-center">
+      <div className="flex justify-center ">
         <GraphVisualization graphData={graphData} />
       </div>
     </div>

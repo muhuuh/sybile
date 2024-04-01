@@ -43,7 +43,7 @@ function Main() {
           setTimeout(() => {
             setIsUploading(false);
             console.log(formData.get("file"));
-            navigate("/main/analysis");
+            navigate("/main/payment");
           }, 1500);
         } else {
           setErrorMessage("Please upload a CSV or XLSX file.");
@@ -94,7 +94,7 @@ function Main() {
             </p>
           )}
           {!isUploading && (
-            <button className="mt-4 bg-teal-500 text-white px-4 py-2 rounded-md">
+            <button className="mt-4 bg-teal-600 text-gray-200 px-4 py-2 rounded-md">
               Upload addresses
             </button>
           )}

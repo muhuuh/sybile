@@ -3,7 +3,7 @@ import VisualMain from "../Visual/VisualMain";
 
 const AnalysisMain = () => {
   return (
-    <div>
+    <div className="min-h-screen bg-darkBgGray">
       <h1>Analytics</h1>
       <VisualMain />
     </div>

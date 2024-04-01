@@ -25,7 +25,8 @@ const GraphVisualization = ({ graphData }) => {
       const svg = d3
         .select(d3Container.current)
         .attr("viewBox", [0, 0, width, height])
-        .style("border", "1px solid black");
+        .style("border", "1px solid teal")
+        .style("background-color", "#f0f0f0");
 
       // Create a container for zooming and panning
       const container = svg.append("g").attr("cursor", "grab");
