@@ -8,7 +8,7 @@ const PaymentMain = () => {
   const assignedId = useSelector((state) => state.paymnent.user.assignedId);
   const paymentMade = useSelector((state) => state.paymnent.user.paymentMade);
   const analysisDone = useSelector((state) => state.paymnent.user.analysisDone);
-  const mainDataPoints = useSelector((state) => state.visuals.mainDataPoints); // Replace with actual data points from your state
+  const mainDataPoints = useSelector((state) => state.visuals.mainDataPoints);
 
   console.log("mainDataPoints");
   console.log(analysisDone);
@@ -43,9 +43,9 @@ const PaymentMain = () => {
         )}
 
         {analysisDone && (
-          <div>
+          <div className="flex flex-col">
             {/* Example rendering of data points, replace with actual content */}
-            <div className="my-10">
+            <div className=" my-10 mx-auto max-w-6xl  bg-lightBgGray rounded-lg shadow-md py-10 px-32">
               <div className="text-gray-200">
                 Total number of{" "}
                 <span className="text-teal-500">sybile addresses found</span>:{" "}
@@ -62,13 +62,13 @@ const PaymentMain = () => {
                 <span className="text-teal-500">biggest cluster</span>:{" "}
                 {mainDataPoints.biggestCluster}
               </div>
+              <button
+                onClick={() => navigate("/main/payment/details")}
+                className="mt-16 mx-auto bg-teal-600 text-gray-200 px-4 py-2 rounded-md hover:bg-teal-700 transition duration-200"
+              >
+                Pay to see more details
+              </button>
             </div>
-            <button
-              onClick={() => navigate("/main/payment/details")} // Replace with your actual payment flow trigger
-              className="mt-4 bg-teal-600 text-gray-200 px-4 py-2 rounded-md hover:bg-teal-700 transition duration-200"
-            >
-              Pay to see more details
-            </button>
           </div>
         )}
       </div>
