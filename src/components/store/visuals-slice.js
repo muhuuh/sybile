@@ -1,11 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const defaultState = {};
+const defaultState = {
+  rawVisualData: {},
+  mainDataPoints: { sybileAddrNbr: 0, sybileClusterNbr: 0, biggestCluster: 0 },
+};
 
 const visualsSlice = createSlice({
   name: "thirdParty",
   initialState: defaultState,
-  rawVisualData: {},
+
   reducers: {
     updateinventoryProducts(state, action) {
       state.inventoryNoDuplicates = action.payload;

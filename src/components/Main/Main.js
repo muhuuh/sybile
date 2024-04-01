@@ -94,7 +94,7 @@ function Main() {
             </p>
           )}
           {!isUploading && (
-            <button className="mt-4 bg-teal-600 text-gray-200 px-4 py-2 rounded-md">
+            <button className="mt-4 bg-teal-600 text-gray-200 px-4 py-2 rounded-md hover:bg-teal-700 transition duration-200">
               Upload addresses
             </button>
           )}

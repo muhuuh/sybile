@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import Main from "./components/Main/Main";
 import AnalysisMain from "./components/Main/Analysis/AnalysisMain";
 import PaymentMain from "./components/Main/Payment/PaymentMain";
+import PaymentDetails from "./components/Main/Payment/PaymentDetails";
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
         <Route path="/main" element={<Main />} />
         <Route path="/main/analysis" element={<AnalysisMain />} />
         <Route path="/main/payment" element={<PaymentMain />} />
+        <Route path="/main/payment/details" element={<PaymentDetails />} />
       </Routes>
     </div>
   );

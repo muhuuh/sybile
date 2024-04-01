@@ -2,9 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const defaultState = {
   user: {
-    assignedId: null,
+    assignedId: 0,
     paymentMade: false,
-    analysisDone: false,
+    analysisDone: true,
   },
 };
 
