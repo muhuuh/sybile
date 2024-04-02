@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../UI/LoadingSpinner";
+import PaymentDetails from "./PaymentDetails";
 
 const PaymentMain = () => {
   const navigate = useNavigate();
@@ -9,6 +10,7 @@ const PaymentMain = () => {
   const paymentMade = useSelector((state) => state.paymnent.user.paymentMade);
   const analysisDone = useSelector((state) => state.paymnent.user.analysisDone);
   const mainDataPoints = useSelector((state) => state.visuals.mainDataPoints);
+  const [openModal, setOpenModal] = useState(false);
 
   console.log("mainDataPoints");
   console.log(analysisDone);
@@ -18,6 +20,10 @@ const PaymentMain = () => {
   if (paymentMade && analysisDone) {
     navigate("/main/analysis");
   }
+
+  const closeModalHandler = () => {
+    setOpenModal(false);
+  };
 
   // Render a different message depending on whether the analysis is done or not
   const message = analysisDone
@@ -63,7 +69,7 @@ const PaymentMain = () => {
                 {mainDataPoints.biggestCluster}
               </div>
               <button
-                onClick={() => navigate("/main/payment/details")}
+                onClick={() => setOpenModal(true)}
                 className="mt-16 mx-auto bg-teal-600 text-gray-200 px-4 py-2 rounded-md hover:bg-teal-700 transition duration-200"
               >
                 Pay to see more details
@@ -71,6 +77,7 @@ const PaymentMain = () => {
             </div>
           </div>
         )}
+        {openModal && <PaymentDetails closeModal={closeModalHandler} />}
       </div>
     </div>
   );
