@@ -33,7 +33,8 @@ function Main() {
 
         // If upload is successful, store the file URL in the 'uploads' table
         //const storageUrl = `${supabase.storageUrl}/object/public/${filePath}`;
-        const storageUrl = `https://${supabase.storageUrl}/storage/v1/object/public/sybile/${filePath}`;
+        const projectUrl = "https://sgtpfbliixxaqtnajnek.supabase.co"; // Replace with your actual project URL
+        const storageUrl = `${projectUrl}/storage/v1/object/public/sybile/${filePath}`;
 
         //Insert storageUrl into 'uploads' table (See step 2 for details)
         let { error: insertError } = await supabase
