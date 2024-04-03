@@ -6,6 +6,15 @@ const supabaseKey = process.env.REACT_APP_SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default async function handler(req, res) {
+  console.log("req");
+  console.log(req);
+  console.log(req.method);
+  console.log(res);
+  console.log("req.body: ", JSON.stringify(req.body, null, 2));
+  console.log("Webhook triggered");
+
+  const { type, record } = req.body;
+  console.log("Type:", type);
   if (req.method === "POST") {
     // Parse the notification from Blocknative
     console.log("serverless function");
