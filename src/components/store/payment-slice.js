@@ -45,7 +45,7 @@ export const updatePaymentInfo = createAsyncThunk(
 //update redux store
 const defaultState = {
   user: {
-    assignedId: 0,
+    request_id: 0,
     paymentMade: false,
     analysisDone: true,
   },
@@ -63,10 +63,10 @@ const paymentSlice = createSlice({
   initialState: defaultState,
   reducers: {
     updatePaymentData(state, action) {
-      state.user = action.payload;
+      state.user = { ...state.user, ...action.payload };
     },
     updatePaymentDetails(state, action) {
-      state.paymentDetails = action.payload;
+      state.paymentDetails = { ...state.paymentDetails, ...action.payload };
     },
   },
   extraReducers: (builder) => {

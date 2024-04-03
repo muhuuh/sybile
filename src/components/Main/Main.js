@@ -3,16 +3,19 @@ import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import supabase from "../../Supabase/supabase";
+import { useDispatch } from "react-redux";
+import { paymentActions } from "../store/payment-slice";
 
 function Main() {
   const [isUploading, setIsUploading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onDrop = useCallback(
     async (acceptedFiles) => {
       const file = acceptedFiles[0];
-      setErrorMessage(""); // Clear previous errors
+      setErrorMessage("");
 
       if (file && (file.type === "text/csv" || file.name.endsWith(".xlsx"))) {
         setIsUploading(true);
@@ -21,7 +24,7 @@ function Main() {
         const filePath = `uploads/${Math.random()}.${fileExtension}`;
 
         let { error: uploadError, data: fileData } = await supabase.storage
-          .from("sybile") // replace with your actual bucket name
+          .from("sybile")
           .upload(filePath, file);
 
         if (uploadError) {
@@ -31,20 +34,29 @@ function Main() {
           return;
         }
 
-        // If upload is successful, store the file URL in the 'uploads' table
-        //const storageUrl = `${supabase.storageUrl}/object/public/${filePath}`;
-        const projectUrl = "https://sgtpfbliixxaqtnajnek.supabase.co"; // Replace with your actual project URL
+        const projectUrl = "https://sgtpfbliixxaqtnajnek.supabase.co";
         const storageUrl = `${projectUrl}/storage/v1/object/public/sybile/${filePath}`;
 
-        //Insert storageUrl into 'uploads' table (See step 2 for details)
-        let { error: insertError } = await supabase
+        let { data: insertData, error: insertError } = await supabase
           .from("uploads")
-          .insert([{ storage_url: storageUrl }]);
+          .insert([{ storage_url: storageUrl }])
+          .select("id");
+
+        console.log("Insert response:", insertData, insertError);
 
         if (insertError) {
           console.error(
             "Failed to insert storage URL into uploads table",
             insertError
+          );
+        } else if (insertData && insertData.length > 0) {
+          const newRequestId = insertData[0].id;
+          // Dispatch actions to update request_id in Redux store
+          dispatch(
+            paymentActions.updatePaymentData({ request_id: newRequestId })
+          );
+          dispatch(
+            paymentActions.updatePaymentDetails({ request_id: newRequestId })
           );
         }
 

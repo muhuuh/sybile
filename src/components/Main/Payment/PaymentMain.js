@@ -6,7 +6,7 @@ import PaymentDetails from "./PaymentDetails";
 
 const PaymentMain = () => {
   const navigate = useNavigate();
-  const assignedId = useSelector((state) => state.paymnent.user.assignedId);
+  const requestId = useSelector((state) => state.paymnent.user.request_id);
   const paymentMade = useSelector((state) => state.paymnent.user.paymentMade);
   const analysisDone = useSelector((state) => state.paymnent.user.analysisDone);
   const mainDataPoints = useSelector((state) => state.visuals.mainDataPoints);
@@ -15,7 +15,7 @@ const PaymentMain = () => {
   console.log("mainDataPoints");
   console.log(analysisDone);
   console.log(paymentMade);
-  console.log(assignedId);
+  console.log(requestId);
   // If payment and analysis are both done, we navigate to the details page
   if (paymentMade && analysisDone) {
     navigate("/main/analysis");
@@ -40,7 +40,7 @@ const PaymentMain = () => {
         </h1>
         <p className="mb-3 text-gray-200 text-lg mt-6">{message}</p>
         {!analysisDone && (
-          <p className="mb-3 text-xl text-gray-200">{assignedId}</p>
+          <p className="mb-3 text-xl text-gray-200">{requestId}</p>
         )}
         {!analysisDone && (
           <div className="mt-12">

@@ -4,9 +4,11 @@ import { paymentActions, updatePaymentInfo } from "../../store/payment-slice";
 
 const PaymentDetails = ({ closeModal }) => {
   const paymentDetails = useSelector((state) => state.paymnent.paymentDetails);
-  const [requestId, setRequestId] = useState("");
   const [userAddress, setUserAddress] = useState("");
   const dispatch = useDispatch();
+
+  console.log("paymentDetails");
+  console.log(paymentDetails);
 
   const paymentAddress = "0x851dB07Ac4c422010F5dD2a904EC470D660b15e5";
   const shortPaymentAddress = `${paymentAddress.slice(
@@ -30,10 +32,13 @@ const PaymentDetails = ({ closeModal }) => {
     const updatedPaymentDetails = {
       ...paymentDetails,
       addressPayer: userAddress,
+      minValue: amountToPay,
     };
 
     dispatch(paymentActions.updatePaymentDetails(updatedPaymentDetails));
     dispatch(updatePaymentInfo(updatedPaymentDetails));
+
+    closeModal();
   };
 
   // Call this function when payment was succesfull
@@ -67,9 +72,10 @@ const PaymentDetails = ({ closeModal }) => {
           type="text"
           placeholder="Request ID"
           className="form-input px-4 py-1 mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-          value={requestId}
-          onChange={(e) => setRequestId(e.target.value)}
+          value={paymentDetails.request_id}
+          readOnly
         />
+
         <input
           type="text"
           placeholder="Your USDT Address"
