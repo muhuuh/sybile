@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     try {
       const { data, error } = await supabase
         .from("payment_infos")
-        .update({ value_paid: transaction.value })
+        .update({ value_paid: transaction.value, tx_id: transaction.hash })
         .match({ address_payer: transaction.from });
 
       if (error) {
