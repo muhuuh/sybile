@@ -12,6 +12,46 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     // Parse the notification from Blocknative
 
+    const transaction = req.body;
+    console.log("Transaction details:", transaction);
+
+    try {
+      const { data, error } = await supabase
+        .from("payment_infos")
+        .update({ value_paid: transaction.value })
+        .match({ address_payer: transaction.from });
+
+      if (error) {
+        console.error("Supabase update error:", error);
+        return res.status(500).json({ error: "Failed to update database" });
+      }
+
+      return res
+        .status(200)
+        .json({ message: "Transaction processed successfully", details: data });
+    } catch (error) {
+      console.error("Processing error:", error);
+      return res
+        .status(500)
+        .json({ error: "Error processing the transaction" });
+    }
+
+    //if successful, get request_id from this row, and with this request id, update analysis_request table
+  } else {
+    console.log("Method not allowed");
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+}
+
+//working code with documentation payload
+/*
+export default async function handler(req, res) {
+  console.log("Webhook triggered");
+  console.log("req.body: ", JSON.stringify(req.body, null, 2));
+
+  if (req.method === "POST") {
+    // Parse the notification from Blocknative
+
     const transaction = req.body.transactions[0];
     console.log("Transaction details:", transaction);
 
@@ -43,3 +83,4 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 }
+*/
