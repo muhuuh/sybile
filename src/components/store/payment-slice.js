@@ -22,12 +22,39 @@ export const updateAnalysisRequest = createAsyncThunk(
   }
 );
 
+export const updatePaymentInfo = createAsyncThunk(
+  "payment/updatePaymentInfo",
+  async (paymentDetails, { dispatch }) => {
+    const { request_id, addressPayer, minValue } = paymentDetails;
+    const dataToInsert = {
+      request_id,
+      address_payer: addressPayer,
+      min_value: minValue,
+    };
+
+    const { data, error } = await supabase
+      .from("payment_infos")
+      .insert(dataToInsert);
+
+    if (error) throw error;
+    console.log("Payment info updated in Supabase:", data);
+    return data;
+  }
+);
+
 //update redux store
 const defaultState = {
   user: {
     assignedId: 0,
     paymentMade: false,
     analysisDone: true,
+  },
+  paymentDetails: {
+    request_id: 0,
+    addressPayer: "",
+    minValue: 0,
+    valuePaid: 0,
+    tx_id: "",
   },
 };
 
@@ -37,6 +64,9 @@ const paymentSlice = createSlice({
   reducers: {
     updatePaymentData(state, action) {
       state.user = action.payload;
+    },
+    updatePaymentDetails(state, action) {
+      state.paymentDetails = action.payload;
     },
   },
   extraReducers: (builder) => {
