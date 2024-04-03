@@ -20,7 +20,7 @@ export default async function handler(req, res) {
       const { data, error } = await supabase
         .from("payment_infos")
         .update({ value_paid: transaction.value })
-        .match({ address_payer: "0x485B16f05E0261e1D12C7755B64960095e3B0B5f" });
+        .match({ address_payer: transaction.from });
 
       if (error) {
         console.error("Supabase update error:", error);
