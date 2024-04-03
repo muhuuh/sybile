@@ -8,18 +8,21 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 export default async function handler(req, res) {
   if (req.method === "POST") {
     // Parse the notification from Blocknative
+    console.log("serverless function");
+    console.log(req.body);
     const { transaction } = req.body; // Adjust based on actual Blocknative notification payload
 
     // Perform validation and update Supabase if necessary
     const { data, error } = await supabase
       .from("payment_info")
       .update({ payment_received: true })
-      .match({ request_id: transaction.from }); // Ensure you're matching with correct logic
-
+      .match({ address_payer: transaction.from });
     if (error) {
       console.error("Supabase update error:", error);
       return res.status(500).json({ error: "Failed to update database" });
     }
+
+    //if successful, get request_id from this row, and with this request id, update analysis_request table
 
     return res.status(200).json({ message: "Transaction processed" });
   } else {
