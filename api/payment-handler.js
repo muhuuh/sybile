@@ -10,26 +10,29 @@ export default async function handler(req, res) {
   console.log("req.body: ", JSON.stringify(req.body, null, 2));
 
   if (req.method === "POST") {
-    // Parse the notification from Blocknative
     const transaction = req.body;
     console.log("Transaction details:", transaction);
 
     try {
-      // Update payment_infos and retrieve the updated row to get request_id
       const { data: paymentData, error: paymentError } = await supabase
         .from("payment_infos")
         .update({ value_paid: transaction.value, tx_id: transaction.hash })
         .match({ address_payer: transaction.from })
-        .single(); // Assuming each transaction uniquely identifies a single row
+        .select("request_id")
+        .single(); // Assuming the operation affects a single row and you want to fetch it
 
       if (paymentError) {
         console.error("Supabase update error:", paymentError);
         return res.status(500).json({ error: "Failed to update database" });
       }
 
-      // Extract request_id from the updated payment_info
-      const { request_id } = paymentData;
+      if (!paymentData) {
+        return res
+          .status(404)
+          .json({ error: "No payment info found for the transaction" });
+      }
 
+      const { request_id } = paymentData;
       // Update analysis_requests using the retrieved request_id
       const { error: analysisError } = await supabase
         .from("analysis_requests")
@@ -43,10 +46,12 @@ export default async function handler(req, res) {
           .json({ error: "Failed to update analysis_requests table" });
       }
 
-      return res.status(200).json({
-        message: "Transaction and analysis updated successfully",
-        paymentDetails: paymentData,
-      });
+      return res
+        .status(200)
+        .json({
+          message: "Transaction and analysis updated successfully",
+          paymentDetails: paymentData,
+        });
     } catch (error) {
       console.error("Processing error:", error);
       return res
