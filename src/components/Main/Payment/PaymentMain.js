@@ -25,12 +25,9 @@ const PaymentMain = () => {
     setOpenModal(false);
   };
 
-  // Render a different message depending on whether the analysis is done or not
   const message = analysisDone
     ? "Your analysis is complete! Here are three key data points:"
-    : "Your analysis is underway. You have been assigned the following ID: ";
-
-  // This will hold your three main data points coming from the Redux store or any other source.
+    : "Your analysis is underway. Please stay on this page and don't refresh.";
 
   return (
     <div className="min-h-screen p-8 bg-darkBgGray">
@@ -40,18 +37,21 @@ const PaymentMain = () => {
         </h1>
         <p className="mb-3 text-gray-200 text-lg mt-6">{message}</p>
         {!analysisDone && (
-          <p className="mb-3 text-xl text-gray-200">{requestId}</p>
-        )}
-        {!analysisDone && (
-          <div className="mt-12">
-            <LoadingSpinner />
-          </div>
+          <>
+            <div className="mt-12">
+              <LoadingSpinner />
+              <p className="text-xl text-gray-200 mt-12">
+                Please make sure to save the below ID. It is your access code to
+                retrieve your analysis.
+              </p>
+              <p className="mt-3 text-xl text-gray-200">{requestId}</p>
+            </div>
+          </>
         )}
 
         {analysisDone && (
           <div className="flex flex-col">
-            {/* Example rendering of data points, replace with actual content */}
-            <div className=" my-10 mx-auto max-w-6xl  bg-lightBgGray rounded-lg shadow-md py-10 px-32">
+            <div className=" my-10 mx-auto max-w-6xl bg-lightBgGray rounded-lg shadow-md py-10 px-32">
               <div className="text-gray-200">
                 Total number of{" "}
                 <span className="text-teal-500">sybile addresses found</span>:{" "}
@@ -62,7 +62,6 @@ const PaymentMain = () => {
                 <span className="text-teal-500">clusters found</span>:{" "}
                 {mainDataPoints.sybileClusterNbr}
               </div>
-
               <div className="text-gray-200">
                 Among all, the{" "}
                 <span className="text-teal-500">biggest cluster</span>:{" "}

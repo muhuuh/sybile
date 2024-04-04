@@ -47,7 +47,7 @@ const defaultState = {
   user: {
     request_id: 0,
     paymentMade: false,
-    analysisDone: true,
+    analysisDone: false,
   },
   paymentDetails: {
     request_id: 0,
