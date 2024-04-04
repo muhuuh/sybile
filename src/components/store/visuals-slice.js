@@ -12,7 +12,7 @@ export const fetchNetworkAnalysis = createAsyncThunk(
       .single();
 
     if (error) throw new Error(error.message);
-    return data.data_analysis;
+    return data.data_network;
   }
 );
 
@@ -40,7 +40,7 @@ export const fetchAddressAnalysis = createAsyncThunk(
       .single();
 
     if (error) throw new Error(error.message);
-    return data.data_analysis;
+    return data.data_sybile_addresses;
   }
 );
 
@@ -112,8 +112,14 @@ const visualsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(fetchNetworkAnalysis.fulfilled, (state, action) => {
+      state.networkAnalysis = action.payload;
+    });
     builder.addCase(fetchDataAnalysis.fulfilled, (state, action) => {
       state.dataAnalysis = action.payload;
+    });
+    builder.addCase(fetchAddressAnalysis.fulfilled, (state, action) => {
+      state.sybileAddresseAnalysis = action.payload;
     });
   },
 });

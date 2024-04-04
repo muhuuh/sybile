@@ -20,20 +20,39 @@ const AnalysisMain = () => {
   );
   const dispatch = useDispatch();
 
-  console.log("dataAnalysis");
-  console.log(dataAnalysis);
-  console.log(networkAnalysis);
-  console.log(sybileAddresseAnalysis);
-  console.log(requestId);
-
   useEffect(() => {
     if (paymentMade && analysisDone && requestId) {
-      console.log("get data");
       dispatch(fetchNetworkAnalysis(requestId));
       dispatch(fetchDataAnalysis(requestId));
       dispatch(fetchAddressAnalysis(requestId));
     }
   }, [paymentMade, analysisDone, requestId, dispatch]);
+
+  const downloadAddressesAsCSV = () => {
+    const addresses = sybileAddresseAnalysis;
+
+    // Check if addresses is an array and has items
+    if (!Array.isArray(addresses) || addresses.length === 0) {
+      console.error("No addresses data to download.");
+      return; // Stop the function if no data is available
+    }
+
+    // Convert JSON to CSV
+    const header = Object.keys(addresses[0]).join(",");
+    const rows = addresses.map((obj) => Object.values(obj).join(","));
+    const csv = [header, ...rows].join("\n");
+
+    // Create a Blob and download the file
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "sybileAddresses.csv";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div className="min-h-screen bg-darkBgGray p-8">
@@ -80,8 +99,11 @@ const AnalysisMain = () => {
 
         {/* Additional sections can be similarly detailed */}
       </div>
+      <button onClick={downloadAddressesAsCSV} className="button-class">
+        Download Addresses as CSV
+      </button>
       <VisualMain />
-      {/* Option to download the detailed report */}
+
       <div className="mt-6">
         <button
           onClick={() => {
