@@ -10,16 +10,18 @@ export default async function handler(req, res) {
   console.log("req.body: ", JSON.stringify(req.body, null, 2));
 
   if (req.method === "POST") {
+    // Parse the notification from Blocknative
     const transaction = req.body;
     console.log("Transaction details:", transaction);
 
     try {
+      // First, update value_paid and tx_id based on the transaction details
       const { data: paymentData, error: paymentError } = await supabase
         .from("payment_infos")
         .update({ value_paid: transaction.value, tx_id: transaction.hash })
         .match({ address_payer: transaction.from })
-        .select("request_id")
-        .single(); // Assuming the operation affects a single row and you want to fetch it
+        .select("request_id, min_value, value_paid") // Get necessary columns to check the conditions
+        .single();
 
       if (paymentError) {
         console.error("Supabase update error:", paymentError);
@@ -32,18 +34,27 @@ export default async function handler(req, res) {
           .json({ error: "No payment info found for the transaction" });
       }
 
-      const { request_id } = paymentData;
-      // Update analysis_requests using the retrieved request_id
-      const { error: analysisError } = await supabase
-        .from("analysis_requests")
-        .update({ payment_done: true })
-        .match({ request_id });
+      // Check if the value paid is greater than or equal to the min_value
+      if (paymentData.value_paid >= paymentData.min_value) {
+        // Proceed to update analysis_requests since the payment meets the criteria
+        const { error: analysisError } = await supabase
+          .from("analysis_requests")
+          .update({ payment_done: true })
+          .match({ request_id: paymentData.request_id });
 
-      if (analysisError) {
-        console.error("Error updating analysis_requests:", analysisError);
+        if (analysisError) {
+          console.error("Error updating analysis_requests:", analysisError);
+          return res
+            .status(500)
+            .json({ error: "Failed to update analysis_requests table" });
+        }
+      } else {
+        // If the condition is not met, you might want to log this or handle accordingly
         return res
-          .status(500)
-          .json({ error: "Failed to update analysis_requests table" });
+          .status(400)
+          .json({
+            error: "Payment does not meet the minimum value requirement",
+          });
       }
 
       return res
