@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../UI/LoadingSpinner";
@@ -16,10 +16,13 @@ const PaymentMain = () => {
   console.log(analysisDone);
   console.log(paymentMade);
   console.log(requestId);
-  // If payment and analysis are both done, we navigate to the details page
-  if (paymentMade && analysisDone) {
-    navigate("/main/analysis");
-  }
+
+  // Navigate when both payment and analysis are done
+  useEffect(() => {
+    if (paymentMade && analysisDone) {
+      navigate("/main/analysis");
+    }
+  }, [paymentMade, analysisDone, navigate]);
 
   const closeModalHandler = () => {
     setOpenModal(false);

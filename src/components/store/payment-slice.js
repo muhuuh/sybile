@@ -46,8 +46,8 @@ export const updatePaymentInfo = createAsyncThunk(
 const defaultState = {
   user: {
     request_id: 0,
-    paymentMade: false,
-    analysisDone: false,
+    paymentMade: true,
+    analysisDone: true,
   },
   paymentDetails: {
     request_id: 0,
