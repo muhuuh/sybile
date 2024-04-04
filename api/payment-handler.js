@@ -11,32 +11,48 @@ export default async function handler(req, res) {
 
   if (req.method === "POST") {
     // Parse the notification from Blocknative
-
     const transaction = req.body;
     console.log("Transaction details:", transaction);
 
     try {
-      const { data, error } = await supabase
+      // Update payment_infos and retrieve the updated row to get request_id
+      const { data: paymentData, error: paymentError } = await supabase
         .from("payment_infos")
         .update({ value_paid: transaction.value, tx_id: transaction.hash })
-        .match({ address_payer: transaction.from });
+        .match({ address_payer: transaction.from })
+        .single(); // Assuming each transaction uniquely identifies a single row
 
-      if (error) {
-        console.error("Supabase update error:", error);
+      if (paymentError) {
+        console.error("Supabase update error:", paymentError);
         return res.status(500).json({ error: "Failed to update database" });
       }
 
-      return res
-        .status(200)
-        .json({ message: "Transaction processed successfully", details: data });
+      // Extract request_id from the updated payment_info
+      const { request_id } = paymentData;
+
+      // Update analysis_requests using the retrieved request_id
+      const { error: analysisError } = await supabase
+        .from("analysis_requests")
+        .update({ payment_done: true })
+        .match({ request_id });
+
+      if (analysisError) {
+        console.error("Error updating analysis_requests:", analysisError);
+        return res
+          .status(500)
+          .json({ error: "Failed to update analysis_requests table" });
+      }
+
+      return res.status(200).json({
+        message: "Transaction and analysis updated successfully",
+        paymentDetails: paymentData,
+      });
     } catch (error) {
       console.error("Processing error:", error);
       return res
         .status(500)
         .json({ error: "Error processing the transaction" });
     }
-
-    //if successful, get request_id from this row, and with this request id, update analysis_request table
   } else {
     console.log("Method not allowed");
     return res.status(405).json({ error: "Method not allowed" });
