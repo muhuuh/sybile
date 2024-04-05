@@ -45,7 +45,10 @@ export const fetchAddressAnalysis = createAsyncThunk(
 );
 
 const defaultState = {
-  networkAnalysis: {},
+  networkAnalysis: {
+    nodes: [],
+    links: [],
+  },
   dataAnalysis: {
     executiveSummary: {
       totalSybilAddresses: 0,
@@ -100,6 +103,7 @@ const defaultState = {
     },
   },
   sybileAddresseAnalysis: {},
+  requestValid: true,
 };
 
 const visualsSlice = createSlice({
@@ -112,15 +116,28 @@ const visualsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchNetworkAnalysis.fulfilled, (state, action) => {
-      state.networkAnalysis = action.payload;
-    });
-    builder.addCase(fetchDataAnalysis.fulfilled, (state, action) => {
-      state.dataAnalysis = action.payload;
-    });
-    builder.addCase(fetchAddressAnalysis.fulfilled, (state, action) => {
-      state.sybileAddresseAnalysis = action.payload;
-    });
+    builder
+      .addCase(fetchNetworkAnalysis.fulfilled, (state, action) => {
+        state.networkAnalysis = action.payload;
+        state.requestValid = true; // Set requestValid to true on successful fetch
+      })
+      .addCase(fetchDataAnalysis.fulfilled, (state, action) => {
+        state.dataAnalysis = action.payload;
+        state.requestValid = true; // Set requestValid to true on successful fetch
+      })
+      .addCase(fetchAddressAnalysis.fulfilled, (state, action) => {
+        state.sybileAddresseAnalysis = action.payload;
+        state.requestValid = true; // Set requestValid to true on successful fetch
+      })
+      .addCase(fetchNetworkAnalysis.rejected, (state, action) => {
+        state.requestValid = false; // Set requestValid to false on rejection
+      })
+      .addCase(fetchDataAnalysis.rejected, (state, action) => {
+        state.requestValid = false; // Set requestValid to false on rejection
+      })
+      .addCase(fetchAddressAnalysis.rejected, (state, action) => {
+        state.requestValid = false; // Set requestValid to false on rejection
+      });
   },
 });
 

@@ -12,7 +12,7 @@
   margin: 8px;
   border-radius: 50%;
   border: 6px solid #eeab94;
-  border-color: #eeab94 transparent #eeab94 transparent;
+  border-color: #eeab94 transparent;
   animation: spinner 1.2s linear infinite;
 }
 
@@ -42,6 +42,6 @@
   margin: 4px;
   border-radius: 50%;
   border: 3px solid #eeab94;
-  border-color: #eeab94 transparent #eeab94 transparent;
+  border-color: #eeab94 transparent;
   animation: spinner 1.2s linear infinite;
 }

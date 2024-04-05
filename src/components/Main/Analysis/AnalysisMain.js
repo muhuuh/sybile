@@ -8,13 +8,14 @@ import {
 } from "../../store/visuals-slice";
 
 const AnalysisMain = () => {
-  //TODOadd search function to have requestID even we we arrive directly here withou dropping new csv file
   const requestId = useSelector((state) => state.paymnent.user.request_id);
   //const requestId = "6bb337cc-a664-4bc8-8544-c1f511307282";
   const analysisDone = useSelector((state) => state.paymnent.user.analysisDone);
   const paymentMade = useSelector((state) => state.paymnent.user.paymentMade);
+  const requestValid = useSelector((state) => state.visuals.requestValid);
   const dataAnalysis = useSelector((state) => state.visuals.dataAnalysis);
   const networkAnalysis = useSelector((state) => state.visuals.networkAnalysis);
+
   const sybileAddresseAnalysis = useSelector(
     (state) => state.visuals.sybileAddresseAnalysis
   );
@@ -54,14 +55,10 @@ const AnalysisMain = () => {
     URL.revokeObjectURL(url);
   };
 
-  //----------- check if analysis has result and if requestID exists -------
-
-  const validRequest = dataAnalysis.executiveSummary.totalParticipants !== 0;
-
   return (
     <div className="min-h-screen bg-darkBgGray p-8">
       <h1 className="text-3xl text-center text-teal-600 mb-6">Analytics</h1>
-      {validRequest && (
+      {requestValid && (
         <div>
           <div className="text-gray-200 mt-4">
             {dataAnalysis && (
@@ -112,10 +109,10 @@ const AnalysisMain = () => {
           >
             Download Sybile Addresses
           </button>
-          <VisualMain />
+          <VisualMain networkAnalysis={networkAnalysis} />
         </div>
       )}
-      {!validRequest && (
+      {!requestValid && (
         <div className="text-center">
           <div className="text-xl text-red-700">Sorry</div>
           <div className="text-gray-200">

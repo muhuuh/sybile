@@ -1,7 +1,7 @@
 import React from "react";
 import GraphVisualization from "./GraphVisualization";
 
-const VisualMain = () => {
+const VisualMain = ({ networkAnalysis }) => {
   // Hardcoded graph data
   const graphData = {
     nodes: [
@@ -57,6 +57,9 @@ const VisualMain = () => {
       { source: 17, target: 18, value: 1 },
     ],
   };
+
+  console.log("networkAnalysis");
+  console.log(networkAnalysis);
 
   return (
     <div className="mt-10">
