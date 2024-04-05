@@ -13,6 +13,7 @@ import {
 
 function Main() {
   const [isUploading, setIsUploading] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [requestId, setRequestId] = useState("");
   const [newRequest, setNewRequest] = useState(true);
@@ -87,11 +88,13 @@ function Main() {
 
   const handleFetchAnalysis = async () => {
     if (requestId) {
+      setIsFetching(true);
       await Promise.all([
         dispatch(fetchNetworkAnalysis(requestId)),
         dispatch(fetchDataAnalysis(requestId)),
         dispatch(fetchAddressAnalysis(requestId)),
       ]);
+      setIsFetching(false);
       navigate("/main/analysis");
     }
   };
@@ -185,6 +188,12 @@ function Main() {
           >
             Fetch Analysis
           </button>
+          {isFetching && (
+            <div className="flex flex-col items-center mt-10">
+              <LoadingSpinner />
+              <p className="text-gray-500">Loading...</p>
+            </div>
+          )}
         </div>
       )}
     </main>
