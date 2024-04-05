@@ -5,13 +5,21 @@ import LoadingSpinner from "../UI/LoadingSpinner";
 import supabase from "../../Supabase/supabase";
 import { useDispatch } from "react-redux";
 import { paymentActions } from "../store/payment-slice";
+import {
+  fetchAddressAnalysis,
+  fetchDataAnalysis,
+  fetchNetworkAnalysis,
+} from "../store/visuals-slice";
 
 function Main() {
   const [isUploading, setIsUploading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [requestId, setRequestId] = useState("");
+  const [newRequest, setNewRequest] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  //---------------handle file drop from user----------
   const onDrop = useCallback(
     async (acceptedFiles) => {
       const file = acceptedFiles[0];
@@ -69,19 +77,25 @@ function Main() {
     [navigate]
   );
 
-  /*          //simulate a successful upload, remove afterwards
-          setTimeout(() => {
-            setIsUploading(false);
-            console.log(formData.get("file"));
-            navigate("/main/payment");
-          }, 1500);
-          */
-
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept:
       ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   });
+
+  //--------------handle search with request id -----------
+
+  const handleFetchAnalysis = async () => {
+    if (requestId) {
+      await Promise.all([
+        dispatch(fetchNetworkAnalysis(requestId)),
+        dispatch(fetchDataAnalysis(requestId)),
+        dispatch(fetchAddressAnalysis(requestId)),
+      ]);
+      navigate("/main/analysis");
+    }
+  };
+
   return (
     <main className="min-h-screen p-8  bg-darkBgGray">
       <div className="text-center mt-6">
@@ -93,48 +107,86 @@ function Main() {
           your airdrop
         </p>
       </div>
-      <section className="max-w-6xl mx-auto bg-lightBgGray rounded-lg shadow-md p-8 mt-20">
-        <p className="text-center pb-4 px-24 text-gray-200">
-          Get your sybile attacker analysis with custom confidence band,
-          interactive visualisation, and more.
-        </p>
-        <div
-          {...getRootProps()}
-          className={`flex flex-col items-center justify-center border-2 border-dashed ${
-            isUploading ? "border-gray-300" : "border-teal-400"
-          } rounded-md py-16 mb-4`}
+      <div className="text-center mt-14">
+        <button
+          onClick={() => {
+            setNewRequest(true);
+          }}
+          className="bg-teal-600 text-gray-200 px-4 py-2 rounded-l ml-2 hover:bg-teal-700 transition duration-200"
         >
-          <input {...getInputProps()} />
-          {isUploading ? (
-            <div className="flex flex-col items-center">
-              <LoadingSpinner />
-              <p className="text-gray-500">Uploading...</p>
-            </div>
-          ) : (
-            <p className="text-teal-600">
-              {isDragActive
-                ? "Drop the files here ..."
-                : "Drag 'n' drop a CSV or Excel file "}
-            </p>
-          )}
-          {!isUploading && (
-            <button className="mt-4 bg-teal-600 text-gray-200 px-4 py-2 rounded-md hover:bg-teal-700 transition duration-200">
-              Upload addresses
-            </button>
-          )}
-          {errorMessage && (
-            <div className="text-red-500">
-              <p>{errorMessage}</p>
-            </div>
-          )}
+          New Request
+        </button>
+        <button
+          onClick={() => {
+            setNewRequest(false);
+          }}
+          className="bg-teal-600 text-gray-200 px-4 py-2 rounded-r ml-2 hover:bg-teal-700 transition duration-200"
+        >
+          Search Analysis
+        </button>
+      </div>
+
+      {newRequest && (
+        <section className="max-w-6xl mx-auto bg-lightBgGray rounded-lg shadow-md p-8 mt-10">
+          <p className="text-center pb-4 px-24 text-gray-200">
+            Get your sybile attacker analysis with custom confidence band,
+            interactive visualisation, and more.
+          </p>
+          <div
+            {...getRootProps()}
+            className={`flex flex-col items-center justify-center border-2 border-dashed ${
+              isUploading ? "border-gray-300" : "border-teal-400"
+            } rounded-md py-16 mb-4`}
+          >
+            <input {...getInputProps()} />
+            {isUploading ? (
+              <div className="flex flex-col items-center">
+                <LoadingSpinner />
+                <p className="text-gray-500">Uploading...</p>
+              </div>
+            ) : (
+              <p className="text-teal-600">
+                {isDragActive
+                  ? "Drop the files here ..."
+                  : "Drag 'n' drop a CSV or Excel file "}
+              </p>
+            )}
+            {!isUploading && (
+              <button className="mt-4 bg-teal-600 text-gray-200 px-4 py-2 rounded-md hover:bg-teal-700 transition duration-200">
+                Upload addresses
+              </button>
+            )}
+            {errorMessage && (
+              <div className="text-red-500">
+                <p>{errorMessage}</p>
+              </div>
+            )}
+          </div>
+          <p className="text-sm text-gray-300">
+            Need help to gather all addresses that need to be analyzed?{" "}
+            <a href="#" className="text-teal-600 hover:underline">
+              Contact us!
+            </a>
+          </p>
+        </section>
+      )}
+      {!newRequest && (
+        <div className="mt-10 text-center">
+          <input
+            type="text"
+            value={requestId}
+            onChange={(e) => setRequestId(e.target.value)}
+            placeholder="Enter request ID"
+            className="text-black p-2 rounded-l"
+          />
+          <button
+            onClick={handleFetchAnalysis}
+            className="bg-teal-600 text-gray-200 px-4 py-2 rounded-r ml-2 hover:bg-teal-700 transition duration-200"
+          >
+            Fetch Analysis
+          </button>
         </div>
-        <p className="text-sm text-gray-300">
-          Need help to gather all addresses that need to be analyzed?{" "}
-          <a href="#" className="text-teal-600 hover:underline">
-            Contact us!
-          </a>
-        </p>
-      </section>
+      )}
     </main>
   );
 }

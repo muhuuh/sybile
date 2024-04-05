@@ -99,21 +99,13 @@ const AnalysisMain = () => {
 
         {/* Additional sections can be similarly detailed */}
       </div>
-      <button onClick={downloadAddressesAsCSV} className="button-class">
-        Download Addresses as CSV
+      <button
+        onClick={downloadAddressesAsCSV}
+        className="bg-teal-600 text-white px-4 py-2 mt-4 rounded hover:bg-teal-700 transition duration-300"
+      >
+        Download Sybile Addresses
       </button>
       <VisualMain />
-
-      <div className="mt-6">
-        <button
-          onClick={() => {
-            /* logic to download the full report as a PDF or document */
-          }}
-          className="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 transition duration-300"
-        >
-          Download Full Report
-        </button>
-      </div>
     </div>
   );
 };
