@@ -96,6 +96,10 @@ function Main() {
       ]);
       setIsFetching(false);
       navigate("/main/analysis");
+    } else {
+      setErrorMessage(
+        "There was an error when looking for this request. Please check again the request ID. "
+      );
     }
   };
 
@@ -192,6 +196,11 @@ function Main() {
             <div className="flex flex-col items-center mt-10">
               <LoadingSpinner />
               <p className="text-gray-500">Loading...</p>
+            </div>
+          )}
+          {errorMessage && (
+            <div className="text-red-500">
+              <p>{errorMessage}</p>
             </div>
           )}
         </div>

@@ -9,8 +9,8 @@ import {
 
 const AnalysisMain = () => {
   //TODOadd search function to have requestID even we we arrive directly here withou dropping new csv file
-  //const requestId = useSelector((state) => state.paymnent.user.request_id);
-  const requestId = "6bb337cc-a664-4bc8-8544-c1f511307282";
+  const requestId = useSelector((state) => state.paymnent.user.request_id);
+  //const requestId = "6bb337cc-a664-4bc8-8544-c1f511307282";
   const analysisDone = useSelector((state) => state.paymnent.user.analysisDone);
   const paymentMade = useSelector((state) => state.paymnent.user.paymentMade);
   const dataAnalysis = useSelector((state) => state.visuals.dataAnalysis);
@@ -54,58 +54,81 @@ const AnalysisMain = () => {
     URL.revokeObjectURL(url);
   };
 
+  //----------- check if analysis has result and if requestID exists -------
+
+  const validRequest = dataAnalysis.executiveSummary.totalParticipants !== 0;
+
   return (
     <div className="min-h-screen bg-darkBgGray p-8">
       <h1 className="text-3xl text-center text-teal-600 mb-6">Analytics</h1>
-
-      <div className="text-gray-200 mt-4">
-        <h2 className="text-2xl mb-4">Main findings</h2>
-        {dataAnalysis && (
-          <>
-            <p>
-              Total Users: {dataAnalysis.executiveSummary.totalParticipants}
-            </p>
-            <p>
-              Total Sybil Addresses:{" "}
-              {dataAnalysis.executiveSummary.totalSybilAddresses}
-            </p>
-            <p>
-              Sybil Percentage: {dataAnalysis.executiveSummary.sybilPercentage}%
-            </p>
-            <p>
-              Sybil Token Percentage:{" "}
-              {dataAnalysis.executiveSummary.sybilTokenPercentage}%
-            </p>
-            <p>
-              Financial Loss: $
-              {dataAnalysis.executiveSummary.financialLoss.toLocaleString()}
-            </p>
-            <p>
-              Addresses accounting for 80% sybil-attacked tokens:{" "}
-              {dataAnalysis.executiveSummary.topSybilAddresses}
-            </p>
-            <p>
-              Top 3 sybile clusters:{" "}
-              {dataAnalysis.executiveSummary.mostActiveClusters.totalAddresses}{" "}
-              addresses claimed{" "}
-              {
-                dataAnalysis.executiveSummary.mostActiveClusters
-                  .claimedPercentage
-              }
-              % of Sybil-attacked tokens
-            </p>
-          </>
-        )}
-
-        {/* Additional sections can be similarly detailed */}
-      </div>
-      <button
-        onClick={downloadAddressesAsCSV}
-        className="bg-teal-600 text-white px-4 py-2 mt-4 rounded hover:bg-teal-700 transition duration-300"
-      >
-        Download Sybile Addresses
-      </button>
-      <VisualMain />
+      {validRequest && (
+        <div>
+          <div className="text-gray-200 mt-4">
+            {dataAnalysis && (
+              <>
+                <h2 className="text-2xl mb-4">Main findings</h2>
+                <p>
+                  Total Users: {dataAnalysis.executiveSummary.totalParticipants}
+                </p>
+                <p>
+                  Total Sybil Addresses:{" "}
+                  {dataAnalysis.executiveSummary.totalSybilAddresses}
+                </p>
+                <p>
+                  Sybil Percentage:{" "}
+                  {dataAnalysis.executiveSummary.sybilPercentage}%
+                </p>
+                <p>
+                  Sybil Token Percentage:{" "}
+                  {dataAnalysis.executiveSummary.sybilTokenPercentage}%
+                </p>
+                <p>
+                  Financial Loss: $
+                  {dataAnalysis.executiveSummary.financialLoss.toLocaleString()}
+                </p>
+                <p>
+                  Addresses accounting for 80% sybil-attacked tokens:{" "}
+                  {dataAnalysis.executiveSummary.topSybilAddresses}
+                </p>
+                <p>
+                  Top 3 sybile clusters:{" "}
+                  {
+                    dataAnalysis.executiveSummary.mostActiveClusters
+                      .totalAddresses
+                  }{" "}
+                  addresses claimed{" "}
+                  {
+                    dataAnalysis.executiveSummary.mostActiveClusters
+                      .claimedPercentage
+                  }
+                  % of Sybil-attacked tokens
+                </p>
+              </>
+            )}
+          </div>
+          <button
+            onClick={downloadAddressesAsCSV}
+            className="bg-teal-600 text-white px-4 py-2 mt-4 rounded hover:bg-teal-700 transition duration-300"
+          >
+            Download Sybile Addresses
+          </button>
+          <VisualMain />
+        </div>
+      )}
+      {!validRequest && (
+        <div className="text-center">
+          <div className="text-xl text-red-700">Sorry</div>
+          <div className="text-gray-200">
+            It looks like your analysis is not ready yet or you have used an
+            invalid request ID
+          </div>
+          <div className="text-gray-200">Please try again in 5 mins</div>
+          <div className="text-gray-200">
+            If the error message pertains, either contact us or raise a new
+            request
+          </div>
+        </div>
+      )}
     </div>
   );
 };
