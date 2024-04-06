@@ -56,59 +56,75 @@ const AnalysisMain = () => {
   };
 
   return (
-    <div className="min-h-screen bg-darkBgGray p-8">
-      <h1 className="text-3xl text-center text-teal-600 mb-6">Analytics</h1>
+    <div className="min-h-screen bg-gray-100 p-8">
+      <h1 className="text-3xl font-bold text-indogoDye mb-4 tracking-wider text-center">
+        Analytics
+      </h1>
       {requestValid && (
         <div>
-          <div className="text-gray-200 mt-4">
+          <div className="flex justify-center text-gray-200 mt-16">
             {dataAnalysis && (
-              <>
-                <h2 className="text-2xl mb-4">Main findings</h2>
-                <p>
-                  Total Users: {dataAnalysis.executiveSummary.totalParticipants}
-                </p>
-                <p>
-                  Total Sybil Addresses:{" "}
-                  {dataAnalysis.executiveSummary.totalSybilAddresses}
-                </p>
-                <p>
-                  Sybil Percentage:{" "}
-                  {dataAnalysis.executiveSummary.sybilPercentage}%
-                </p>
-                <p>
-                  Sybil Token Percentage:{" "}
-                  {dataAnalysis.executiveSummary.sybilTokenPercentage}%
-                </p>
-                <p>
-                  Financial Loss: $
-                  {dataAnalysis.executiveSummary.financialLoss.toLocaleString()}
-                </p>
-                <p>
-                  Addresses accounting for 80% sybil-attacked tokens:{" "}
-                  {dataAnalysis.executiveSummary.topSybilAddresses}
-                </p>
-                <p>
-                  Top 3 sybile clusters:{" "}
-                  {
-                    dataAnalysis.executiveSummary.mostActiveClusters
-                      .totalAddresses
-                  }{" "}
-                  addresses claimed{" "}
-                  {
-                    dataAnalysis.executiveSummary.mostActiveClusters
-                      .claimedPercentage
-                  }
-                  % of Sybil-attacked tokens
-                </p>
-              </>
+              <div className="text-gray-700 grid grid-cols-2 gap-4">
+                <ul className="list-disc pl-5">
+                  <li>
+                    Total Users:{" "}
+                    {dataAnalysis.executiveSummary.totalParticipants}
+                  </li>
+                  <li>
+                    Total Sybil Addresses:{" "}
+                    {dataAnalysis.executiveSummary.totalSybilAddresses}
+                  </li>
+                  <li>
+                    Sybil Address Percentage:{" "}
+                    {dataAnalysis.executiveSummary.sybilPercentage}%
+                  </li>
+                </ul>
+                <ul className="list-disc pl-5">
+                  <li>
+                    Sybiled Token Percentage:{" "}
+                    {dataAnalysis.executiveSummary.sybilTokenPercentage}%
+                  </li>
+
+                  <li>
+                    Addresses accounting for 80% sybil-attacked tokens:{" "}
+                    {dataAnalysis.executiveSummary.topSybilAddresses}
+                  </li>
+                  <li>
+                    {" "}
+                    Top 3 sybile clusters:{" "}
+                    {
+                      dataAnalysis.executiveSummary.mostActiveClusters
+                        .totalAddresses
+                    }{" "}
+                    addresses claimed{" "}
+                    {
+                      dataAnalysis.executiveSummary.mostActiveClusters
+                        .claimedPercentage
+                    }
+                    % of Sybil-attacked tokens
+                  </li>
+                </ul>
+                <div className="col-span-2 mt-6 text-lg">
+                  <p className="text-center">
+                    In total, the{" "}
+                    <span className="font-bold">financial loss</span> due to the
+                    non-detected sybil attack amounts to: $
+                    <span className="font-bold underline">
+                      {dataAnalysis.executiveSummary.financialLoss.toLocaleString()}
+                    </span>
+                  </p>
+                </div>
+              </div>
             )}
           </div>
-          <button
-            onClick={downloadAddressesAsCSV}
-            className="bg-teal-600 text-white px-4 py-2 mt-4 rounded hover:bg-teal-700 transition duration-300"
-          >
-            Download Sybile Addresses
-          </button>
+          <div className="text-center mt-12">
+            <button
+              onClick={downloadAddressesAsCSV}
+              className="bg-honoluluBlue text-gray-200 px-4 py-2 shadow-lg rounded ml-2 hover:bg-salmon hover:text-gray-800 transition duration-200"
+            >
+              Download Sybile Addresses
+            </button>
+          </div>
           <VisualMain networkAnalysis={networkAnalysis} />
         </div>
       )}
