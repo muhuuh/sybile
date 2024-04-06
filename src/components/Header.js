@@ -6,7 +6,7 @@ const Header = () => {
     <header className="bg-white border-b py-8 flex justify-between items-center px-24 shadow-md">
       <NavLink
         to="/main"
-        className="text-3xl font-bold tracking-widest text-honoluluBlue"
+        className="text-3xl font-bold tracking-widest text-indogoDye"
       >
         ManyMe
       </NavLink>

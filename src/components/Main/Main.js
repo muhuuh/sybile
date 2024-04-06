@@ -106,7 +106,7 @@ function Main() {
   return (
     <main className="min-h-screen p-8  bg-gray-100">
       <div className="text-center mt-6">
-        <h1 className="text-3xl font-bold text-honoluluBlue mb-4 tracking-wider">
+        <h1 className="text-3xl font-bold text-indogoDye mb-4 tracking-wider">
           Reward your users, and not airdrop farmers
         </h1>
         <p className="text-gray-800 font-light text-lg mb-6">
@@ -123,7 +123,7 @@ function Main() {
             newRequest
               ? "bg-argentinianBlue text-gray-800"
               : "bg-honoluluBlue text-gray-200"
-          } px-4 py-2 rounded-l shadow-lg ml-2 hover:bg-salmon hover:text-gray-800 transition duration-200`}
+          } px-4 py-2 rounded-l shadow-lg ml-2 hover:bg-argentinianBlue hover:text-gray-800 transition duration-200`}
         >
           New Request
         </button>
@@ -135,7 +135,7 @@ function Main() {
             !newRequest
               ? "bg-argentinianBlue text-gray-800"
               : "bg-honoluluBlue text-gray-200"
-          } px-4 py-2 rounded-r shadow-lg ml-2 hover:bg-salmon hover:text-gray-800 transition duration-200`}
+          } px-4 py-2 rounded-r shadow-lg ml-2 hover:bg-argentinianBlue hover:text-gray-800 transition duration-200`}
         >
           Search Analysis
         </button>
