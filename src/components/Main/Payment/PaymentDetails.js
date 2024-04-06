@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { paymentActions, updatePaymentInfo } from "../../store/payment-slice";
+import LoadingSpinner from "../../UI/LoadingSpinner";
 
 const PaymentDetails = ({ closeModal }) => {
   const paymentDetails = useSelector((state) => state.paymnent.paymentDetails);
@@ -37,6 +38,7 @@ const PaymentDetails = ({ closeModal }) => {
 
     dispatch(paymentActions.updatePaymentDetails(updatedPaymentDetails));
     dispatch(updatePaymentInfo(updatedPaymentDetails));
+    dispatch(paymentActions.updatePaymentSent(true));
 
     closeModal();
   };
@@ -55,57 +57,67 @@ const PaymentDetails = ({ closeModal }) => {
   };
 */
   return (
-    // Overlay div with semi-transparent background to focus attention on the modal
     <div
       className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50"
       onClick={closeModal}
     >
-      {/* Modal content with modern styling */}
       <div
-        className="bg-gray-100 p-12 rounded-lg shadow-xl max-w-md w-full mx-4"
+        className="bg-gray-100 p-12 rounded-lg shadow-xl max-w-md w-full mx-4 text-left"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-2xl font-semibold text-teal-700 tracking-wider mb-8">
+        <h2 className="text-2xl font-semibold text-indogoDye tracking-wider mb-8 text-center">
           Make a Payment
         </h2>
-        <input
-          type="text"
-          placeholder="Request ID"
-          className="form-input px-4 py-1 mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-          value={paymentDetails.request_id}
-          readOnly
-        />
+        <div className="text-sm font-light">
+          <label htmlFor="requestId" className="block">
+            Your request ID
+          </label>
+          <input
+            id="requestId"
+            type="text"
+            className="form-input px-4 py-1 mt-1 block w-full border-gray-300 rounded-md shadow-sm text-gray-600"
+            value={paymentDetails.request_id}
+            readOnly
+          />
+        </div>
 
-        <input
-          type="text"
-          placeholder="Your USDT Address"
-          className="form-input px-4 py-1 mt-4 block w-full border-gray-300 rounded-md shadow-sm"
-          value={userAddress}
-          onChange={(e) => setUserAddress(e.target.value)}
-        />
+        <div className="mt-4 text-sm font-ligh">
+          <label htmlFor="userAddress" className="block text-sm font-light">
+            Your USDT Address
+          </label>
+          <input
+            id="userAddress"
+            type="text"
+            className="form-input px-4 py-1 mt-1 block w-full border-gray-300 rounded-md shadow-sm text-gray-600"
+            value={userAddress}
+            onChange={(e) => setUserAddress(e.target.value)}
+          />
+        </div>
+
         <p className="mt-10 text-gray-600">
-          Amount to pay (USDT):{" "}
-          <span className="font-medium text-gray-800 ml-4">{amountToPay}</span>
+          Amount to pay:{" "}
+          <span className="font-medium text-indogoDye">{amountToPay}</span> USDT
         </p>
         <div className="mt-2 text-gray-600">
           Send payment to:{" "}
-          <span className="font-medium text-gray-800 ml-4">
+          <span className="font-medium text-indogoDye">
             {shortPaymentAddress}
           </span>
           <button
             onClick={() => copyToClipboard(paymentAddress)}
-            className="ml-2 bg-gray-200 text-gray-700 px-2 py-1 rounded-md hover:bg-gray-300 transition duration-200"
+            className="ml-2 bg-gray-200 text-gray-700 px-2 py-0.5 rounded-md text-sm font-light hover:bg-gray-300 transition duration-200"
           >
             Copy
           </button>
         </div>
-
-        <button
-          onClick={handlePaymentSubmission}
-          className="mt-12 bg-teal-600 text-gray-200 px-4 py-2 rounded-md hover:bg-teal-700 transition duration-200"
-        >
-          Submit Payment Info
-        </button>
+        <div className="text-center">
+          <button
+            onClick={handlePaymentSubmission}
+            className="bg-honoluluBlue text-gray-200 px-4 py-2 mt-10 shadow-lg rounded ml-2 hover:bg-salmon hover:text-gray-800 transition duration-200"
+          >
+            Submit Payment Info
+          </button>
+        </div>
       </div>
     </div>
   );
