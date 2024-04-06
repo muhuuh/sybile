@@ -95,7 +95,6 @@ const PaymentMain = () => {
                     We are monitoring your payment and will refresh
                     automatically the page after 3 confirmation
                   </p>
-                  <p className="mt-3 text-xl text-gray-200">{requestId}</p>
                 </div>
               )}
             </div>

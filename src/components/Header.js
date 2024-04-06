@@ -4,7 +4,10 @@ import { NavLink, useLocation } from "react-router-dom";
 const Header = () => {
   const location = useLocation(); // Get the current location
   const isAnalysisActive =
-    location.pathname === "/" || location.pathname === "/main";
+    location.pathname === "/" ||
+    location.pathname === "/main" ||
+    location.pathname === "/main/payment" ||
+    location.pathname === "/main/analysis";
 
   return (
     <header className="bg-white border-b py-8 flex justify-between items-center px-24 shadow-md">
