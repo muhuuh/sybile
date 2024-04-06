@@ -104,22 +104,26 @@ function Main() {
   };
 
   return (
-    <main className="min-h-screen p-8  bg-darkBgGray">
+    <main className="min-h-screen p-8  bg-gray-100">
       <div className="text-center mt-6">
-        <h1 className="text-2xl font-bold text-teal-600 mb-4 tracking-wider">
+        <h1 className="text-3xl font-bold text-honoluluBlue mb-4 tracking-wider">
           Reward your users, and not airdrop farmers
         </h1>
-        <p className="text-gray-200 mb-6">
+        <p className="text-gray-800 font-light text-lg mb-6">
           Leverage Machine Learning and AI to filter out sybile attackers from
           your airdrop
         </p>
       </div>
-      <div className="text-center mt-14">
+      <div className="text-center mt-14 tracking-wider">
         <button
           onClick={() => {
             setNewRequest(true);
           }}
-          className="bg-teal-600 text-gray-200 px-4 py-2 rounded-l ml-2 hover:bg-teal-700 transition duration-200"
+          className={`${
+            newRequest
+              ? "bg-argentinianBlue text-gray-800"
+              : "bg-honoluluBlue text-gray-200"
+          } px-4 py-2 rounded-l shadow-lg ml-2 hover:bg-argentinianBlue hover:text-gray-800 transition duration-200`}
         >
           New Request
         </button>
@@ -127,22 +131,26 @@ function Main() {
           onClick={() => {
             setNewRequest(false);
           }}
-          className="bg-teal-600 text-gray-200 px-4 py-2 rounded-r ml-2 hover:bg-teal-700 transition duration-200"
+          className={`${
+            !newRequest
+              ? "bg-argentinianBlue text-gray-800"
+              : "bg-honoluluBlue text-gray-200"
+          } px-4 py-2 rounded-r shadow-lg ml-2 hover:bg-argentinianBlue hover:text-gray-800 transition duration-200`}
         >
           Search Analysis
         </button>
       </div>
 
       {newRequest && (
-        <section className="max-w-6xl mx-auto bg-lightBgGray rounded-lg shadow-md p-8 mt-10">
-          <p className="text-center pb-4 px-24 text-gray-200">
+        <section className="max-w-6xl mx-auto bg-white rounded-lg border-gray-200 border shadow-lg p-8 mt-10">
+          <p className="text-center pb-4 px-24 text-gray-700 font-light">
             Get your sybile attacker analysis with custom confidence band,
             interactive visualisation, and more.
           </p>
           <div
             {...getRootProps()}
             className={`flex flex-col items-center justify-center border-2 border-dashed ${
-              isUploading ? "border-gray-300" : "border-teal-400"
+              isUploading ? "border-gray-300" : "border-honoluluBlue"
             } rounded-md py-16 mb-4`}
           >
             <input {...getInputProps()} />
@@ -152,26 +160,26 @@ function Main() {
                 <p className="text-gray-500">Uploading...</p>
               </div>
             ) : (
-              <p className="text-teal-600">
+              <p className="text-gray-700 font-light">
                 {isDragActive
                   ? "Drop the files here ..."
                   : "Drag 'n' drop a CSV or Excel file "}
               </p>
             )}
             {!isUploading && (
-              <button className="mt-4 bg-teal-600 text-gray-200 px-4 py-2 rounded-md hover:bg-teal-700 transition duration-200">
+              <button className="mt-4 tracking-wider shadow-lg bg-honoluluBlue text-gray-200 px-4 py-2 rounded-md hover:bg-argentinianBlue hover:text-gray-800 transition duration-200">
                 Upload addresses
               </button>
             )}
             {errorMessage && (
-              <div className="text-red-500">
+              <div className="text-red-700">
                 <p>{errorMessage}</p>
               </div>
             )}
           </div>
-          <p className="text-sm text-gray-300">
+          <p className="text-sm text-gray-500 font-light">
             Need help to gather all addresses that need to be analyzed?{" "}
-            <a href="#" className="text-teal-600 hover:underline">
+            <a href="#" className="text-honoluluBlue hover:underline">
               Contact us!
             </a>
           </p>
