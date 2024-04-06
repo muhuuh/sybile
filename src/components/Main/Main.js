@@ -189,17 +189,17 @@ function Main() {
         </section>
       )}
       {!newRequest && (
-        <div className="mt-10 text-center">
+        <div className="mt-24 text-center">
           <input
             type="text"
             value={requestId}
             onChange={(e) => setRequestId(e.target.value)}
             placeholder="Enter request ID"
-            className="text-black p-2 rounded-l"
+            className="text-gray-700 w-96 p-2 pl-6 rounded-l shadow-md"
           />
           <button
             onClick={handleFetchAnalysis}
-            className="bg-teal-600 text-gray-200 px-4 py-2 rounded-r ml-2 hover:bg-teal-700 transition duration-200"
+            className="bg-honoluluBlue text-gray-200 px-4 py-2 shadow-lg rounded-r ml-2 hover:bg-salmon hover:text-gray-800 transition duration-200"
           >
             Fetch Analysis
           </button>
@@ -210,7 +210,7 @@ function Main() {
             </div>
           )}
           {errorMessage && (
-            <div className="text-red-500">
+            <div className="text-red-700">
               <p>{errorMessage}</p>
             </div>
           )}
