@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import VisualMain from "../Visual/VisualMain";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -15,6 +15,7 @@ const AnalysisMain = () => {
   const requestValid = useSelector((state) => state.visuals.requestValid);
   const dataAnalysis = useSelector((state) => state.visuals.dataAnalysis);
   const networkAnalysis = useSelector((state) => state.visuals.networkAnalysis);
+  const [estimatedMcap, setEstimatedMcap] = useState("");
 
   const sybileAddresseAnalysis = useSelector(
     (state) => state.visuals.sybileAddresseAnalysis
@@ -28,6 +29,12 @@ const AnalysisMain = () => {
       dispatch(fetchAddressAnalysis(requestId));
     }
   }, [paymentMade, analysisDone, requestId, dispatch]);
+
+  const computeFinancialLoss = () => {
+    const sybilTokenPercentage =
+      dataAnalysis.executiveSummary.sybilTokenPercentage / 100;
+    return (estimatedMcap * sybilTokenPercentage).toLocaleString();
+  };
 
   const downloadAddressesAsCSV = () => {
     const addresses = sybileAddresseAnalysis;
@@ -105,14 +112,25 @@ const AnalysisMain = () => {
                   </li>
                 </ul>
                 <div className="col-span-2 mt-6 text-lg">
-                  <p className="text-center">
-                    In total, the{" "}
-                    <span className="font-bold">financial loss</span> due to the
-                    non-detected sybil attack amounts to: $
-                    <span className="font-bold underline">
-                      {dataAnalysis.executiveSummary.financialLoss.toLocaleString()}
-                    </span>
-                  </p>
+                  <div className="text-center mb-2">
+                    <input
+                      type="number"
+                      placeholder="Estimated MCAP at launch"
+                      className="border-2 border-gray-200 px-2 py-1 rounded text-sm font-light w-64 mb-4"
+                      value={estimatedMcap}
+                      onChange={(e) => setEstimatedMcap(e.target.value)}
+                    />
+                    {estimatedMcap && (
+                      <p className="text-center">
+                        In total, the{" "}
+                        <span className="font-bold">financial loss</span> due to
+                        the non-detected sybil attack amounts to: $
+                        <span className="font-bold underline">
+                          {computeFinancialLoss()}
+                        </span>
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
