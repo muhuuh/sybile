@@ -123,7 +123,7 @@ function Main() {
             newRequest
               ? "bg-argentinianBlue text-gray-800"
               : "bg-honoluluBlue text-gray-200"
-          } px-4 py-2 rounded-l shadow-lg ml-2 hover:bg-argentinianBlue hover:text-gray-800 transition duration-200`}
+          } px-4 py-2 rounded-l shadow-lg ml-2 hover:bg-salmon hover:text-gray-800 transition duration-200`}
         >
           New Request
         </button>
@@ -135,7 +135,7 @@ function Main() {
             !newRequest
               ? "bg-argentinianBlue text-gray-800"
               : "bg-honoluluBlue text-gray-200"
-          } px-4 py-2 rounded-r shadow-lg ml-2 hover:bg-argentinianBlue hover:text-gray-800 transition duration-200`}
+          } px-4 py-2 rounded-r shadow-lg ml-2 hover:bg-salmon hover:text-gray-800 transition duration-200`}
         >
           Search Analysis
         </button>
@@ -167,7 +167,7 @@ function Main() {
               </p>
             )}
             {!isUploading && (
-              <button className="mt-4 tracking-wider shadow-lg bg-honoluluBlue text-gray-200 px-4 py-2 rounded-md hover:bg-argentinianBlue hover:text-gray-800 transition duration-200">
+              <button className="mt-4 tracking-wider shadow-lg bg-honoluluBlue text-gray-200 px-4 py-2 rounded-md hover:bg-salmon hover:text-gray-800 transition duration-200">
                 Upload addresses
               </button>
             )}
@@ -179,7 +179,10 @@ function Main() {
           </div>
           <p className="text-sm text-gray-500 font-light">
             Need help to gather all addresses that need to be analyzed?{" "}
-            <a href="#" className="text-honoluluBlue hover:underline">
+            <a
+              href="#"
+              className="text-honoluluBlue hover:underline decoration-salmon tracking-wider font-bold"
+            >
               Contact us!
             </a>
           </p>

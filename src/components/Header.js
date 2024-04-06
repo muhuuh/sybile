@@ -3,21 +3,42 @@ import { NavLink } from "react-router-dom";
 
 const Header = () => {
   return (
-    <header className="bg-gray-200 py-8 flex justify-center items-center border-b-4 border-teal-800 px-24 shadow-md">
+    <header className="bg-white border-b py-8 flex justify-between items-center px-24 shadow-md">
       <NavLink
         to="/main"
-        className="text-3xl font-bold tracking-widest text-teal-700"
+        className="text-3xl font-bold tracking-widest text-honoluluBlue"
       >
-        Six Billes
+        ManyMe
       </NavLink>
-      <div className="flex flex-grow text-gray-700 justify-center gap-x-8 tracking-wider">
-        <NavLink to="/main" activeClassName="underline" className="text-xl ">
+      <div className="flex text-gray-600 text-xl justify-center gap-x-20 tracking-wider">
+        <NavLink
+          to="/main"
+          className={({ isActive }) =>
+            isActive
+              ? "underline decoration-salmon font-bold"
+              : "" + " text-gray-700"
+          }
+        >
           Analysis
         </NavLink>
-        <NavLink to="/demo" activeClassName="underline" className="text-xl">
+        <NavLink
+          to="/demo"
+          className={({ isActive }) =>
+            isActive
+              ? "underline decoration-salmon font-bold"
+              : "" + " text-gray-700"
+          }
+        >
           Demo
         </NavLink>
-        <NavLink to="/faq" activeClassName="underline" className="text-xl">
+        <NavLink
+          to="/faq"
+          className={({ isActive }) =>
+            isActive
+              ? "underline decoration-salmon font-bold"
+              : "" + " text-gray-700"
+          }
+        >
           FAQ
         </NavLink>
       </div>
