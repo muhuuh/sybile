@@ -112,7 +112,7 @@ const AnalysisMain = () => {
                   </li>
                 </ul>
                 <div className="col-span-2 mt-6 text-lg">
-                  <div className="text-center mb-2">
+                  <div className="text-center">
                     <input
                       type="number"
                       placeholder="Estimated MCAP at launch"

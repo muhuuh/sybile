@@ -57,6 +57,7 @@ const defaultState = {
     tx_id: "",
   },
   paymentSent: false,
+  confidenceInterval: 0.95,
 };
 
 const paymentSlice = createSlice({
@@ -71,6 +72,9 @@ const paymentSlice = createSlice({
     },
     updatePaymentSent(state, action) {
       state.paymentSent = action.payload;
+    },
+    updateConfidence(state, action) {
+      state.confidenceInterval = action.payload;
     },
   },
   extraReducers: (builder) => {
