@@ -22,6 +22,9 @@ const AnalysisMain = () => {
   );
   const dispatch = useDispatch();
 
+  console.log("dataAnalysis");
+  console.log(dataAnalysis);
+
   useEffect(() => {
     if (paymentMade && analysisDone && requestId) {
       dispatch(fetchNetworkAnalysis(requestId));
@@ -31,8 +34,11 @@ const AnalysisMain = () => {
   }, [paymentMade, analysisDone, requestId, dispatch]);
 
   const computeFinancialLoss = () => {
-    const sybilTokenPercentage =
-      dataAnalysis.executiveSummary.sybilTokenPercentage / 100;
+    const sybilTokenPercentage = dataAnalysis.sybiledTokenPercentage / 100;
+    console.log("sybilTokenPercentage");
+
+    console.log(sybilTokenPercentage);
+    console.log(estimatedMcap);
     return (estimatedMcap * sybilTokenPercentage).toLocaleString();
   };
 
@@ -73,42 +79,31 @@ const AnalysisMain = () => {
             {dataAnalysis && (
               <div className="text-gray-700 grid grid-cols-2 gap-4">
                 <ul className="list-disc pl-5">
+                  <li>Total Users: {dataAnalysis.totalUsers}</li>
                   <li>
-                    Total Users:{" "}
-                    {dataAnalysis.executiveSummary.totalParticipants}
-                  </li>
-                  <li>
-                    Total Sybil Addresses:{" "}
-                    {dataAnalysis.executiveSummary.totalSybilAddresses}
+                    Total Sybil Addresses: {dataAnalysis.totalSybilAddresses}
                   </li>
                   <li>
                     Sybil Address Percentage:{" "}
-                    {dataAnalysis.executiveSummary.sybilPercentage}%
+                    {dataAnalysis.sybilAddressPercentage}%
                   </li>
                 </ul>
                 <ul className="list-disc pl-5">
                   <li>
                     Sybiled Token Percentage:{" "}
-                    {dataAnalysis.executiveSummary.sybilTokenPercentage}%
+                    {dataAnalysis.sybiledTokenPercentage}%
                   </li>
 
                   <li>
                     Addresses accounting for 80% sybil-attacked tokens:{" "}
-                    {dataAnalysis.executiveSummary.topSybilAddresses}
+                    {dataAnalysis.addressesAccountingForTopSybil}
                   </li>
                   <li>
                     {" "}
                     Top 3 sybile clusters:{" "}
-                    {
-                      dataAnalysis.executiveSummary.mostActiveClusters
-                        .totalAddresses
-                    }{" "}
-                    addresses claimed{" "}
-                    {
-                      dataAnalysis.executiveSummary.mostActiveClusters
-                        .claimedPercentage
-                    }
-                    % of Sybil-attacked tokens
+                    {dataAnalysis.topSybileClusters.totalAddresses} addresses
+                    claimed {dataAnalysis.topSybileClusters.claimedPercentage}%
+                    of Sybil-attacked tokens
                   </li>
                 </ul>
                 <div className="col-span-2 mt-6 text-lg">

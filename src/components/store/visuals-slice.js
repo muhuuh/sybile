@@ -50,58 +50,17 @@ const defaultState = {
     links: [],
   },
   dataAnalysis: {
-    executiveSummary: {
-      totalSybilAddresses: 0,
-      totalParticipants: 0,
-      sybilPercentage: 0,
-      sybilTokenPercentage: 0,
-      financialLoss: 0,
-      topSybilAddresses: 0,
-      topSybilPercentage: 0,
-      mostActiveClusters: {
-        totalClusters: 0,
-        totalAddresses: 0,
-        claimedTokens: 0,
-        claimedPercentage: 0,
-      },
-    },
-    initialFindings: {
+    totalUsers: 0,
+    totalSybilAddresses: 0,
+    sybilAddressPercentage: 0,
+    sybiledTokenPercentage: 0,
+    addressesAccountingForTopSybil: 0,
+    topSybileClusters: {
       totalAddresses: 0,
-      totalClaimedENA: 0,
-      sybilClaimedENA: 0,
-      potentialSavingsENA: 0,
-      largestCluster: {
-        addressCount: 0,
-        claimedENA: 0,
-      },
-    },
-    detailedAnalysis: {
-      sybilAttackDistribution: {
-        averageClaimedENA: 0,
-        standardDeviation: 0,
-        medianClaimedENA: 0,
-      },
-      sybileAmount: {
-        perAddressAverage: 0,
-        perAddressMedian: 0,
-        perClusterAverage: 0,
-        perClusterMedian: 0,
-      },
-      topClaimers: {
-        topAddressClaimedENA: 0,
-        topClusters: [
-          {
-            clusterId: 0,
-            claimedENA: 0,
-            percentageOfTotalClaimed: 0,
-          },
-        ],
-      },
-      clusterInsights: {
-        averageClusterSize: 0,
-      },
+      claimedPercentage: 0,
     },
   },
+
   sybileAddresseAnalysis: {},
   requestValid: true,
 };

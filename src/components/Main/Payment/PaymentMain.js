@@ -64,14 +64,21 @@ const PaymentMain = () => {
                 <span className="text-honoluluBlue">
                   Sybile addresses found
                 </span>
-                : {dataAnalysis.executiveSummary.totalSybilAddresses}
+                : {dataAnalysis.totalSybilAddresses}
               </div>
               <div className="text-gray-700">
-                Total number of sybile{" "}
+                Total number of{" "}
                 <span className="text-honoluluBlue">
-                  Sybil Token Percentage:
+                  Sybil Addresses Percentage
                 </span>
-                : {dataAnalysis.executiveSummary.sybilTokenPercentage}%
+                : {dataAnalysis.sybilAddressPercentage}%
+              </div>
+              <div className="text-gray-700">
+                Total{" "}
+                <span className="text-honoluluBlue">
+                  Sybil Token Percentage
+                </span>
+                : {dataAnalysis.sybiledTokenPercentage}%
               </div>
               <div className="text-gray-700">
                 Potential savings{" "}
