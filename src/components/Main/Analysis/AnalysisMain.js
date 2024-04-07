@@ -35,10 +35,6 @@ const AnalysisMain = () => {
 
   const computeFinancialLoss = () => {
     const sybilTokenPercentage = dataAnalysis.sybiledTokenPercentage / 100;
-    console.log("sybilTokenPercentage");
-
-    console.log(sybilTokenPercentage);
-    console.log(estimatedMcap);
     return (estimatedMcap * sybilTokenPercentage).toLocaleString();
   };
 
@@ -109,17 +105,24 @@ const AnalysisMain = () => {
                 <div className="col-span-2 mt-6 text-lg">
                   <div className="text-center">
                     <input
-                      type="number"
+                      type="text"
                       placeholder="Estimated MCAP at launch"
-                      className="border-2 border-gray-200 px-2 py-1 rounded text-sm font-light w-64 mb-4"
-                      value={estimatedMcap}
-                      onChange={(e) => setEstimatedMcap(e.target.value)}
+                      className="border-2 border-gray-200 px-2 py-1 rounded text-sm font-light w-52 tracking-wider mb-4"
+                      value={estimatedMcap.replace(
+                        /\B(?=(\d{3})+(?!\d))/g,
+                        ","
+                      )}
+                      onChange={(e) =>
+                        setEstimatedMcap(e.target.value.replace(/,/g, ""))
+                      }
                     />
                     {estimatedMcap && (
                       <p className="text-center">
                         In total, the{" "}
-                        <span className="font-bold">financial loss</span> due to
-                        the non-detected sybil attack amounts to: $
+                        <span className="font-bold tracking-wider">
+                          financial loss
+                        </span>{" "}
+                        due to the non-detected sybil attack amounts to: $
                         <span className="font-bold underline">
                           {computeFinancialLoss()}
                         </span>
