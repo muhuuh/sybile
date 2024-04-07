@@ -13,8 +13,13 @@ const Header = () => {
     <header className="bg-white border-b py-8 flex justify-between items-center px-24 shadow-md">
       <NavLink
         to="/main"
-        className="text-3xl font-bold tracking-widest text-indogoDye"
+        className="flex items-center text-3xl font-bold tracking-widest text-indogoDye"
       >
+        <img
+          src={`${process.env.PUBLIC_URL}/manyme-main.png`}
+          alt="ManyMe Logo"
+          className="h-12 mr-2"
+        />
         ManyMe
       </NavLink>
       <div className="flex text-gray-600 text-xl justify-center gap-x-20 tracking-wider">
