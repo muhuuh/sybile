@@ -12,6 +12,7 @@ const PaymentMain = () => {
   const paymentSent = useSelector((state) => state.paymnent.paymentSent);
   const dataAnalysis = useSelector((state) => state.visuals.dataAnalysis);
   const [openModal, setOpenModal] = useState(false);
+  const [estimatedMcap, setEstimatedMcap] = useState("");
 
   console.log("mainDataPoints");
   console.log(analysisDone);
@@ -25,6 +26,11 @@ const PaymentMain = () => {
       navigate("/main/analysis");
     }
   }, [paymentMade, analysisDone, navigate]);
+
+  const computeFinancialLoss = () => {
+    const sybilTokenPercentage = dataAnalysis.sybiledTokenPercentage / 100;
+    return (estimatedMcap * sybilTokenPercentage).toLocaleString();
+  };
 
   const closeModalHandler = () => {
     setOpenModal(false);
@@ -58,7 +64,7 @@ const PaymentMain = () => {
 
         {analysisDone && (
           <div className="flex flex-col">
-            <div className=" my-10 mx-auto max-w-6xl bg-white rounded-lg shadow-lg border py-10 px-32">
+            <div className=" my-10 mx-auto max-w-6xl w-1/3 bg-white rounded-lg shadow-lg border py-10 px-32">
               <div className="text-gray-700">
                 Total number of{" "}
                 <span className="text-honoluluBlue">
@@ -80,11 +86,32 @@ const PaymentMain = () => {
                 </span>
                 : {dataAnalysis.sybiledTokenPercentage}%
               </div>
-              <div className="text-gray-700">
-                Potential savings{" "}
-                <span className="text-honoluluBlue">Potential savings</span>:{" "}
-                {dataAnalysis.executiveSummary.financialLoss.toLocaleString()}
+              <div className="col-span-2 mt-10 text-lg">
+                <div className="text-center">
+                  <input
+                    type="text"
+                    placeholder="Estimated MCAP at launch"
+                    className="border-2 border-gray-200 px-2 py-1 rounded text-sm font-light w-52 tracking-wider mb-4"
+                    value={estimatedMcap.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                    onChange={(e) =>
+                      setEstimatedMcap(e.target.value.replace(/,/g, ""))
+                    }
+                  />
+                  {estimatedMcap && (
+                    <p className="text-center">
+                      In total, the{" "}
+                      <span className="font-bold tracking-wider">
+                        financial loss
+                      </span>{" "}
+                      due to the detected sybil attack amounts to: $
+                      <span className="font-bold underline">
+                        {computeFinancialLoss()}
+                      </span>
+                    </p>
+                  )}
+                </div>
               </div>
+
               {!paymentSent ? (
                 <button
                   onClick={() => setOpenModal(true)}

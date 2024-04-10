@@ -122,7 +122,7 @@ const AnalysisMain = () => {
                         <span className="font-bold tracking-wider">
                           financial loss
                         </span>{" "}
-                        due to the non-detected sybil attack amounts to: $
+                        due to the detected sybil attack amounts to: $
                         <span className="font-bold underline">
                           {computeFinancialLoss()}
                         </span>
