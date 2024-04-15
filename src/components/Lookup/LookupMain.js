@@ -49,7 +49,7 @@ function LookupMain() {
 
         let { data: insertData, error: insertError } = await supabase
           .from("uploads")
-          .insert([{ storage_url: storageUrl, confidence: confidenceInterval }])
+          .insert([{ storage_url: storageUrl }])
           .select("id");
 
         console.log("Insert response:", insertData, insertError);
@@ -68,7 +68,6 @@ function LookupMain() {
           dispatch(
             paymentActions.updatePaymentDetails({ request_id: newRequestId })
           );
-          dispatch(paymentActions.updateConfidence(confidenceInterval));
         }
 
         setIsUploading(false);
@@ -153,21 +152,7 @@ function LookupMain() {
             Get your sybile attacker analysis with custom confidence band,
             interactive visualisation, and more.
           </p>
-          <div className="text-center">
-            <label htmlFor="confidenceInterval" className="font-light text-sm">
-              Select your confidence interval:
-            </label>
-            <select
-              id="confidenceInterval"
-              value={confidenceInterval}
-              onChange={(e) => setConfidenceInterval(e.target.value)}
-              className="border-2 border-gray-300 px-2 ml-2 mb-4 rounded font-light text-sm"
-            >
-              <option value="90">90%</option>
-              <option value="95">95%</option>
-              <option value="99">99%</option>
-            </select>
-          </div>
+
           <div
             {...getRootProps()}
             className={`flex flex-col items-center justify-center border-2 border-dashed ${
