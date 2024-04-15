@@ -11,7 +11,7 @@ import {
   fetchNetworkAnalysis,
 } from "../store/visuals-slice";
 
-function Main() {
+function PredictiveMain() {
   const [isUploading, setIsUploading] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -106,16 +106,9 @@ function Main() {
   };
 
   return (
-    <main className="min-h-screen p-8  bg-gray-100">
+    <main className=" px-8  bg-gray-100">
       <div className="text-center mt-6">
-        <h1 className="text-3xl font-bold text-indogoDye mb-4 tracking-wider">
-          Reward your users, and not airdrop farmers
-        </h1>
-        <p className="text-gray-800 font-light text-lg mb-10">
-          Leverage Machine Learning and AI to filter out sybile attackers from
-          your airdrop
-        </p>
-        <h1 className="text-xl font-bold underline text-indogoDye mb-4 tracking-wider">
+        <h1 className="text-xl font-bold  text-indogoDye underline decoration-salmon mb-4 tracking-wider">
           Predictive Analysis
         </h1>
         <div className="flex justify-center">
@@ -249,4 +242,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default PredictiveMain;

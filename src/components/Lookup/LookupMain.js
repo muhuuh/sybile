@@ -106,16 +106,9 @@ function LookupMain() {
   };
 
   return (
-    <main className="min-h-screen p-8  bg-gray-100">
+    <main className=" px-8  bg-gray-100">
       <div className="text-center mt-6">
-        <h1 className="text-3xl font-bold text-indogoDye mb-4 tracking-wider">
-          Reward your users, and not airdrop farmers
-        </h1>
-        <p className="text-gray-800 font-light text-lg mb-10">
-          Leverage Machine Learning and AI to filter out sybile attackers from
-          your airdrop
-        </p>
-        <h1 className="text-xl font-bold underline text-indogoDye mb-4 tracking-wider">
+        <h1 className="text-xl font-bold underline decoration-salmon text-indogoDye mb-4 tracking-wider">
           Lookup Analysis
         </h1>
         <div className="flex justify-center">
