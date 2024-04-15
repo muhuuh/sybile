@@ -10,6 +10,7 @@ import {
   fetchDataAnalysis,
   fetchNetworkAnalysis,
 } from "../store/visuals-slice";
+import SearchAnalysis from "../Main/Analysis/SearchAnalysis";
 
 function LookupMain() {
   const [isUploading, setIsUploading] = useState(false);
@@ -149,8 +150,7 @@ function LookupMain() {
       {newRequest && (
         <section className="max-w-6xl mx-auto bg-white rounded-lg border-gray-200 border shadow-lg p-8 mt-10">
           <p className="text-center pb-4 px-24 text-gray-700 font-light">
-            Get your sybile attacker analysis with custom confidence band,
-            interactive visualisation, and more.
+            Compare your list of users with known sybil attackers
           </p>
 
           <div
@@ -194,34 +194,8 @@ function LookupMain() {
           </p>
         </section>
       )}
-      {!newRequest && (
-        <div className="mt-24 text-center">
-          <input
-            type="text"
-            value={requestId}
-            onChange={(e) => setRequestId(e.target.value)}
-            placeholder="Enter request ID"
-            className="text-gray-700 w-96 p-2 pl-6 rounded-l shadow-md"
-          />
-          <button
-            onClick={handleFetchAnalysis}
-            className="bg-honoluluBlue text-gray-200 px-4 py-2 shadow-lg rounded-r ml-2 hover:bg-salmon hover:text-gray-800 transition duration-200"
-          >
-            Fetch Analysis
-          </button>
-          {isFetching && (
-            <div className="flex flex-col items-center mt-10">
-              <LoadingSpinner />
-              <p className="text-gray-500">Loading...</p>
-            </div>
-          )}
-          {errorMessage && (
-            <div className="text-red-700">
-              <p>{errorMessage}</p>
-            </div>
-          )}
-        </div>
-      )}
+
+      {!newRequest && <SearchAnalysis />}
     </main>
   );
 }
