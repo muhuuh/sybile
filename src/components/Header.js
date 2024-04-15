@@ -34,12 +34,12 @@ const Header = () => {
           Analysis
         </NavLink>
         <NavLink
-          to="/demo"
+          to="/lookup"
           className={({ isActive }) =>
             isActive ? "underline decoration-salmon font-bold" : "text-gray-700"
           }
         >
-          Demo
+          Lookup
         </NavLink>
         <NavLink
           to="/faq"

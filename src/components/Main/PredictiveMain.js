@@ -111,12 +111,24 @@ function Main() {
         <h1 className="text-3xl font-bold text-indogoDye mb-4 tracking-wider">
           Reward your users, and not airdrop farmers
         </h1>
-        <p className="text-gray-800 font-light text-lg mb-6">
+        <p className="text-gray-800 font-light text-lg mb-10">
           Leverage Machine Learning and AI to filter out sybile attackers from
           your airdrop
         </p>
+        <h1 className="text-xl font-bold underline text-indogoDye mb-4 tracking-wider">
+          Predictive Analysis
+        </h1>
+        <div className="flex justify-center">
+          <p className="text-gray-800 font-light  w-1/2 mb-6">
+            Share the list of your users, and this analysis will run an analysis
+            to detect sybil clusters on the whole user base, independently
+            whether users are already known as sybil attackers. This consists of
+            the most in-depth and accurate analysis and detcts also unknown
+            sybil attackers and their clusters
+          </p>
+        </div>
       </div>
-      <div className="text-center mt-14 tracking-wider">
+      <div className="text-center mt-2 tracking-wider">
         <button
           onClick={() => {
             setNewRequest(true);
