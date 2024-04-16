@@ -1,20 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LookupMain from "./Lookup/LookupMain";
 import PredictiveMain from "./Main/PredictiveMain";
+import useTypewriter from "react-typewriter-hook";
 
 const LandingPage = () => {
   const [showPredictive, setShowPredictive] = useState(false);
+  const fixedTitle = "Reward your users, and not airdrop farmers";
+  const [magicName, setMagicName] = useState("");
 
   const toggle = () => {
     setShowPredictive(!showPredictive);
   };
+
+  useEffect(() => {
+    setMagicName(fixedTitle);
+  }, []);
+  const name = useTypewriter(magicName);
+
   return (
     <main className="min-h-screen p-8  bg-gray-100">
       <div className="text-center mt-6">
-        <h1 className="text-3xl font-bold text-indogoDye mb-4 tracking-wider">
-          Reward your users, and not airdrop farmers
+        <h1 className="text-3xl font-bold text-indogoDye mb-2 tracking-wider">
+          {name || " "}
         </h1>
-        <p className="text-gray-800 font-light text-lg mb-10">
+        <p className="text-gray-800  text-lg mb-10">
           Leverage Machine Learning and AI to filter out sybile attackers from
           your airdrop
         </p>
