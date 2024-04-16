@@ -66,7 +66,7 @@ function PredictiveMain() {
         }
 
         setIsUploading(false);
-        navigate("/main/payment");
+        navigate("/main/payment/predictive");
       } else {
         setErrorMessage("Please upload a CSV or XLSX file.");
       }

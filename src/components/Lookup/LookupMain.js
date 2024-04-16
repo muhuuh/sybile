@@ -67,7 +67,7 @@ function LookupMain() {
         }
 
         setIsUploading(false);
-        navigate("/main/payment");
+        navigate("/main/payment/lookup");
       } else {
         setErrorMessage("Please upload a CSV or XLSX file.");
       }

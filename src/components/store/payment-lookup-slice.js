@@ -47,7 +47,7 @@ const defaultState = {
   user: {
     request_id: 0,
     paymentMade: false,
-    analysisDone: true, //TODO change to false. true is only for testing purpose until script connected
+    analysisDone: false, //TODO change to false. true is only for testing purpose until script connected
   },
   paymentDetails: {
     request_id: 0,

@@ -2,15 +2,21 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../UI/LoadingSpinner";
-import PaymentDetails from "./PaymentDetails";
+import PaymentDetails from "../../Main/Payment/PaymentDetails";
 
-const PaymentMain = () => {
+const PaymentLookupMain = () => {
   const navigate = useNavigate();
-  const requestId = useSelector((state) => state.paymnent.user.request_id);
-  const paymentMade = useSelector((state) => state.paymnent.user.paymentMade);
-  const analysisDone = useSelector((state) => state.paymnent.user.analysisDone);
-  const paymentSent = useSelector((state) => state.paymnent.paymentSent);
-  const dataAnalysis = useSelector((state) => state.visuals.dataAnalysis);
+  const requestId = useSelector(
+    (state) => state.paymnentLookup.user.request_id
+  );
+  const paymentMade = useSelector(
+    (state) => state.paymnentLookup.user.paymentMade
+  );
+  const analysisDone = useSelector(
+    (state) => state.paymnentLookup.user.analysisDone
+  );
+  const paymentSent = useSelector((state) => state.paymnentLookup.paymentSent);
+  const dataAnalysis = useSelector((state) => state.visuals.dataAnalysis); //TODO adapt to new structure
   const [openModal, setOpenModal] = useState(false);
   const [estimatedMcap, setEstimatedMcap] = useState("");
 
@@ -23,7 +29,7 @@ const PaymentMain = () => {
   // Navigate when both payment and analysis are done
   useEffect(() => {
     if (paymentMade && analysisDone) {
-      navigate("/main/analysis/predictive");
+      navigate("/main/analysis/lookup");
     }
   }, [paymentMade, analysisDone, navigate]);
 
@@ -140,4 +146,4 @@ const PaymentMain = () => {
   );
 };
 
-export default PaymentMain;
+export default PaymentLookupMain;
