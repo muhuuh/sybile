@@ -5,20 +5,13 @@ import LoadingSpinner from "../UI/LoadingSpinner";
 import supabase from "../../Supabase/supabase";
 import { useDispatch } from "react-redux";
 import { paymentActions } from "../store/payment-slice";
-import {
-  fetchAddressAnalysis,
-  fetchDataAnalysis,
-  fetchNetworkAnalysis,
-} from "../store/visuals-slice";
 import SearchAnalysis from "../Main/Analysis/SearchAnalysis";
+import { paymentLookupActions } from "../store/payment-lookup-slice";
 
 function LookupMain() {
   const [isUploading, setIsUploading] = useState(false);
-  const [isFetching, setIsFetching] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [requestId, setRequestId] = useState("");
   const [newRequest, setNewRequest] = useState(true);
-  const [confidenceInterval, setConfidenceInterval] = useState("95");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -32,7 +25,7 @@ function LookupMain() {
         setIsUploading(true);
 
         const fileExtension = file.name.split(".").pop();
-        const filePath = `uploads/${Math.random()}.${fileExtension}`;
+        const filePath = `lookup/${Math.random()}.${fileExtension}`;
 
         let { error: uploadError, data: fileData } = await supabase.storage
           .from("sybile")
@@ -49,7 +42,7 @@ function LookupMain() {
         const storageUrl = `${projectUrl}/storage/v1/object/public/sybile/${filePath}`;
 
         let { data: insertData, error: insertError } = await supabase
-          .from("uploads")
+          .from("lookup_uploads")
           .insert([{ storage_url: storageUrl }])
           .select("id");
 
@@ -64,10 +57,12 @@ function LookupMain() {
           const newRequestId = insertData[0].id;
           // Dispatch actions to update request_id in Redux store
           dispatch(
-            paymentActions.updatePaymentData({ request_id: newRequestId })
+            paymentLookupActions.updatePaymentData({ request_id: newRequestId })
           );
           dispatch(
-            paymentActions.updatePaymentDetails({ request_id: newRequestId })
+            paymentLookupActions.updatePaymentDetails({
+              request_id: newRequestId,
+            })
           );
         }
 
@@ -85,25 +80,6 @@ function LookupMain() {
     accept:
       ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   });
-
-  //--------------handle search with request id -----------
-
-  const handleFetchAnalysis = async () => {
-    if (requestId) {
-      setIsFetching(true);
-      await Promise.all([
-        dispatch(fetchNetworkAnalysis(requestId)),
-        dispatch(fetchDataAnalysis(requestId)),
-        dispatch(fetchAddressAnalysis(requestId)),
-      ]);
-      setIsFetching(false);
-      navigate("/main/analysis");
-    } else {
-      setErrorMessage(
-        "There was an error when looking for this request. Please check again the request ID. "
-      );
-    }
-  };
 
   return (
     <main className=" px-8  bg-gray-100">

@@ -5,18 +5,11 @@ import LoadingSpinner from "../UI/LoadingSpinner";
 import supabase from "../../Supabase/supabase";
 import { useDispatch } from "react-redux";
 import { paymentActions } from "../store/payment-slice";
-import {
-  fetchAddressAnalysis,
-  fetchDataAnalysis,
-  fetchNetworkAnalysis,
-} from "../store/visuals-slice";
 import SearchAnalysis from "./Analysis/SearchAnalysis";
 
 function PredictiveMain() {
   const [isUploading, setIsUploading] = useState(false);
-  const [isFetching, setIsFetching] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [requestId, setRequestId] = useState("");
   const [newRequest, setNewRequest] = useState(true);
   const [confidenceInterval, setConfidenceInterval] = useState("95");
   const dispatch = useDispatch();
@@ -86,25 +79,6 @@ function PredictiveMain() {
     accept:
       ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   });
-
-  //--------------handle search with request id -----------
-
-  const handleFetchAnalysis = async () => {
-    if (requestId) {
-      setIsFetching(true);
-      await Promise.all([
-        dispatch(fetchNetworkAnalysis(requestId)),
-        dispatch(fetchDataAnalysis(requestId)),
-        dispatch(fetchAddressAnalysis(requestId)),
-      ]);
-      setIsFetching(false);
-      navigate("/main/analysis");
-    } else {
-      setErrorMessage(
-        "There was an error when looking for this request. Please check again the request ID. "
-      );
-    }
-  };
 
   return (
     <main className=" px-8  bg-gray-100">

@@ -16,7 +16,7 @@ export const updateAnalysisRequest = createAsyncThunk(
     if (error) throw error;
 
     // If there's no error, update the local Redux state
-    dispatch(paymentActions.updatePaymentData(userDetails));
+    dispatch(paymentLookupSlice.updatePaymentData(userDetails));
 
     return data;
   }
@@ -57,10 +57,9 @@ const defaultState = {
     tx_id: "",
   },
   paymentSent: false,
-  confidenceInterval: 0.95,
 };
 
-const paymentSlice = createSlice({
+const paymentLookupSlice = createSlice({
   name: "thirdParty",
   initialState: defaultState,
   reducers: {
@@ -84,5 +83,5 @@ const paymentSlice = createSlice({
   },
 });
 
-export const paymentActions = paymentSlice.actions;
-export default paymentSlice;
+export const paymentLookupActions = paymentLookupSlice.actions;
+export default paymentLookupSlice;

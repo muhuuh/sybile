@@ -6,6 +6,7 @@ const store = configureStore({
   reducer: {
     visuals: visualsSlice.reducer,
     paymnent: paymentSlice.reducer,
+    paymnentLookup: paymentSlice.reducer,
   },
 });
 
