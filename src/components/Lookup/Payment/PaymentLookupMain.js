@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../UI/LoadingSpinner";
-import PaymentDetails from "../../Main/Payment/PaymentDetails";
+import PaymentLookupDetails from "./PaymentLookupDetails";
 
 const PaymentLookupMain = () => {
   const navigate = useNavigate();
@@ -140,7 +140,7 @@ const PaymentLookupMain = () => {
             </div>
           </div>
         )}
-        {openModal && <PaymentDetails closeModal={closeModalHandler} />}
+        {openModal && <PaymentLookupDetails closeModal={closeModalHandler} />}
       </div>
     </div>
   );

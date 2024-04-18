@@ -30,6 +30,7 @@ export const updatePaymentInfo = createAsyncThunk(
       request_id,
       address_payer: addressPayer,
       min_value: minValue,
+      analysis_type: "predictive",
     };
 
     const { data, error } = await supabase
@@ -55,7 +56,7 @@ const defaultState = {
     minValue: 0,
     valuePaid: 0,
     tx_id: "",
-    analysis_type,
+    analysis_type: "predictive",
   },
   paymentSent: false,
   confidenceInterval: 0.95,

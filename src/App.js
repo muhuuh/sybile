@@ -7,6 +7,7 @@ import PaymentDetails from "./components/Main/Payment/PaymentDetails";
 import LookupMain from "./components/Lookup/LookupMain";
 import LandingPage from "./components/LandingPage";
 import PaymentLookupMain from "./components/Lookup/Payment/PaymentLookupMain";
+import PaymentLookupDetails from "./components/Lookup/Payment/PaymentLookupDetails";
 
 const App = () => {
   return (
@@ -20,6 +21,10 @@ const App = () => {
         <Route path="/main/payment/details" element={<PaymentDetails />} />
         <Route path="/lookup" element={<LookupMain />} />
         <Route path="/main/payment/lookup" element={<PaymentLookupMain />} />
+        <Route
+          path="/main/payment/details_lookup"
+          element={<PaymentLookupDetails />}
+        />
       </Routes>
     </div>
   );

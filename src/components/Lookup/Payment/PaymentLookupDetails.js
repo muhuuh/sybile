@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { paymentActions, updatePaymentInfo } from "../../store/payment-slice";
 
-const PaymentDetails = ({ closeModal }) => {
+import {
+  paymentLookupActions,
+  updatePaymentInfo,
+} from "../../store/payment-lookup-slice";
+
+const PaymentLookupDetails = ({ closeModal }) => {
   const paymentDetails = useSelector((state) => state.paymnent.paymentDetails);
   const [userAddress, setUserAddress] = useState("");
   const dispatch = useDispatch();
@@ -35,26 +39,12 @@ const PaymentDetails = ({ closeModal }) => {
       minValue: amountToPay,
     };
 
-    dispatch(paymentActions.updatePaymentDetails(updatedPaymentDetails));
+    dispatch(paymentLookupActions.updatePaymentDetails(updatedPaymentDetails));
     dispatch(updatePaymentInfo(updatedPaymentDetails));
-    dispatch(paymentActions.updatePaymentSent(true));
+    dispatch(paymentLookupActions.updatePaymentSent(true));
 
     closeModal();
   };
-
-  // Call this function when payment was succesfull
-  /*
-  const handleUpdateAnalysis = () => {
-    dispatch(updateAnalysisRequest(paymentDetails))
-      .unwrap()
-      .then((response) => {
-        // Handle the success case
-      })
-      .catch((error) => {
-        // Handle the error case
-      });
-  };
-*/
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50"
@@ -122,4 +112,4 @@ const PaymentDetails = ({ closeModal }) => {
   );
 };
 
-export default PaymentDetails;
+export default PaymentLookupDetails;

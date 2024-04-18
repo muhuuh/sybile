@@ -6,7 +6,7 @@ export const updateAnalysisRequest = createAsyncThunk(
   "user/updateAnalysisRequest",
   async (userDetails, { dispatch }) => {
     const { data, error } = await supabase
-      .from("analysis_requests")
+      .from("analysislookup_requests")
       .update({
         analysis_done: userDetails.analysisDone,
         payment_done: userDetails.paymentMade,
@@ -30,6 +30,7 @@ export const updatePaymentInfo = createAsyncThunk(
       request_id,
       address_payer: addressPayer,
       min_value: minValue,
+      analysis_type: "lookup",
     };
 
     const { data, error } = await supabase
@@ -55,7 +56,7 @@ const defaultState = {
     minValue: 0,
     valuePaid: 0,
     tx_id: "",
-    analysis_type,
+    analysis_type: "lookup",
   },
   paymentSent: false,
 };
