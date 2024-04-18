@@ -55,6 +55,7 @@ const defaultState = {
     minValue: 0,
     valuePaid: 0,
     tx_id: "",
+    analysis_type,
   },
   paymentSent: false,
   confidenceInterval: 0.95,

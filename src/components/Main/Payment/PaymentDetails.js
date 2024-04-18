@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { paymentActions, updatePaymentInfo } from "../../store/payment-slice";
-import LoadingSpinner from "../../UI/LoadingSpinner";
 
 const PaymentDetails = ({ closeModal }) => {
   const paymentDetails = useSelector((state) => state.paymnent.paymentDetails);
@@ -34,6 +33,7 @@ const PaymentDetails = ({ closeModal }) => {
       ...paymentDetails,
       addressPayer: userAddress,
       minValue: amountToPay,
+      analysis_type: "predictive",
     };
 
     dispatch(paymentActions.updatePaymentDetails(updatedPaymentDetails));

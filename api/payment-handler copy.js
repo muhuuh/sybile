@@ -1,3 +1,5 @@
+//original function working for predictive analysis
+
 import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
@@ -19,7 +21,7 @@ export default async function handler(req, res) {
         .from("payment_infos")
         .update({ value_paid: transaction.value, tx_id: transaction.hash })
         .match({ address_payer: transaction.from })
-        .select("request_id, min_value, value_paid, analysis_type") // Get necessary columns to check the conditions
+        .select("request_id, min_value, value_paid") // Get necessary columns to check the conditions
         .single();
 
       if (paymentError) {
@@ -33,30 +35,11 @@ export default async function handler(req, res) {
           .json({ error: "No payment info found for the transaction" });
       }
 
-      // Check if the value paid is greater than or equal to the min_value & is the predictive analysis
-      if (
-        paymentData.value_paid >= paymentData.min_value &&
-        paymentData.analysis_type === "predictive"
-      ) {
+      // Check if the value paid is greater than or equal to the min_value
+      if (paymentData.value_paid >= paymentData.min_value) {
         // Proceed to update analysis_requests since the payment meets the criteria
         const { error: analysisError } = await supabase
           .from("analysis_requests")
-          .update({ payment_done: true })
-          .match({ request_id: paymentData.request_id });
-
-        if (analysisError) {
-          console.error("Error updating analysis_requests:", analysisError);
-          return res
-            .status(500)
-            .json({ error: "Failed to update analysis_requests table" });
-        }
-      } else if (
-        paymentData.value_paid >= paymentData.min_value &&
-        paymentData.analysis_type === "lookup"
-      ) {
-        // Proceed to update analysis_requests since the payment meets the criteria
-        const { error: analysisError } = await supabase
-          .from("analysis_lookup_requests")
           .update({ payment_done: true })
           .match({ request_id: paymentData.request_id });
 
