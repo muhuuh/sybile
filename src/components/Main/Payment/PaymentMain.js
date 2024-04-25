@@ -129,7 +129,7 @@ const PaymentMain = () => {
                   </p>
                   <p className="text-light text-gray-700 ">
                     We are monitoring your payment and will refresh
-                    automatically the page after 3 confirmation
+                    automatically the page after onchain confirmation
                   </p>
                 </div>
               )}

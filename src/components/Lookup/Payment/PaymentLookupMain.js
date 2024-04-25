@@ -72,13 +72,23 @@ const PaymentLookupMain = () => {
 
         {analysisDone && (
           <div className="flex flex-col">
-            <div className=" my-10 mx-auto max-w-6xl w-1/3 bg-white rounded-lg shadow-lg border py-10 px-32">
+            <div className="flex justify-center">
+              <div className="font-light w-2/3 text-center">
+                Please find below insights based on our database of known sybil
+                attacker addresses. Be aware, attackers not yet saved in our
+                database will not be flaged. For the complete analysis, please
+                chose the advanced/predictive analysis{" "}
+              </div>
+            </div>
+            <div className=" my-10 mx-auto max-w-6xl w-1/2 bg-white rounded-lg shadow-lg border py-10 px-32">
+              <div className="text-gray-700">
+                Total <span className="text-honoluluBlue">Sybil clusters</span>:{" "}
+                {dataAnalysis.sybiledTokenPercentage}%
+              </div>
               <div className="text-gray-700">
                 Total number of{" "}
-                <span className="text-honoluluBlue">
-                  Sybile addresses found
-                </span>
-                : {dataAnalysis.totalSybilAddresses}
+                <span className="text-honoluluBlue">Sybile addresses</span>:{" "}
+                {dataAnalysis.totalSybilAddresses}
               </div>
               <div className="text-gray-700">
                 Total number of{" "}
@@ -87,13 +97,7 @@ const PaymentLookupMain = () => {
                 </span>
                 : {dataAnalysis.sybilAddressPercentage}%
               </div>
-              <div className="text-gray-700">
-                Total{" "}
-                <span className="text-honoluluBlue">
-                  Sybil Token Percentage
-                </span>
-                : {dataAnalysis.sybiledTokenPercentage}%
-              </div>
+
               <div className="col-span-2 mt-10 text-lg">
                 <div className="text-center">
                   <input
@@ -135,7 +139,7 @@ const PaymentLookupMain = () => {
                   </p>
                   <p className="text-light text-gray-700 ">
                     We are monitoring your payment and will refresh
-                    automatically the page after 3 confirmation
+                    automatically the page after onchain confirmation
                   </p>
                 </div>
               )}
