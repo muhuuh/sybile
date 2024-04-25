@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { performLookupAnalysis } from "./performLookupAnalysis";
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -55,7 +56,7 @@ export default async function handler(req, res) {
             .status(500)
             .json({ error: "Failed to update analysis_requests table" });
         } else {
-          performAnalysis(supabase, paymentData.request_id);
+          performAnalysis(paymentData.request_id);
         }
       } else if (
         paymentData.value_paid >= paymentData.min_value &&
@@ -76,7 +77,11 @@ export default async function handler(req, res) {
             .status(500)
             .json({ error: "Failed to update analysis_requests table" });
         } else {
-          performLookupAnalysis(supabase, paymentData.request_id);
+          console.log("performing lookup analysis");
+          // Call performLookupAnalysis without awaiting but handle errors and logs
+          performLookupAnalysis(paymentData.request_id).catch((error) => {
+            console.error("Error during lookup analysis:", error);
+          });
         }
       } else {
         // If the condition is not met, you might want to log this or handle accordingly
