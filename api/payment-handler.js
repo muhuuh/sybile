@@ -41,32 +41,42 @@ export default async function handler(req, res) {
         paymentData.analysis_type === "predictive"
       ) {
         // Proceed to update analysis_requests since the payment meets the criteria
-        const { error: analysisError } = await supabase
+        const { error: paymentError } = await supabase
           .from("analysis_requests")
           .update({ payment_done: true })
           .match({ request_id: paymentData.request_id });
 
-        if (analysisError) {
-          console.error("Error updating analysis_requests:", analysisError);
+        if (paymentError) {
+          console.error(
+            "Error updating analysis_requests for payment processing:",
+            paymentError
+          );
           return res
             .status(500)
             .json({ error: "Failed to update analysis_requests table" });
+        } else {
+          performAnalysis(supabase, paymentData.request_id);
         }
       } else if (
         paymentData.value_paid >= paymentData.min_value &&
         paymentData.analysis_type === "lookup"
       ) {
         // Proceed to update analysis_requests since the payment meets the criteria
-        const { error: analysisError } = await supabase
+        const { error: paymentError } = await supabase
           .from("analysis_lookup_requests")
           .update({ payment_done: true })
           .match({ request_id: paymentData.request_id });
 
-        if (analysisError) {
-          console.error("Error updating analysis_requests:", analysisError);
+        if (paymentError) {
+          console.error(
+            "Error updating analysis_requests for payment processing:",
+            paymentError
+          );
           return res
             .status(500)
             .json({ error: "Failed to update analysis_requests table" });
+        } else {
+          performLookupAnalysis(supabase, paymentData.request_id);
         }
       } else {
         // If the condition is not met, you might want to log this or handle accordingly
