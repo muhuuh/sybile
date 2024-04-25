@@ -8,6 +8,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function performLookupAnalysis(requestId) {
   console.log("requestId", requestId);
+  console.log("supabaseKey;", supabaseKey);
   try {
     // Fetch storage URL from the database
     const { data: lookupData, error: lookupError } = await supabase
