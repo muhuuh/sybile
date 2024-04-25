@@ -7,6 +7,7 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function performLookupAnalysis(requestId) {
+  console.log("requestId", requestId);
   try {
     // Fetch storage URL from the database
     const { data: lookupData, error: lookupError } = await supabase
@@ -15,6 +16,8 @@ export async function performLookupAnalysis(requestId) {
       .eq("id", requestId)
       .single();
 
+    console.log("lookupData.storage_url: ", lookupData.storage_url);
+
     if (lookupError) throw new Error("Failed to fetch storage URL");
 
     // Fetch the CSV file from the storage URL
@@ -22,12 +25,15 @@ export async function performLookupAnalysis(requestId) {
     console.log("response get storage");
     console.log(response);
     const csvData = response.data;
+    console.log(csvData);
 
     // Parse CSV data into JSON
     const records = parse(csvData, {
       columns: true,
       skip_empty_lines: true,
     });
+
+    console.log("records: ", records);
 
     // Simulate analysis logic (converting CSV data to JSON is the 'analysis' here)
     const analysisResult = { networkData: records };
