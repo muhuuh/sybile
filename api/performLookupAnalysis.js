@@ -20,25 +20,12 @@ export async function performLookupAnalysis(requestId) {
 
     if (lookupError) throw new Error("Failed to fetch storage URL");
 
-    // Fetch the CSV file from the storage URL
-    const response = await axios.get(lookupData.storage_url);
-    console.log("response get storage");
-    console.log(response);
-    const csvData = response.data;
-    console.log(csvData);
-
-    // Parse CSV data into JSON
-    const records = parse(csvData, {
-      columns: true,
-      skip_empty_lines: true,
-    });
-
-    console.log("records: ", records);
-
-    // Simulate analysis logic (converting CSV data to JSON is the 'analysis' here)
-    const analysisResult = { networkData: records };
-    console.log("analysisResult");
-    console.log(analysisResult);
+    const analysisResult = {
+      sybiledTokenPercentage: 23,
+      totalSybilAddresses: 223,
+      sybilAddressPercentage: 3,
+      storage_url: lookupData.storage_url,
+    };
 
     //TODO add googlecloud API
     // Call an external API with the storage_url if required
