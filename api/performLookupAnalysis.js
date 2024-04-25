@@ -17,9 +17,11 @@ export async function performLookupAnalysis(requestId) {
       .single();
 
     console.log("lookupData.storage_url: ", lookupData.storage_url);
+    if (lookupError) {
+      throw new Error("Failed to fetch storage URL");
+    }
 
-    if (lookupError) throw new Error("Failed to fetch storage URL");
-
+    // Define a dummy analysis result
     const analysisResult = {
       sybiledTokenPercentage: 23,
       totalSybilAddresses: 223,
@@ -27,28 +29,30 @@ export async function performLookupAnalysis(requestId) {
       storage_url: lookupData.storage_url,
     };
 
-    //TODO add googlecloud API
-    // Call an external API with the storage_url if required
+    // Optional: Call an external API with the storage_url if required
     // Replace 'EXTERNAL_API_URL' with your actual API endpoint
-    //await axios.post("EXTERNAL_API_URL", { url: lookupData.storage_url });
+    // const apiResponse = await axios.post("EXTERNAL_API_URL", { url: lookupData.storage_url });
+    // console.log("API Response:", apiResponse.data);
 
-    //TODO remove when api calls work as it should be done from there
-    // Store the analysis result in the database
+    // Store the dummy analysis result in the database
     const { error: resultError } = await supabase
       .from("analysis_lookup_results")
       .insert([{ request_id: requestId, data_network: analysisResult }]);
 
-    if (resultError) throw new Error("Failed to store analysis results");
+    if (resultError) {
+      throw new Error("Failed to store analysis results");
+    }
 
-    const { error: AnalysisError } = await supabase
+    // Update the analysis done status
+    const { error: analysisError } = await supabase
       .from("analysis_lookup_requests")
       .update({ analysis_done: true })
       .match({ request_id: requestId });
 
-    if (AnalysisError) {
+    if (analysisError) {
       console.error(
         "Error updating analysis_requests for analysis processing:",
-        AnalysisError
+        analysisError
       );
     }
 
