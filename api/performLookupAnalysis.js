@@ -29,18 +29,23 @@ export async function performLookupAnalysis(requestId) {
       storage_url: lookupData.storage_url,
     };
 
+    console.log("analysisResult: ", analysisResult);
+
     // Optional: Call an external API with the storage_url if required
     // Replace 'EXTERNAL_API_URL' with your actual API endpoint
     // const apiResponse = await axios.post("EXTERNAL_API_URL", { url: lookupData.storage_url });
     // console.log("API Response:", apiResponse.data);
 
     // Store the dummy analysis result in the database
-    const { error: resultError } = await supabase
+    const { data: insertData, error: resultError } = await supabase
       .from("analysis_lookup_results")
       .insert([{ request_id: requestId, data_network: analysisResult }]);
 
     if (resultError) {
+      console.error("Failed to store analysis results:", resultError);
       throw new Error("Failed to store analysis results");
+    } else {
+      console.log("Insert Data:", insertData);
     }
 
     // Update the analysis done status
