@@ -19,6 +19,8 @@ export default async function handler(req, res) {
         .from("payment_infos")
         .update({ value_paid: transaction.value, tx_id: transaction.hash })
         .match({ address_payer: transaction.from })
+        .order("created_at", { ascending: false })
+        .limit(1)
         .select("request_id, min_value, value_paid, analysis_type") // Get necessary columns to check the conditions
         .single();
 
