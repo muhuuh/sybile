@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import supabase from "../../Supabase/supabase";
 import { useDispatch } from "react-redux";
-import { paymentActions } from "../store/payment-slice";
 import SearchAnalysis from "../Main/Analysis/SearchAnalysis";
 import { paymentLookupActions } from "../store/payment-lookup-slice";
 

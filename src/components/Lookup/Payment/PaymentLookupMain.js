@@ -63,7 +63,9 @@ const PaymentLookupMain = () => {
                 Please make sure to save the below ID. It is your access code to
                 retrieve your analysis.
               </p>
-              <p className="mt-3 text-xl text-gray-200">{requestId}</p>
+              <p className="mt-3 text-xl text-indogoDye font-bold">
+                {requestId}
+              </p>
             </div>
           </>
         )}
