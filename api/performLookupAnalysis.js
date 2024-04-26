@@ -1,6 +1,4 @@
 import { createClient } from "@supabase/supabase-js";
-import axios from "axios";
-import { parse } from "csv-parse";
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;

@@ -3,34 +3,40 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchAddressAnalysis,
   fetchDataAnalysis,
-  fetchNetworkAnalysis,
-} from "../../store/visuals-slice";
+} from "../../store/analysis-lookup-slice";
 
 const AnalysisLookupMain = () => {
   const requestId = useSelector(
     (state) => state.paymnentLookup.user.request_id
   );
+
+  //const requestId = "5c5d85cd-98e1-48e4-8081-3746416571cb";
   const analysisDone = useSelector(
     (state) => state.paymnentLookup.user.analysisDone
   );
   const paymentMade = useSelector(
     (state) => state.paymnentLookup.user.paymentMade
   );
+  /*
   const requestValid = useSelector(
     (state) => state.analysisLookup.requestValid
   );
+  */
+  const requestValid = true; //TODO remove when analysis is really done
   const dataAnalysis = useSelector(
     (state) => state.analysisLookup.dataAnalysis
+  );
+  const sybileAddresseAnalysis = useSelector(
+    (state) => state.analysisLookup.sybileAddresseAnalysis
   );
   const [estimatedMcap, setEstimatedMcap] = useState("");
   const dispatch = useDispatch();
 
-  console.log("dataAnalysis");
+  console.log("dataAnalysis lookup");
   console.log(dataAnalysis);
 
   useEffect(() => {
     if (paymentMade && analysisDone && requestId) {
-      dispatch(fetchNetworkAnalysis(requestId));
       dispatch(fetchDataAnalysis(requestId));
       dispatch(fetchAddressAnalysis(requestId));
     }
@@ -42,7 +48,7 @@ const AnalysisLookupMain = () => {
   };
 
   const downloadAddressesAsCSV = () => {
-    const addresses = dataAnalysis.sybileAddresses;
+    const addresses = sybileAddresseAnalysis;
 
     // Check if addresses is an array and has items
     if (!Array.isArray(addresses) || addresses.length === 0) {
@@ -82,20 +88,11 @@ const AnalysisLookupMain = () => {
                   <li>
                     Total Sybil Addresses: {dataAnalysis.totalSybilAddresses}
                   </li>
-                  <li>
-                    Sybil Address Percentage:{" "}
-                    {dataAnalysis.sybilAddressPercentage}%
-                  </li>
                 </ul>
                 <ul className="list-disc pl-5">
                   <li>
-                    Sybiled Token Percentage:{" "}
-                    {dataAnalysis.sybiledTokenPercentage}%
-                  </li>
-
-                  <li>
-                    Addresses accounting for 80% sybil-attacked tokens:{" "}
-                    {dataAnalysis.addressesAccountingForTopSybil}
+                    Sybil Address Percentage:{" "}
+                    {dataAnalysis.sybilAddressPercentage}%
                   </li>
                   <li>
                     {" "}
