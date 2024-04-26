@@ -11,6 +11,8 @@ function LookupMain() {
   const [isUploading, setIsUploading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [newRequest, setNewRequest] = useState(true);
+  const [fileUploaded, setFileUploaded] = useState(false);
+  const [showSnackbar, setShowSnackbar] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -52,6 +54,7 @@ function LookupMain() {
             "Failed to insert storage URL into uploads table",
             insertError
           );
+          setFileUploaded(false);
         } else if (insertData && insertData.length > 0) {
           const newRequestId = insertData[0].id;
           // Dispatch actions to update request_id in Redux store
@@ -63,10 +66,14 @@ function LookupMain() {
               request_id: newRequestId,
             })
           );
+          setFileUploaded(true);
         }
 
         setIsUploading(false);
-        navigate("/main/payment/lookup");
+        setShowSnackbar(true);
+        setTimeout(() => setShowSnackbar(false), 2500); // The snackbar will disappear after 3 seconds
+
+        //navigate("/main/payment/lookup");
       } else {
         setErrorMessage("Please upload a CSV or XLSX file.");
       }
@@ -131,8 +138,10 @@ function LookupMain() {
           <div
             {...getRootProps()}
             className={`flex flex-col items-center justify-center border-2 border-dashed ${
+              isDragActive ? "bg-gray-100" : "bg-white"
+            } ${
               isUploading ? "border-gray-300" : "border-honoluluBlue"
-            } rounded-md py-16 mb-4`}
+            } rounded-md py-16 mb-4 transition-colors duration-300`}
           >
             <input {...getInputProps()} />
             {isUploading ? (
@@ -148,15 +157,58 @@ function LookupMain() {
               </p>
             )}
             {!isUploading && (
-              <button className="mt-4 tracking-wider shadow-lg bg-honoluluBlue text-gray-200 px-4 py-2 rounded-md hover:bg-salmon hover:text-gray-800 transition duration-200">
-                Upload addresses
-              </button>
+              <div className="flex flex-row items-center gap-x-4">
+                <button className="mt-4 tracking-wider shadow-lg bg-honoluluBlue text-gray-200 px-4 py-2 rounded-md hover:bg-salmon hover:text-gray-800 transition duration-200">
+                  Upload addresses
+                </button>
+                {fileUploaded && (
+                  <svg
+                    className="w-6 h-6 mt-2 text-green-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M5 13l4 4L19 7"
+                    ></path>
+                  </svg>
+                )}
+              </div>
             )}
+            {showSnackbar && (
+              <div className="text-center">
+                <div className="  text-green-600 px-4 py-2 rounded">
+                  File uploaded successfully!
+                </div>
+              </div>
+            )}
+
             {errorMessage && (
               <div className="text-red-700">
                 <p>{errorMessage}</p>
               </div>
             )}
+          </div>
+          <div className="flex items-center justify-center space-x-2">
+            <button
+              disabled={!fileUploaded}
+              className={`mt-4 tracking-wider shadow-lg px-4 py-2 rounded-md transition duration-200 ${
+                fileUploaded
+                  ? "bg-honoluluBlue text-gray-200 hover:bg-salmon hover:text-gray-800"
+                  : "bg-gray-300 text-gray-700"
+              }`}
+              onClick={() => {
+                if (fileUploaded) {
+                  navigate("/main/payment/lookup");
+                }
+              }}
+            >
+              Get Analysis
+            </button>
           </div>
           <p className="text-sm text-gray-500 font-light">
             Need help to gather all addresses that need to be analyzed?{" "}
