@@ -22,6 +22,15 @@ export const updateAnalysisRequest = createAsyncThunk(
   }
 );
 
+//realtime lookup update
+export const updateFromRealTimePredictive = createAsyncThunk(
+  "user/updateFromRealTime",
+  async (updateDetails) => {
+    console.log("updateDetails:", updateDetails);
+    return updateDetails; // Directly return details to be handled by extraReducers
+  }
+);
+
 export const updatePaymentInfo = createAsyncThunk(
   "payment/updatePaymentInfo",
   async (paymentDetails, { dispatch }) => {
@@ -80,9 +89,16 @@ const paymentSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(updateAnalysisRequest.fulfilled, (state, action) => {
-      state.user = action.payload;
-    });
+    builder
+      .addCase(updateAnalysisRequest.fulfilled, (state, action) => {
+        state.user = action.payload;
+      })
+      .addCase(updateFromRealTimePredictive.fulfilled, (state, action) => {
+        // Handle the real-time data update here
+        state.user.paymentMade = action.payload.paymentMade;
+        state.user.analysisDone = action.payload.analysisDone;
+        state.user.request_id = action.payload.request_id;
+      });
   },
 });
 

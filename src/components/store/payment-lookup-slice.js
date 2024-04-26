@@ -77,12 +77,6 @@ const paymentLookupSlice = createSlice({
     updatePaymentData(state, action) {
       state.user = { ...state.user, ...action.payload };
     },
-    updateRealTimeData(state, action) {
-      // This might not be needed if handled by extraReducers
-      state.user.paymentMade = action.payload.paymentMade;
-      state.user.analysisDone = action.payload.analysisDone;
-      state.user.request_id = action.payload.request_id;
-    },
     updatePaymentDetails(state, action) {
       state.paymentDetails = { ...state.paymentDetails, ...action.payload };
     },

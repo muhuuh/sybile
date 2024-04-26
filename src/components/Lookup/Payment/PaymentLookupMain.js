@@ -22,7 +22,6 @@ const PaymentLookupMain = () => {
   const dataAnalysis = useSelector((state) => state.visuals.dataAnalysis); //TODO adapt to new structure
   const [openModal, setOpenModal] = useState(false);
   const [estimatedMcap, setEstimatedMcap] = useState("");
-  const [subscription, setSubscription] = useState(null);
 
   console.log("mainDataPoints");
   console.log(analysisDone);

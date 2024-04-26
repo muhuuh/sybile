@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../UI/LoadingSpinner";
 import PaymentDetails from "./PaymentDetails";
+import supabase from "../../../Supabase/supabase";
+import { subscribeToSupabasePredictive } from "../../../Supabase/subscribeSupabase";
 
 const PaymentMain = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const requestId = useSelector((state) => state.paymnent.user.request_id);
   const paymentMade = useSelector((state) => state.paymnent.user.paymentMade);
   const analysisDone = useSelector((state) => state.paymnent.user.analysisDone);
@@ -19,6 +22,19 @@ const PaymentMain = () => {
   console.log(paymentMade);
   console.log(requestId);
   console.log(dataAnalysis);
+
+  //handle unsubscription
+  useEffect(() => {
+    // Subscribe to realtime updates
+    const subscription = subscribeToSupabasePredictive(dispatch);
+
+    // Cleanup function to remove the subscription when the component unmounts
+    return () => {
+      if (subscription) {
+        supabase.removeChannel(subscription); // Unsubscribe when the component unmounts
+      }
+    };
+  }, [dispatch]);
 
   // Navigate when both payment and analysis are done
   useEffect(() => {
