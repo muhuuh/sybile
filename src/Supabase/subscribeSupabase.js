@@ -2,7 +2,7 @@ import supabase from "./supabase";
 import { updateFromRealTime } from "../components/store/payment-lookup-slice";
 import { updateFromRealTimePredictive } from "../components/store/payment-slice";
 
-export const subscribeToSupabaseLookup = (dispatch) => {
+export const subscribeToSupabaseLookup = (dispatch, requestId) => {
   const channel = supabase
     .channel("public:analysis_lookup_requests")
     .on(
@@ -10,13 +10,15 @@ export const subscribeToSupabaseLookup = (dispatch) => {
       { event: "*", schema: "public", table: "analysis_lookup_requests" },
       (payload) => {
         console.log("Change received!", payload);
-        dispatch(
-          updateFromRealTime({
-            request_id: payload.new.request_id,
-            paymentMade: payload.new.payment_done,
-            analysisDone: payload.new.analysis_done,
-          })
-        );
+        if (payload.new.request_id === requestId) {
+          dispatch(
+            updateFromRealTime({
+              request_id: payload.new.request_id,
+              paymentMade: payload.new.payment_done,
+              analysisDone: payload.new.analysis_done,
+            })
+          );
+        }
       }
     )
     .subscribe();
@@ -24,7 +26,7 @@ export const subscribeToSupabaseLookup = (dispatch) => {
   return channel;
 };
 
-export const subscribeToSupabasePredictive = (dispatch) => {
+export const subscribeToSupabasePredictive = (dispatch, requestId) => {
   const channel = supabase
     .channel("public:analysis_requests")
     .on(
@@ -32,13 +34,15 @@ export const subscribeToSupabasePredictive = (dispatch) => {
       { event: "*", schema: "public", table: "analysis_requests" },
       (payload) => {
         console.log("Change received!", payload);
-        dispatch(
-          updateFromRealTimePredictive({
-            request_id: payload.new.request_id,
-            paymentMade: payload.new.payment_done,
-            analysisDone: payload.new.analysis_done,
-          })
-        );
+        if (payload.new.request_id === requestId) {
+          dispatch(
+            updateFromRealTimePredictive({
+              request_id: payload.new.request_id,
+              paymentMade: payload.new.payment_done,
+              analysisDone: payload.new.analysis_done,
+            })
+          );
+        }
       }
     )
     .subscribe();

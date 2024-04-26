@@ -16,6 +16,7 @@ const PaymentMain = () => {
   const dataAnalysis = useSelector((state) => state.visuals.dataAnalysis);
   const [openModal, setOpenModal] = useState(false);
   const [estimatedMcap, setEstimatedMcap] = useState("");
+  const [subscription, setSubscription] = useState(null);
 
   console.log("mainDataPoints");
   console.log(analysisDone);
@@ -25,16 +26,16 @@ const PaymentMain = () => {
 
   //handle unsubscription
   useEffect(() => {
-    // Subscribe to realtime updates
-    const subscription = subscribeToSupabasePredictive(dispatch);
+    // Subscribe to realtime updates, passing the requestId
+    const sub = subscribeToSupabasePredictive(dispatch, requestId);
+    setSubscription(sub);
 
-    // Cleanup function to remove the subscription when the component unmounts
     return () => {
-      if (subscription) {
-        supabase.removeChannel(subscription); // Unsubscribe when the component unmounts
+      if (sub) {
+        supabase.removeChannel(sub); // Unsubscribe when the component unmounts
       }
     };
-  }, [dispatch]);
+  }, [dispatch, requestId]);
 
   // Navigate when both payment and analysis are done
   useEffect(() => {
