@@ -22,6 +22,7 @@ const PaymentLookupMain = () => {
   const dataAnalysis = useSelector((state) => state.visuals.dataAnalysis); //TODO adapt to new structure
   const [openModal, setOpenModal] = useState(false);
   const [estimatedMcap, setEstimatedMcap] = useState("");
+  const [subscription, setSubscription] = useState(null);
 
   console.log("mainDataPoints");
   console.log(analysisDone);
@@ -29,12 +30,17 @@ const PaymentLookupMain = () => {
   console.log(requestId);
   console.log(dataAnalysis);
 
+  //handle unsubscription
   useEffect(() => {
     // Subscribe to realtime updates
-    subscribeToSupabaseLookup(dispatch);
+    const subscription = subscribeToSupabaseLookup(dispatch);
 
     // Cleanup function to remove the subscription when the component unmounts
-    //return () => supabase.removeSubscription();
+    return () => {
+      if (subscription) {
+        supabase.removeChannel(subscription); // Unsubscribe when the component unmounts
+      }
+    };
   }, [dispatch]);
 
   // Navigate when both payment and analysis are done

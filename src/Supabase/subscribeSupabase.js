@@ -2,7 +2,7 @@ import supabase from "./supabase";
 import { updateFromRealTime } from "../components/store/payment-lookup-slice";
 
 export const subscribeToSupabaseLookup = (dispatch) => {
-  const mySubscription = supabase
+  const channel = supabase
     .channel("public:analysis_lookup_requests")
     .on(
       "postgres_changes",
@@ -20,7 +20,7 @@ export const subscribeToSupabaseLookup = (dispatch) => {
     )
     .subscribe();
 
-  return mySubscription;
+  return channel;
 };
 
 /*
