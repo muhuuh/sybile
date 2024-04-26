@@ -71,7 +71,7 @@ function LookupMain() {
 
         setIsUploading(false);
         setShowSnackbar(true);
-        setTimeout(() => setShowSnackbar(false), 2500); // The snackbar will disappear after 3 seconds
+        setTimeout(() => setShowSnackbar(false), 2500);
 
         //navigate("/main/payment/lookup");
       } else {
