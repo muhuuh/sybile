@@ -84,7 +84,14 @@ function PredictiveMain() {
       ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   });
 
-  const onGetAnalysisHandler = () => {};
+  //------------- Handle Analysis call ---------
+  const onGetAnalysisHandler = () => {
+    if (fileUploaded) {
+      //TODO call external analysis function
+
+      navigate("/main/payment/lookup");
+    }
+  };
 
   return (
     <main className=" px-8  bg-gray-100">
@@ -215,11 +222,7 @@ function PredictiveMain() {
                   ? "bg-honoluluBlue text-gray-200 hover:bg-salmon hover:text-gray-800"
                   : "bg-gray-300 text-gray-700"
               }`}
-              onClick={() => {
-                if (fileUploaded) {
-                  navigate("/main/payment/lookup");
-                }
-              }}
+              onClick={onGetAnalysisHandler}
             >
               Get Analysis
             </button>
