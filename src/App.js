@@ -8,6 +8,7 @@ import LookupMain from "./components/Lookup/LookupMain";
 import LandingPage from "./components/LandingPage";
 import PaymentLookupMain from "./components/Lookup/Payment/PaymentLookupMain";
 import PaymentLookupDetails from "./components/Lookup/Payment/PaymentLookupDetails";
+import AnalysisLookupMain from "./components/Main/Analysis/AnalysisLookupMain";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
           path="/main/payment/details_lookup"
           element={<PaymentLookupDetails />}
         />
+        <Route path="/main/analysis/lookup" element={<AnalysisLookupMain />} />
       </Routes>
     </div>
   );
