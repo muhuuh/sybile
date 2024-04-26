@@ -13,6 +13,7 @@ function LookupMain() {
   const [newRequest, setNewRequest] = useState(true);
   const [fileUploaded, setFileUploaded] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
+  const [requestId, setRequestId] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -57,6 +58,7 @@ function LookupMain() {
           setFileUploaded(false);
         } else if (insertData && insertData.length > 0) {
           const newRequestId = insertData[0].id;
+          setRequestId(insertData[0].id);
           // Dispatch actions to update request_id in Redux store
           dispatch(
             paymentLookupActions.updatePaymentData({ request_id: newRequestId })
@@ -71,7 +73,7 @@ function LookupMain() {
 
         setIsUploading(false);
         setShowSnackbar(true);
-        setTimeout(() => setShowSnackbar(false), 2500);
+        setTimeout(() => setShowSnackbar(false), 2000);
 
         //navigate("/main/payment/lookup");
       } else {
@@ -91,6 +93,11 @@ function LookupMain() {
   const onGetAnalysisHandler = () => {
     if (fileUploaded) {
       //TODO call external analysis function
+      /*
+      performLookupAnalysis(requestId).catch((error) => {
+        console.error("Error during lookup analysis:", error);
+      });
+      */
       navigate("/main/payment/lookup");
     }
   };

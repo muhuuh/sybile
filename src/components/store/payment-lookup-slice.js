@@ -22,6 +22,15 @@ export const updateAnalysisRequest = createAsyncThunk(
   }
 );
 
+//realtime lookup update
+export const updateFromRealTime = createAsyncThunk(
+  "user/updateFromRealTime",
+  async (updateDetails) => {
+    console.log("updateDetails:", updateDetails);
+    return updateDetails; // Directly return details to be handled by extraReducers
+  }
+);
+
 export const updatePaymentInfo = createAsyncThunk(
   "payment/updatePaymentInfo",
   async (paymentDetails, { dispatch }) => {
@@ -48,7 +57,7 @@ const defaultState = {
   user: {
     request_id: 0,
     paymentMade: false,
-    analysisDone: true, //TODO change to false. true is only for testing purpose until script connected
+    analysisDone: false, //TODO change to false. true is only for testing purpose until script connected
   },
   paymentDetails: {
     request_id: 0,
@@ -68,6 +77,12 @@ const paymentLookupSlice = createSlice({
     updatePaymentData(state, action) {
       state.user = { ...state.user, ...action.payload };
     },
+    updateRealTimeData(state, action) {
+      // This might not be needed if handled by extraReducers
+      state.user.paymentMade = action.payload.paymentMade;
+      state.user.analysisDone = action.payload.analysisDone;
+      state.user.request_id = action.payload.request_id;
+    },
     updatePaymentDetails(state, action) {
       state.paymentDetails = { ...state.paymentDetails, ...action.payload };
     },
@@ -79,9 +94,17 @@ const paymentLookupSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(updateAnalysisRequest.fulfilled, (state, action) => {
-      state.user = action.payload;
-    });
+    builder
+      .addCase(updateAnalysisRequest.fulfilled, (state, action) => {
+        // Assuming action.payload contains the new user state
+        state.user = { ...state.user, ...action.payload };
+      })
+      .addCase(updateFromRealTime.fulfilled, (state, action) => {
+        // Handle the real-time data update here
+        state.user.paymentMade = action.payload.paymentMade;
+        state.user.analysisDone = action.payload.analysisDone;
+        state.user.request_id = action.payload.request_id;
+      });
   },
 });
 

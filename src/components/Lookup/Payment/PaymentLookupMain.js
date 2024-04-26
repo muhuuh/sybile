@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../UI/LoadingSpinner";
 import PaymentLookupDetails from "./PaymentLookupDetails";
+import { subscribeToSupabaseLookup } from "../../../Supabase/subscribeSupabase";
+import supabase from "../../../Supabase/supabase";
 
 const PaymentLookupMain = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const requestId = useSelector(
     (state) => state.paymnentLookup.user.request_id
   );
@@ -25,6 +28,14 @@ const PaymentLookupMain = () => {
   console.log(paymentMade);
   console.log(requestId);
   console.log(dataAnalysis);
+
+  useEffect(() => {
+    // Subscribe to realtime updates
+    subscribeToSupabaseLookup(dispatch);
+
+    // Cleanup function to remove the subscription when the component unmounts
+    //return () => supabase.removeSubscription();
+  }, [dispatch]);
 
   // Navigate when both payment and analysis are done
   useEffect(() => {

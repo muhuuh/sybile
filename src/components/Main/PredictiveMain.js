@@ -14,6 +14,7 @@ function PredictiveMain() {
   const [confidenceInterval, setConfidenceInterval] = useState("95");
   const [fileUploaded, setFileUploaded] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
+  const [requestId, setRequestId] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -57,6 +58,7 @@ function PredictiveMain() {
           );
         } else if (insertData && insertData.length > 0) {
           const newRequestId = insertData[0].id;
+          setRequestId(insertData[0].id);
           // Dispatch actions to update request_id in Redux store
           dispatch(
             paymentActions.updatePaymentData({ request_id: newRequestId })
@@ -88,8 +90,12 @@ function PredictiveMain() {
   const onGetAnalysisHandler = () => {
     if (fileUploaded) {
       //TODO call external analysis function
-
-      navigate("/main/payment/lookup");
+      /*
+      performLookupAnalysis(requestId).catch((error) => {
+        console.error("Error during lookup analysis:", error);
+      });
+      */
+      navigate("/main/payment/predictive");
     }
   };
 
