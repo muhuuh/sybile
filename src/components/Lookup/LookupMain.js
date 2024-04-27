@@ -142,6 +142,11 @@ function LookupMain() {
           onClick={() => {
             setNewRequest(true);
           }}
+          style={{
+            background: newRequest
+              ? undefined
+              : "linear-gradient(to bottom, #027BCE, #025F9C)",
+          }}
           className={`${
             newRequest
               ? "bg-argentinianBlue text-gray-800"
@@ -154,10 +159,13 @@ function LookupMain() {
           onClick={() => {
             setNewRequest(false);
           }}
+          style={{
+            background: !newRequest
+              ? undefined
+              : "linear-gradient(to bottom, #027BCE, #025F9C)",
+          }}
           className={`${
-            !newRequest
-              ? "bg-argentinianBlue text-gray-800"
-              : "bg-honoluluBlue text-gray-200"
+            !newRequest ? "bg-argentinianBlue text-gray-800" : "text-gray-200"
           } px-4 py-2 rounded-r shadow-lg ml-2 hover:bg-argentinianBlue hover:text-gray-800 transition duration-200`}
         >
           Search Analysis
