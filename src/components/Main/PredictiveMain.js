@@ -6,6 +6,7 @@ import supabase from "../../Supabase/supabase";
 import { useDispatch } from "react-redux";
 import { paymentActions } from "../store/payment-slice";
 import SearchAnalysis from "./Analysis/SearchAnalysis";
+import QuestionIcon from "../UI/Icons/QuestionIcon";
 
 function PredictiveMain() {
   const [isUploading, setIsUploading] = useState(false);
@@ -14,6 +15,8 @@ function PredictiveMain() {
   const [confidenceInterval, setConfidenceInterval] = useState("95");
   const [fileUploaded, setFileUploaded] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
+  const [showExplanation, setShowExplanation] = useState(false);
+
   const [requestId, setRequestId] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -99,23 +102,39 @@ function PredictiveMain() {
     }
   };
 
+  //-----------handle UI ---------------
+
+  const onExplanationHandler = () => {
+    setShowExplanation(!showExplanation);
+  };
+
   return (
     <main className=" px-8 ">
       <div className="text-center mt-6">
-        <h1 className="text-xl font-bold  text-indogoDye underline decoration-salmon mb-4 tracking-wider">
-          Predictive Analysis
-        </h1>
-        <div className="flex justify-center">
-          <p className="text-gray-800 font-light  w-1/2 mb-6">
-            Share the list of your users, and this analysis will run an analysis
-            to detect sybil clusters on the whole user base, independently
-            whether users are already known as sybil attackers. This consists of
-            the most in-depth and accurate analysis and detcts also unknown
-            sybil attackers and their clusters
-          </p>
+        <div className="flex justify-center gap-x-2">
+          <h1 className="text-xl font-bold underline decoration-salmon text-indogoDye mb-4 tracking-wider">
+            Predictive Analysis
+          </h1>
+          <button
+            onClick={onExplanationHandler}
+            className="mb-3 text-indogoDye"
+          >
+            <QuestionIcon />
+          </button>
         </div>
+        {showExplanation && (
+          <div className="flex justify-center">
+            <p className="text-gray-800 font-light  w-1/2 mb-6">
+              Share the list of your users, and this analysis will run an
+              analysis to detect sybil clusters on the whole user base,
+              independently whether users are already known as sybil attackers.
+              This consists of the most in-depth and accurate analysis and
+              detcts also unknown sybil attackers and their clusters
+            </p>
+          </div>
+        )}
       </div>
-      <div className="text-center mt-2 tracking-wider">
+      <div className="text-center mt-6 tracking-wider">
         <button
           onClick={() => {
             setNewRequest(true);
