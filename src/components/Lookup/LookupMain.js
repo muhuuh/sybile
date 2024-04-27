@@ -6,6 +6,7 @@ import supabase from "../../Supabase/supabase";
 import { useDispatch } from "react-redux";
 import SearchAnalysis from "../Main/Analysis/SearchAnalysis";
 import { paymentLookupActions } from "../store/payment-lookup-slice";
+import QuestionIcon from "../UI/Icons/QuestionIcon";
 
 function LookupMain() {
   const [isUploading, setIsUploading] = useState(false);
@@ -13,6 +14,8 @@ function LookupMain() {
   const [newRequest, setNewRequest] = useState(true);
   const [fileUploaded, setFileUploaded] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
+  const [showExplanation, setShowExplanation] = useState(false);
+
   const [requestId, setRequestId] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -102,20 +105,37 @@ function LookupMain() {
     }
   };
 
+  //-----------handle UI ---------------
+
+  const onExplanationHandler = () => {
+    setShowExplanation(!showExplanation);
+  };
+
   return (
     <main className=" px-8  ">
       <div className="text-center mt-6">
-        <h1 className="text-xl font-bold underline decoration-salmon text-indogoDye mb-4 tracking-wider">
-          Lookup Analysis
-        </h1>
-        <div className="flex justify-center">
-          <p className="text-gray-800 font-light  w-1/2 mb-6">
-            This analysis will crosscheck your list of users with our list of
-            known sybil attackers from our database and research. This analysis
-            will not find all sybil attackers but will provide quickly a first
-            good impression of the scale of the sybil attack
-          </p>
+        <div className="flex justify-center gap-x-2">
+          <h1 className="text-xl font-bold underline decoration-salmon text-indogoDye mb-4 tracking-wider">
+            Lookup Analysis
+          </h1>
+          <button
+            onClick={onExplanationHandler}
+            className="mb-3 text-indogoDye"
+          >
+            <QuestionIcon />
+          </button>
         </div>
+
+        {showExplanation && (
+          <div className="flex justify-center">
+            <p className="text-gray-800 font-light  w-1/2 mb-6">
+              This analysis will crosscheck your list of users with our list of
+              known sybil attackers from our database and research. This
+              analysis will not find all sybil attackers but will provide
+              quickly a first good impression of the scale of the sybil attack
+            </p>
+          </div>
+        )}
       </div>
       <div className="text-center mt-2 tracking-wider">
         <button
@@ -147,7 +167,7 @@ function LookupMain() {
       {newRequest && (
         <section className="max-w-6xl mx-auto bg-white rounded-lg border-gray-200 border shadow-lg p-8 mt-10">
           <p className="text-center pb-4 px-24 text-gray-700 font-light">
-            Compare your list of users with known sybil attackers
+            Compare your list of users with our known sybil attackers
           </p>
 
           <div
