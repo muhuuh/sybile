@@ -34,6 +34,7 @@ const AnalysisLookupMain = () => {
 
   console.log("dataAnalysis lookup");
   console.log(dataAnalysis);
+  console.log(sybileAddresseAnalysis);
 
   useEffect(() => {
     if (paymentMade && analysisDone && requestId) {
@@ -56,17 +57,17 @@ const AnalysisLookupMain = () => {
       return; // Stop the function if no data is available
     }
 
-    // Convert JSON to CSV
-    const header = Object.keys(addresses[0]).join(",");
-    const rows = addresses.map((obj) => Object.values(obj).join(","));
-    const csv = [header, ...rows].join("\n");
+    // Convert array of strings (addresses) to CSV format
+    const header = "Addresses";
+    const rows = addresses.join("\n");
+    const csv = [header, rows].join("\n");
 
     // Create a Blob and download the file
-    const blob = new Blob([csv], { type: "text/csv" });
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "sybileAddresses.csv";
+    link.download = "manyme_lookupAnalysis_sybileAddresses.csv";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
