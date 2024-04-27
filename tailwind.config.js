@@ -13,6 +13,9 @@ module.exports = {
         honoluluBlue: "#027BCE",
         salmon: "#eeab94",
       },
+      backgroundImage: {
+        "gradient-honolulu": "linear-gradient(to bottom, #027BCE, #025F9C)",
+      },
     },
   },
   variants: {
