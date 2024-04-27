@@ -242,7 +242,7 @@ function LookupMain() {
               Get Analysis
             </button>
           </div>
-          <p className="text-sm text-gray-500 font-light">
+          <p className="text-sm text-gray-500 font-light mt-2">
             Need help to gather all addresses that need to be analyzed?{" "}
             <a
               href="#"
