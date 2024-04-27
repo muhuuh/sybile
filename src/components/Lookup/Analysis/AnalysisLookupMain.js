@@ -29,7 +29,7 @@ const AnalysisLookupMain = () => {
   const sybileAddresseAnalysis = useSelector(
     (state) => state.analysisLookup.sybileAddresseAnalysis
   );
-  const [estimatedMcap, setEstimatedMcap] = useState("");
+  const [estimatedMcap, setEstimatedMcap] = useState("3000000");
   const dispatch = useDispatch();
 
   console.log("dataAnalysis lookup");
@@ -44,7 +44,7 @@ const AnalysisLookupMain = () => {
   }, [paymentMade, analysisDone, requestId, dispatch]);
 
   const computeFinancialLoss = () => {
-    const sybilTokenPercentage = dataAnalysis.sybiledTokenPercentage / 100;
+    const sybilTokenPercentage = dataAnalysis.sybilAddressPercentage / 100;
     return (estimatedMcap * sybilTokenPercentage).toLocaleString();
   };
 
@@ -58,7 +58,7 @@ const AnalysisLookupMain = () => {
     }
 
     // Convert array of strings (addresses) to CSV format
-    const header = "Addresses";
+    const header = "sybil_addresses";
     const rows = addresses.join("\n");
     const csv = [header, rows].join("\n");
 
@@ -75,51 +75,70 @@ const AnalysisLookupMain = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
+    <div
+      className="min-h-screen  p-8"
+      style={{
+        background: "linear-gradient(to bottom right, #f7f7f7, #f0f8f9)",
+      }}
+    >
       <h1 className="text-3xl font-bold text-indogoDye mb-4 tracking-wider text-center">
-        Analytics
+        Lookup Analysis
       </h1>
       {requestValid && (
         <div>
           <div className="flex justify-center text-gray-200 mt-16">
             {dataAnalysis && (
-              <div className="text-gray-700 grid grid-cols-2 gap-4">
-                <ul className="list-disc pl-5">
-                  <li>Total Users: {dataAnalysis.totalUsers}</li>
-                  <li>
-                    Total Sybil Addresses: {dataAnalysis.totalSybilAddresses}
-                  </li>
-                </ul>
-                <ul className="list-disc pl-5">
-                  <li>
-                    Sybil Address Percentage:{" "}
-                    {dataAnalysis.sybilAddressPercentage}%
-                  </li>
-                  <li>
-                    {" "}
-                    Top 3 sybile clusters:{" "}
-                    {dataAnalysis.topSybileClusters.totalAddresses} addresses
-                    claimed {dataAnalysis.topSybileClusters.claimedPercentage}%
-                    of Sybil-attacked tokens
-                  </li>
-                </ul>
-                <div className="col-span-2 mt-6 text-lg">
-                  <div className="text-center">
-                    <input
-                      type="text"
-                      placeholder="Estimated MCAP at launch"
-                      className="border-2 border-gray-200 px-2 py-1 rounded text-sm font-light w-52 tracking-wider mb-4"
-                      value={estimatedMcap.replace(
-                        /\B(?=(\d{3})+(?!\d))/g,
-                        ","
-                      )}
-                      onChange={(e) =>
-                        setEstimatedMcap(e.target.value.replace(/,/g, ""))
-                      }
-                    />
+              <div className="w-2/3">
+                <div className="bg-white p-6 rounded shadow">
+                  <div className="text-xl text-center font-bold underline decoration-salmon text-indogoDye mb-8 tracking-wider">
+                    Insights Overview
+                  </div>
+                  <div className="text-gray-700  grid grid-cols-2 gap-4">
+                    <ul className="list-disc pl-5">
+                      <li>Total Users: {dataAnalysis.totalUsers}</li>
+                      <li>
+                        Total Sybil Addresses:{" "}
+                        {dataAnalysis.totalSybilAddresses}
+                      </li>
+                    </ul>
+                    <ul className="list-disc pl-5">
+                      <li>
+                        Sybil Address Percentage:{" "}
+                        {dataAnalysis.sybilAddressPercentage}%
+                      </li>
+                      <li>
+                        {" "}
+                        Top 3 sybile clusters:{" "}
+                        {dataAnalysis.topSybileClusters.totalAddresses}{" "}
+                        addresses claimed{" "}
+                        {dataAnalysis.topSybileClusters.claimedPercentage}% of
+                        Sybil-attacked tokens
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="text-gray-700 mt-10 text-lg">
+                  <div className="flex flex-col justify-center text-center">
+                    <label className="font-light">
+                      Enter your estimated Marketcap ($) at launch
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        type="text"
+                        placeholder="Estimated MCAP at launch"
+                        className="border-2 text-center border-gray-200 px-2 py-1 rounded text-sm font-light w-52 tracking-wider mb-4"
+                        value={estimatedMcap.replace(
+                          /\B(?=(\d{3})+(?!\d))/g,
+                          ","
+                        )}
+                        onChange={(e) =>
+                          setEstimatedMcap(e.target.value.replace(/,/g, ""))
+                        }
+                      />
+                    </div>
                     {estimatedMcap && (
                       <p className="text-center">
-                        In total, the{" "}
+                        In total, the estimated{" "}
                         <span className="font-bold tracking-wider">
                           financial loss
                         </span>{" "}
