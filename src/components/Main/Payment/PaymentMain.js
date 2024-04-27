@@ -11,6 +11,7 @@ import {
   fetchDataAnalysis,
   fetchNetworkAnalysis,
 } from "../../store/visuals-slice";
+import QuestionIcon from "../../UI/Icons/QuestionIcon";
 
 const PaymentMain = () => {
   const navigate = useNavigate();
@@ -23,6 +24,8 @@ const PaymentMain = () => {
   const [openModal, setOpenModal] = useState(false);
   const [estimatedMcap, setEstimatedMcap] = useState("");
   const [subscription, setSubscription] = useState(null);
+  const [showAnalysisExplanation, setShowAnalysisExplanation] = useState(false);
+  const [showMcapExplanation, setShowMcapExplanation] = useState(false);
   const paymentAddress = "0x896F5E5FD6e281020d8ef81856B3756dA561cBa0";
 
   console.log("mainDataPoints");
@@ -84,6 +87,15 @@ const PaymentMain = () => {
 
   const closeModalHandler = () => {
     setOpenModal(false);
+  };
+
+  //-----------handle UI ---------------
+
+  const onAnalysisExplanationHandler = () => {
+    setShowAnalysisExplanation(!showAnalysisExplanation);
+  };
+  const onMcapExplanationHandler = () => {
+    setShowMcapExplanation(!showMcapExplanation);
   };
 
   const message = analysisDone ? (
@@ -159,28 +171,55 @@ const PaymentMain = () => {
                 </span>
                 : {dataAnalysis.sybiledTokenPercentage}%
               </div>
-              <div className="col-span-2 mt-10 text-lg">
+              <div className=" mt-10 text-lg">
                 <div className="text-center">
-                  <input
-                    type="text"
-                    placeholder="Estimated MCAP at launch"
-                    className="border-2 border-gray-200 px-2 py-1 rounded text-sm font-light w-52 tracking-wider mb-4"
-                    value={estimatedMcap.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                    onChange={(e) =>
-                      setEstimatedMcap(e.target.value.replace(/,/g, ""))
-                    }
-                  />
+                  <div className="flex flex-col justify-center text-center">
+                    <label className="font-light text-sm mb-2">
+                      Enter your estimated Marketcap ($) at launch
+                    </label>
+                    <div>
+                      <input
+                        type="text"
+                        placeholder="Estimated MCAP at launch"
+                        className="border-2 border-gray-200 px-2 py-1 rounded text-sm font-light w-52 tracking-wider mb-4"
+                        value={estimatedMcap.replace(
+                          /\B(?=(\d{3})+(?!\d))/g,
+                          ","
+                        )}
+                        onChange={(e) =>
+                          setEstimatedMcap(e.target.value.replace(/,/g, ""))
+                        }
+                      />
+                    </div>
+                  </div>
+
                   {estimatedMcap && (
-                    <p className="text-center">
-                      In total, the{" "}
-                      <span className="font-bold tracking-wider">
-                        financial loss
-                      </span>{" "}
-                      due to the detected sybil attack amounts to: $
-                      <span className="font-bold underline">
-                        {computeFinancialLoss()}
-                      </span>
-                    </p>
+                    <div className="flex flex-col items-center justify-center">
+                      <p className="flex flex-row items-center text-center">
+                        In total, the{" "}
+                        <span className="font-bold text-indogoDye tracking-wider">
+                          financial loss
+                        </span>{" "}
+                        due to the detected sybil attack amounts to: $
+                        <span className="font-bold underline text-indogoDye">
+                          {computeFinancialLoss()}
+                        </span>
+                        <button
+                          onClick={onMcapExplanationHandler}
+                          className="ml-2"
+                        >
+                          <QuestionIcon />
+                        </button>
+                      </p>
+                      {showMcapExplanation && (
+                        <div className=" font-light text-sm w-96">
+                          Financial impat is a rough estimation based on the
+                          entered marketcap and the percentage of sybil
+                          addresses, assuming sybil attackers receive on avg the
+                          same amount of tokens that other users
+                        </div>
+                      )}
+                    </div>
                   )}
                 </div>
               </div>
