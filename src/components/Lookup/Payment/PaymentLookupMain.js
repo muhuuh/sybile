@@ -7,6 +7,10 @@ import { subscribeToSupabaseLookup } from "../../../Supabase/subscribeSupabase";
 import supabase from "../../../Supabase/supabase";
 import CopyIcon from "../../UI/Icons/CopyIcon";
 import QuestionIcon from "../../UI/Icons/QuestionIcon";
+import {
+  fetchAddressAnalysis,
+  fetchDataAnalysis,
+} from "../../store/analysis-lookup-slice";
 
 const PaymentLookupMain = () => {
   const navigate = useNavigate();
@@ -49,6 +53,20 @@ const PaymentLookupMain = () => {
       }
     };
   }, [dispatch, requestId]);
+
+  const handleFetchAnalysis = async () => {
+    await Promise.all([
+      dispatch(fetchDataAnalysis(requestId)),
+      dispatch(fetchAddressAnalysis(requestId)),
+    ]);
+  };
+
+  //fetch analysis data from database once it gets updated to update redux store
+  useEffect(() => {
+    if (analysisDone) {
+      handleFetchAnalysis();
+    }
+  }, [analysisDone, handleFetchAnalysis]);
 
   // Navigate when both payment and analysis are done
   useEffect(() => {
