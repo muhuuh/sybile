@@ -5,6 +5,7 @@ import LoadingSpinner from "../../UI/LoadingSpinner";
 import PaymentDetails from "./PaymentDetails";
 import supabase from "../../../Supabase/supabase";
 import { subscribeToSupabasePredictive } from "../../../Supabase/subscribeSupabase";
+import CopyIcon from "../../UI/Icons/CopyIcon";
 
 const PaymentMain = () => {
   const navigate = useNavigate();
@@ -49,6 +50,17 @@ const PaymentMain = () => {
     return (estimatedMcap * sybilTokenPercentage).toLocaleString();
   };
 
+  const copyToClipboard = (text) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        alert("Address copied to clipboard");
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+      });
+  };
+
   const closeModalHandler = () => {
     setOpenModal(false);
   };
@@ -76,12 +88,23 @@ const PaymentMain = () => {
             <div className="mt-12">
               <LoadingSpinner />
               <p className="text-xl text-gray-700 mt-12">
-                Please make sure to save the below ID. It is your access code to
+                Make sure to save the below ID. It is your{" "}
+                <span className="font-bold text-indogoDye">access code</span> to
                 retrieve your analysis.
               </p>
-              <p className="mt-3 text-xl text-indogoDye font-bold">
-                {requestId}
-              </p>
+              <div className="text-center gap-x-2 mt-6">
+                <span className="mt-3 text-xl text-indogoDye hover:text-salmon font-bold">
+                  {requestId}
+                </span>
+                <button
+                  onClick={() => copyToClipboard(requestId)}
+                  className="  text-salmon px-2 "
+                >
+                  <div className="">
+                    <CopyIcon />
+                  </div>
+                </button>
+              </div>
             </div>
           </>
         )}

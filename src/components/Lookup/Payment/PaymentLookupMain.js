@@ -71,9 +71,14 @@ const PaymentLookupMain = () => {
     setOpenModal(false);
   };
 
-  const message = analysisDone
-    ? "Your analysis is complete! Here are three key data points:"
-    : "Your analysis is underway. Please stay on this page and don't refresh.";
+  const message = analysisDone ? (
+    "Your analysis is complete! Here are three key data points:"
+  ) : (
+    <p className="text-xl text-gray-700 mt-12">
+      Your analysis is underway. Please{" "}
+      <span className=" ">stay on this page</span> and don't refresh.
+    </p>
+  );
 
   return (
     <div
@@ -104,7 +109,7 @@ const PaymentLookupMain = () => {
                 </span>
                 <button
                   onClick={() => copyToClipboard(requestId)}
-                  className=" text-gray-700 px-2 "
+                  className="  text-salmon px-2 "
                 >
                   <div className="">
                     <CopyIcon />
