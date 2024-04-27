@@ -6,6 +6,11 @@ import PaymentDetails from "./PaymentDetails";
 import supabase from "../../../Supabase/supabase";
 import { subscribeToSupabasePredictive } from "../../../Supabase/subscribeSupabase";
 import CopyIcon from "../../UI/Icons/CopyIcon";
+import {
+  fetchAddressAnalysis,
+  fetchDataAnalysis,
+  fetchNetworkAnalysis,
+} from "../../store/visuals-slice";
 
 const PaymentMain = () => {
   const navigate = useNavigate();
@@ -38,6 +43,21 @@ const PaymentMain = () => {
       }
     };
   }, [dispatch, requestId]);
+
+  //fetch analysis data from database once it gets updated to update redux store
+  const handleFetchAnalysis = async () => {
+    await Promise.all([
+      dispatch(fetchDataAnalysis(requestId)),
+      dispatch(fetchAddressAnalysis(requestId)),
+      dispatch(fetchNetworkAnalysis(requestId)),
+    ]);
+  };
+
+  useEffect(() => {
+    if (analysisDone) {
+      handleFetchAnalysis();
+    }
+  }, [analysisDone, handleFetchAnalysis]);
 
   // Navigate when both payment and analysis are done
   useEffect(() => {

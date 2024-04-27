@@ -54,6 +54,7 @@ const PaymentLookupMain = () => {
     };
   }, [dispatch, requestId]);
 
+  //fetch analysis data from database once it gets updated to update redux store
   const handleFetchAnalysis = async () => {
     await Promise.all([
       dispatch(fetchDataAnalysis(requestId)),
@@ -61,7 +62,6 @@ const PaymentLookupMain = () => {
     ]);
   };
 
-  //fetch analysis data from database once it gets updated to update redux store
   useEffect(() => {
     if (analysisDone) {
       handleFetchAnalysis();
