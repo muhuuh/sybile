@@ -6,8 +6,10 @@ const Header = () => {
   const isAnalysisActive =
     location.pathname === "/" ||
     location.pathname === "/main" ||
-    location.pathname === "/main/payment" ||
-    location.pathname === "/main/analysis";
+    location.pathname === "/main/payment/lookup" ||
+    location.pathname === "/main/analysis/lookup" ||
+    location.pathname === "/main/payment/predictive" ||
+    location.pathname === "/main/analysis/predictive";
 
   return (
     <header className="bg-white border-b py-8 flex justify-between items-center px-24 shadow-md">

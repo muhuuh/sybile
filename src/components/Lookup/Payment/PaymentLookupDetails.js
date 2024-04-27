@@ -67,7 +67,7 @@ const PaymentLookupDetails = ({ closeModal }) => {
             onClick={() => {
               setShowExplanation(!showExplanation);
             }}
-            className="ml-2 mb-7 text-indogoDye"
+            className="ml-2  text-indogoDye"
           >
             <QuestionIcon />
           </button>

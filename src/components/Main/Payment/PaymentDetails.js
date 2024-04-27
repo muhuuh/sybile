@@ -1,21 +1,25 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { paymentActions, updatePaymentInfo } from "../../store/payment-slice";
+import QuestionIcon from "../../UI/Icons/QuestionIcon";
+import CopyIcon from "../../UI/Icons/CopyIcon";
 
 const PaymentDetails = ({ closeModal }) => {
   const paymentDetails = useSelector((state) => state.paymnent.paymentDetails);
   const [userAddress, setUserAddress] = useState("");
+  const [showExplanation, setShowExplanation] = useState(false);
+
   const dispatch = useDispatch();
 
   console.log("paymentDetails");
   console.log(paymentDetails);
 
-  const paymentAddress = "0x851dB07Ac4c422010F5dD2a904EC470D660b15e5";
+  const paymentAddress = "0x896F5E5FD6e281020d8ef81856B3756dA561cBa0";
   const shortPaymentAddress = `${paymentAddress.slice(
     0,
     6
   )}...${paymentAddress.slice(-6)}`;
-  const amountToPay = 1000; //TODO needs to be computed
+  const amountToPay = 599; //TODO needs to be computed
 
   const copyToClipboard = (text) => {
     navigator.clipboard
@@ -64,9 +68,28 @@ const PaymentDetails = ({ closeModal }) => {
         className="bg-gray-100 p-12 rounded-lg shadow-xl max-w-md w-full mx-4 text-left"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-2xl font-semibold text-indogoDye tracking-wider mb-8 text-center">
-          Make a Payment
-        </h2>
+        <div className="flex flex-row justify-center items-center">
+          {" "}
+          <h2 className="text-2xl underline decoration-salmon font-semibold text-indogoDye tracking-wider text-center">
+            Get Analysis Detail
+          </h2>
+          <button
+            onClick={() => {
+              setShowExplanation(!showExplanation);
+            }}
+            className="ml-2  text-indogoDye"
+          >
+            <QuestionIcon />
+          </button>
+        </div>
+        {showExplanation && (
+          <p className="font-light text-sm my-4">
+            Enter the address with which you will pay, and send the exact amount
+            displayed to the address shared below. Once the payment is received,
+            the page will automatically refresh - or use you ID to find the
+            analysis once it is ready.
+          </p>
+        )}
         <div className="text-sm font-light">
           <label htmlFor="requestId" className="block">
             Your request ID
@@ -82,7 +105,7 @@ const PaymentDetails = ({ closeModal }) => {
 
         <div className="mt-4 text-sm font-ligh">
           <label htmlFor="userAddress" className="block text-sm font-light">
-            Your USDT Address
+            Your USDT Payment Address
           </label>
           <input
             id="userAddress"
@@ -104,9 +127,9 @@ const PaymentDetails = ({ closeModal }) => {
           </span>
           <button
             onClick={() => copyToClipboard(paymentAddress)}
-            className="ml-2 bg-gray-200 text-gray-700 px-2 py-0.5 rounded-md text-sm font-light hover:bg-gray-300 transition duration-200"
+            className="ml-2 text-indogoDye hover:text-salmon "
           >
-            Copy
+            <CopyIcon />
           </button>
         </div>
         <div className="text-center">

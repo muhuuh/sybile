@@ -134,7 +134,7 @@ function PredictiveMain() {
           </div>
         )}
       </div>
-      <div className="text-center mt-6 tracking-wider">
+      <div className="text-center mt-2 tracking-wider">
         <button
           onClick={() => {
             setNewRequest(true);
