@@ -4,8 +4,10 @@ import {
   fetchAddressAnalysis,
   fetchDataAnalysis,
 } from "../../store/analysis-lookup-slice";
+import QuestionIcon from "../../UI/Icons/QuestionIcon";
 
 const AnalysisLookupMain = () => {
+  const [showMcapExplanation, setShowMcapExplanation] = useState(false);
   const requestId = useSelector(
     (state) => state.paymnentLookup.user.request_id
   );
@@ -74,6 +76,10 @@ const AnalysisLookupMain = () => {
     URL.revokeObjectURL(url);
   };
 
+  const onMcapExplanationHandler = () => {
+    setShowMcapExplanation(!showMcapExplanation);
+  };
+
   return (
     <div
       className="min-h-screen  p-8"
@@ -137,16 +143,32 @@ const AnalysisLookupMain = () => {
                       />
                     </div>
                     {estimatedMcap && (
-                      <p className="text-center">
-                        In total, the estimated{" "}
-                        <span className="font-bold tracking-wider">
-                          financial loss
-                        </span>{" "}
-                        due to the detected sybil attack amounts to: $
-                        <span className="font-bold underline">
-                          {computeFinancialLoss()}
-                        </span>
-                      </p>
+                      <div className="flex flex-col items-center justify-center">
+                        <p className="flex flex-row items-center text-center">
+                          In total, the{" "}
+                          <span className="font-bold text-indogoDye tracking-wider mx-1">
+                            financial loss{" "}
+                          </span>{" "}
+                          due to the detected sybil attack amounts to: $
+                          <span className="font-bold underline text-indogoDye">
+                            {computeFinancialLoss()}
+                          </span>
+                          <button
+                            onClick={onMcapExplanationHandler}
+                            className="ml-2"
+                          >
+                            <QuestionIcon />
+                          </button>
+                        </p>
+                        {showMcapExplanation && (
+                          <div className="mt-2 font-light text-sm w-96">
+                            Financial impat is a rough estimation based on the
+                            entered marketcap and the percentage of sybil
+                            addresses, assuming sybil attackers receive on avg
+                            the same amount of tokens that other users
+                          </div>
+                        )}
+                      </div>
                     )}
                   </div>
                 </div>

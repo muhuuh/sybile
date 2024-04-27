@@ -221,12 +221,11 @@ const PaymentLookupMain = () => {
                       />
                     </div>
                   </div>
-
                   {estimatedMcap && (
                     <div className="flex flex-col items-center justify-center">
                       <p className="flex flex-row items-center text-center">
                         In total, the{" "}
-                        <span className="font-bold text-indogoDye tracking-wider">
+                        <span className="mx-1 font-bold text-indogoDye tracking-wider">
                           financial loss
                         </span>{" "}
                         due to the detected sybil attack amounts to: $
