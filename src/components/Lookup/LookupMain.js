@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import SearchAnalysis from "../Main/Analysis/SearchAnalysis";
 import { paymentLookupActions } from "../store/payment-lookup-slice";
 import QuestionIcon from "../UI/Icons/QuestionIcon";
+import SearchLookupAnalysis from "./Analysis/SearchLookupAnalysis";
 
 function LookupMain() {
   const [isUploading, setIsUploading] = useState(false);
@@ -253,7 +254,7 @@ function LookupMain() {
         </section>
       )}
 
-      {!newRequest && <SearchAnalysis />}
+      {!newRequest && <SearchLookupAnalysis />}
     </main>
   );
 }

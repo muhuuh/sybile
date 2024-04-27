@@ -8,7 +8,7 @@ import {
 import CopyIcon from "../../UI/Icons/CopyIcon";
 import QuestionIcon from "../../UI/Icons/QuestionIcon";
 
-const PaymentLookupDetails = ({ closeModal }) => {
+const PaymentLookupDetails = ({ closeModal, paymentAddress }) => {
   const paymentDetails = useSelector((state) => state.paymnent.paymentDetails);
   const [userAddress, setUserAddress] = useState("");
   const [showExplanation, setShowExplanation] = useState(false);
@@ -18,7 +18,6 @@ const PaymentLookupDetails = ({ closeModal }) => {
   console.log("paymentDetails");
   console.log(paymentDetails);
 
-  const paymentAddress = "0x896F5E5FD6e281020d8ef81856B3756dA561cBa0";
   const shortPaymentAddress = `${paymentAddress.slice(
     0,
     6

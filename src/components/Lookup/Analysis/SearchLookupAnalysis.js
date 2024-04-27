@@ -4,11 +4,10 @@ import { useDispatch } from "react-redux";
 import {
   fetchAddressAnalysis,
   fetchDataAnalysis,
-  fetchNetworkAnalysis,
-} from "../../store/visuals-slice";
+} from "../../store/analysis-lookup-slice";
 import { useNavigate } from "react-router-dom";
 
-const SearchAnalysis = () => {
+const SearchLookupAnalysis = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
@@ -19,12 +18,11 @@ const SearchAnalysis = () => {
     if (requestId) {
       setIsFetching(true);
       await Promise.all([
-        dispatch(fetchNetworkAnalysis(requestId)),
         dispatch(fetchDataAnalysis(requestId)),
         dispatch(fetchAddressAnalysis(requestId)),
       ]);
       setIsFetching(false);
-      navigate("/main/analysis/predictive");
+      navigate("/main/analysis/lookup");
     } else {
       setErrorMessage(
         "There was an error when looking for this request. Please check again the request ID. "
@@ -61,4 +59,4 @@ const SearchAnalysis = () => {
   );
 };
 
-export default SearchAnalysis;
+export default SearchLookupAnalysis;

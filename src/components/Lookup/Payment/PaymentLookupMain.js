@@ -29,6 +29,7 @@ const PaymentLookupMain = () => {
   const [subscription, setSubscription] = useState(null);
   const [showAnalysisExplanation, setShowAnalysisExplanation] = useState(false);
   const [showMcapExplanation, setShowMcapExplanation] = useState(false);
+  const paymentAddress = "0x896F5E5FD6e281020d8ef81856B3756dA561cBa0";
 
   console.log("mainDataPoints");
   console.log(analysisDone);
@@ -232,21 +233,37 @@ const PaymentLookupMain = () => {
                   Pay to see more details
                 </button>
               ) : (
-                <div className="mt-10">
+                <div className="mt-6">
                   <LoadingSpinner />
-                  <p className=" text-gray-700 mt-4">
-                    Thanks for sending your payment!
+                  <p className=" text-indogoDye font-bold mt-4">
+                    Thanks for your interest!
                   </p>
-                  <p className="text-light text-gray-700 ">
-                    We are monitoring your payment and will refresh
-                    automatically the page after onchain confirmation
+                  <p className="text-light text-gray-700 mt-2">
+                    Remember to send your payment to{" "}
+                    <span className="font-light text-sm italic">
+                      {paymentAddress}
+                    </span>{" "}
+                    using your address you have shared
+                  </p>
+                  <p className="text-light text-gray-700 mt-2">
+                    We are monitoring your payment and will
+                    <span className="font-bold text-salmon">
+                      {" "}
+                      refresh automatically
+                    </span>{" "}
+                    the page after onchain confirmation
                   </p>
                 </div>
               )}
             </div>
           </div>
         )}
-        {openModal && <PaymentLookupDetails closeModal={closeModalHandler} />}
+        {openModal && (
+          <PaymentLookupDetails
+            closeModal={closeModalHandler}
+            paymentAddress={paymentAddress}
+          />
+        )}
       </div>
     </div>
   );

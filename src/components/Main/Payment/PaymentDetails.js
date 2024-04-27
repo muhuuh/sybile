@@ -4,7 +4,7 @@ import { paymentActions, updatePaymentInfo } from "../../store/payment-slice";
 import QuestionIcon from "../../UI/Icons/QuestionIcon";
 import CopyIcon from "../../UI/Icons/CopyIcon";
 
-const PaymentDetails = ({ closeModal }) => {
+const PaymentDetails = ({ closeModal, paymentAddress }) => {
   const paymentDetails = useSelector((state) => state.paymnent.paymentDetails);
   const [userAddress, setUserAddress] = useState("");
   const [showExplanation, setShowExplanation] = useState(false);
@@ -14,7 +14,6 @@ const PaymentDetails = ({ closeModal }) => {
   console.log("paymentDetails");
   console.log(paymentDetails);
 
-  const paymentAddress = "0x896F5E5FD6e281020d8ef81856B3756dA561cBa0";
   const shortPaymentAddress = `${paymentAddress.slice(
     0,
     6
