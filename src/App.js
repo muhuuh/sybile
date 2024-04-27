@@ -8,7 +8,7 @@ import LookupMain from "./components/Lookup/LookupMain";
 import LandingPage from "./components/LandingPage";
 import PaymentLookupMain from "./components/Lookup/Payment/PaymentLookupMain";
 import PaymentLookupDetails from "./components/Lookup/Payment/PaymentLookupDetails";
-import AnalysisLookupMain from "./components/Main/Analysis/AnalysisLookupMain";
+import AnalysisLookupMain from "./components/Lookup/Analysis/AnalysisLookupMain";
 
 const App = () => {
   return (

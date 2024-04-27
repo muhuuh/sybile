@@ -20,7 +20,12 @@ const LandingPage = () => {
   */
 
   return (
-    <main className="min-h-screen p-8  bg-gray-100">
+    <main
+      className="min-h-screen p-8"
+      style={{
+        background: "linear-gradient(to bottom right, #f7f7f7, #f0f8f9)",
+      }}
+    >
       <div className="text-center mt-6">
         <h1 className="text-3xl font-bold text-indogoDye mb-2 tracking-wider">
           {fixedTitle || " "}

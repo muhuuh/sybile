@@ -103,7 +103,7 @@ function LookupMain() {
   };
 
   return (
-    <main className=" px-8  bg-gray-100">
+    <main className=" px-8  ">
       <div className="text-center mt-6">
         <h1 className="text-xl font-bold underline decoration-salmon text-indogoDye mb-4 tracking-wider">
           Lookup Analysis

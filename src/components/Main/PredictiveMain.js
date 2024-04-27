@@ -100,7 +100,7 @@ function PredictiveMain() {
   };
 
   return (
-    <main className=" px-8  bg-gray-100">
+    <main className=" px-8 ">
       <div className="text-center mt-6">
         <h1 className="text-xl font-bold  text-indogoDye underline decoration-salmon mb-4 tracking-wider">
           Predictive Analysis
