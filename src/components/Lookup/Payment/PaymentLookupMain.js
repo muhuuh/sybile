@@ -5,6 +5,7 @@ import LoadingSpinner from "../../UI/LoadingSpinner";
 import PaymentLookupDetails from "./PaymentLookupDetails";
 import { subscribeToSupabaseLookup } from "../../../Supabase/subscribeSupabase";
 import supabase from "../../../Supabase/supabase";
+import CopyIcon from "../../UI/Icons/CopyIcon";
 
 const PaymentLookupMain = () => {
   const navigate = useNavigate();
@@ -55,6 +56,17 @@ const PaymentLookupMain = () => {
     return (estimatedMcap * sybilTokenPercentage).toLocaleString();
   };
 
+  const copyToClipboard = (text) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        alert("Address copied to clipboard");
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+      });
+  };
+
   const closeModalHandler = () => {
     setOpenModal(false);
   };
@@ -64,7 +76,12 @@ const PaymentLookupMain = () => {
     : "Your analysis is underway. Please stay on this page and don't refresh.";
 
   return (
-    <div className="min-h-screen p-8 bg-gray-100">
+    <div
+      className="min-h-screen p-8 "
+      style={{
+        background: "linear-gradient(to bottom right, #f7f7f7, #f0f8f9)",
+      }}
+    >
       <div className="text-center mt-6">
         <h1 className="text-3xl font-bold text-indogoDye mb-4 tracking-wider">
           Payment and Analysis
@@ -77,12 +94,23 @@ const PaymentLookupMain = () => {
             <div className="mt-12">
               <LoadingSpinner />
               <p className="text-xl text-gray-700 mt-12">
-                Please make sure to save the below ID. It is your access code to
+                Make sure to save the below ID. It is your{" "}
+                <span className="font-bold text-indogoDye">access code</span> to
                 retrieve your analysis.
               </p>
-              <p className="mt-3 text-xl text-indogoDye font-bold">
-                {requestId}
-              </p>
+              <div className="text-center gap-x-2 mt-6">
+                <span className="mt-3 text-xl text-indogoDye hover:text-salmon font-bold">
+                  {requestId}
+                </span>
+                <button
+                  onClick={() => copyToClipboard(requestId)}
+                  className=" text-gray-700 px-2 "
+                >
+                  <div className="">
+                    <CopyIcon />
+                  </div>
+                </button>
+              </div>
             </div>
           </>
         )}

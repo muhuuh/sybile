@@ -15,3 +15,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.button-gradient-honolulu {
+  background-image: linear-gradient(to bottom, #027bce, #025f9c);
+  color: #ffffff;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.button-gradient-honolulu:hover {
+  background-color: #eeab94; /* salmon color for hover */
+  background-image: none; /* Remove gradient on hover */
+  color: #00487c; /* Switch text color on hover */
+}

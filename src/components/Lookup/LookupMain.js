@@ -176,7 +176,7 @@ function LookupMain() {
               isDragActive ? "bg-gray-100" : "bg-white"
             } ${
               isUploading ? "border-gray-300" : "border-honoluluBlue"
-            } rounded-md py-16 mb-4 transition-colors duration-300`}
+            } rounded-md py-16 mx- mb-4 transition-colors duration-300`}
           >
             <input {...getInputProps()} />
             {isUploading ? (
