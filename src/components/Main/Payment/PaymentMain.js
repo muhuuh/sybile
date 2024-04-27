@@ -65,9 +65,14 @@ const PaymentMain = () => {
     setOpenModal(false);
   };
 
-  const message = analysisDone
-    ? "Your analysis is complete! Here are three key data points:"
-    : "Your analysis is underway. Please stay on this page and don't refresh.";
+  const message = analysisDone ? (
+    "Your Predictive analysis is complete! "
+  ) : (
+    <p className="text-xl text-gray-700 mt-12">
+      Your analysis is underway. Please{" "}
+      <span className=" ">stay on this page</span> and don't refresh.
+    </p>
+  );
 
   return (
     <div

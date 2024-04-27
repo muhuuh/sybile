@@ -6,6 +6,7 @@ import PaymentLookupDetails from "./PaymentLookupDetails";
 import { subscribeToSupabaseLookup } from "../../../Supabase/subscribeSupabase";
 import supabase from "../../../Supabase/supabase";
 import CopyIcon from "../../UI/Icons/CopyIcon";
+import QuestionIcon from "../../UI/Icons/QuestionIcon";
 
 const PaymentLookupMain = () => {
   const navigate = useNavigate();
@@ -20,10 +21,14 @@ const PaymentLookupMain = () => {
     (state) => state.paymnentLookup.user.analysisDone
   );
   const paymentSent = useSelector((state) => state.paymnentLookup.paymentSent);
-  const dataAnalysis = useSelector((state) => state.visuals.dataAnalysis); //TODO adapt to new structure
+  const dataAnalysis = useSelector(
+    (state) => state.analysisLookup.dataAnalysis
+  );
   const [openModal, setOpenModal] = useState(false);
   const [estimatedMcap, setEstimatedMcap] = useState("");
   const [subscription, setSubscription] = useState(null);
+  const [showAnalysisExplanation, setShowAnalysisExplanation] = useState(false);
+  const [showMcapExplanation, setShowMcapExplanation] = useState(false);
 
   console.log("mainDataPoints");
   console.log(analysisDone);
@@ -71,8 +76,27 @@ const PaymentLookupMain = () => {
     setOpenModal(false);
   };
 
+  //-----------handle UI ---------------
+
+  const onAnalysisExplanationHandler = () => {
+    setShowAnalysisExplanation(!showAnalysisExplanation);
+  };
+  const onMcapExplanationHandler = () => {
+    setShowMcapExplanation(!showMcapExplanation);
+  };
+
   const message = analysisDone ? (
-    "Your analysis is complete! Here are three key data points:"
+    <div className="mb-3 ">
+      <span className=" text-gray-800 text-lg  font-light tracking-wider">
+        Your Lookup Analysis is complete!
+      </span>
+      <button
+        onClick={onAnalysisExplanationHandler}
+        className="mt-10 ml-2 text-indogoDye"
+      >
+        <QuestionIcon />
+      </button>
+    </div>
   ) : (
     <p className="text-xl text-gray-700 mt-12">
       Your analysis is underway. Please{" "}
@@ -123,14 +147,23 @@ const PaymentLookupMain = () => {
         {analysisDone && (
           <div className="flex flex-col">
             <div className="flex justify-center">
-              <div className="font-light w-2/3 text-center">
-                Please find below insights based on our database of known sybil
-                attacker addresses. Be aware, attackers not yet saved in our
-                database will not be flaged. For the complete analysis, please
-                chose the advanced/predictive analysis{" "}
-              </div>
+              {showAnalysisExplanation && (
+                <div className="font-light w-2/3 text-center">
+                  Please find below general insights based on our database of
+                  known sybil attacker addresses. Be aware, attackers not yet
+                  saved in our database will not be flaged. For the complete
+                  analysis, please chose the predictive analysis{" "}
+                </div>
+              )}
             </div>
             <div className=" my-10 mx-auto max-w-6xl w-1/2 bg-white rounded-lg shadow-lg border py-10 px-32">
+              <h1 className="text-lg font-bold underline decoration-salmon text-indogoDye mb-4 tracking-wider">
+                Lookup Analysis
+              </h1>
+              <p className="font-light mb-4">
+                Based only on known sybil attackers, your list of users
+                contains:{" "}
+              </p>
               <div className="text-gray-700">
                 Total <span className="text-honoluluBlue">Sybil clusters</span>:{" "}
                 {dataAnalysis.sybiledTokenPercentage}%
@@ -150,23 +183,40 @@ const PaymentLookupMain = () => {
 
               <div className="col-span-2 mt-10 text-lg">
                 <div className="text-center">
-                  <input
-                    type="text"
-                    placeholder="Estimated MCAP at launch"
-                    className="border-2 border-gray-200 px-2 py-1 rounded text-sm font-light w-52 tracking-wider mb-4"
-                    value={estimatedMcap.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                    onChange={(e) =>
-                      setEstimatedMcap(e.target.value.replace(/,/g, ""))
-                    }
-                  />
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Estimated MCAP at launch"
+                      className="border-2 border-gray-200 px-2 py-1 rounded text-sm font-light w-52 tracking-wider mb-4"
+                      value={estimatedMcap.replace(
+                        /\B(?=(\d{3})+(?!\d))/g,
+                        ","
+                      )}
+                      onChange={(e) =>
+                        setEstimatedMcap(e.target.value.replace(/,/g, ""))
+                      }
+                    />
+                    <button
+                      onClick={onMcapExplanationHandler}
+                      className="ml-2 text-indogoDye"
+                    >
+                      <QuestionIcon />
+                    </button>
+                  </div>
+                  {showMcapExplanation && (
+                    <p className="font-light text-sm mb-4">
+                      Enter your launch mcap to estimate the financial impact
+                      sybil attacker would have on your protocol
+                    </p>
+                  )}
                   {estimatedMcap && (
                     <p className="text-center">
                       In total, the{" "}
-                      <span className="font-bold tracking-wider">
+                      <span className="font-bold text-indogoDye tracking-wider">
                         financial loss
                       </span>{" "}
                       due to the detected sybil attack amounts to: $
-                      <span className="font-bold underline">
+                      <span className="font-bold underline text-salmon">
                         {computeFinancialLoss()}
                       </span>
                     </p>
@@ -177,7 +227,7 @@ const PaymentLookupMain = () => {
               {!paymentSent ? (
                 <button
                   onClick={() => setOpenModal(true)}
-                  className="bg-honoluluBlue text-gray-200 px-4 py-2 mt-10 shadow-lg rounded ml-2 hover:bg-salmon hover:text-gray-800 transition duration-200"
+                  className="bg-honoluluBlue text-gray-200 px-4 py-2 mt-6 shadow-lg rounded ml-2 hover:bg-salmon hover:text-gray-800 transition duration-200"
                 >
                   Pay to see more details
                 </button>
