@@ -7,11 +7,14 @@ import {
 } from "../../store/payment-lookup-slice";
 import CopyIcon from "../../UI/Icons/CopyIcon";
 import QuestionIcon from "../../UI/Icons/QuestionIcon";
+import supabase from "../../../Supabase/supabase";
 
 const PaymentLookupDetails = ({ closeModal, paymentAddress }) => {
   const paymentDetails = useSelector((state) => state.paymnent.paymentDetails);
   const [userAddress, setUserAddress] = useState("");
   const [showExplanation, setShowExplanation] = useState(false);
+  const [inviteCode, setInviteCode] = useState("");
+  const [inviteCodeMessage, setInviteCodeMessage] = useState("");
 
   const dispatch = useDispatch();
 
@@ -36,6 +39,52 @@ const PaymentLookupDetails = ({ closeModal, paymentAddress }) => {
   };
 
   const handlePaymentSubmission = async () => {
+    const invite = paymentDetails.invite;
+    if (invite !== "") {
+      // Re-check if the code is still redeemable before proceeding
+      const { data: inviteData, error: inviteError } = await supabase
+        .from("invite_codes")
+        .select("redeemed")
+        .eq("code", invite.code)
+        .single();
+
+      if (inviteError || !inviteData || inviteData.redeemed) {
+        alert("The invite code is either already redeemed or not valid.");
+        return;
+      }
+
+      // Mark the code as redeemed
+      const { error: redeemError } = await supabase
+        .from("invite_codes")
+        .update({
+          redeemed: true,
+          redeem_date: new Date(),
+          user_address: paymentAddress,
+        })
+        .eq("code", invite.code);
+
+      if (redeemError) {
+        console.error("Failed to redeem invite code:", redeemError);
+        return;
+      }
+
+      //update payment as done
+      const { error: paymentError } = await supabase
+        .from("analysis_lookup_requests")
+        .update({ payment_done: true })
+        .match({ request_id: paymentDetails.request_id });
+
+      if (paymentError) {
+        console.error("Failed to redeem invite code:", redeemError);
+        return;
+      }
+      dispatch(paymentLookupActions.updatePaymentSent(true));
+    } else {
+      setInviteCodeMessage(
+        "The invite code is either already redeemed or not valid."
+      );
+    }
+
     const updatedPaymentDetails = {
       ...paymentDetails,
       addressPayer: userAddress,
@@ -48,6 +97,34 @@ const PaymentLookupDetails = ({ closeModal, paymentAddress }) => {
 
     closeModal();
   };
+
+  const onCheckHandler = async () => {
+    const { data, error } = await supabase
+      .from("invite_codes")
+      .select("code, redeemed, user_address, redeem_date")
+      .eq("code", inviteCode)
+      .single();
+
+    if (error) {
+      console.error("Error fetching invite code:", error);
+      setInviteCodeMessage("Error fetching invite code");
+      return;
+    }
+
+    if (data && !data.redeemed) {
+      dispatch(
+        paymentLookupActions.updateInvite({
+          code: inviteCode,
+          redeemed: false,
+          user: data.user_address,
+        })
+      );
+      setInviteCodeMessage("Code is valid and not redeemed.");
+    } else {
+      setInviteCodeMessage("Code is invalid or already redeemed");
+    }
+  };
+
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50"
@@ -103,6 +180,26 @@ const PaymentLookupDetails = ({ closeModal, paymentAddress }) => {
             value={userAddress}
             onChange={(e) => setUserAddress(e.target.value)}
           />
+        </div>
+        <div className="mt-4 text-sm font-light">
+          <label htmlFor="inviteCode" className="block text-sm font-light">
+            Invite Code
+          </label>
+          <div className="flex flex-row">
+            <input
+              id="inviteCode"
+              type="text"
+              className="form-input px-4 py-1 mt-1 block w-full border-gray-300 rounded-md shadow-sm text-gray-600"
+              value={inviteCode}
+              onChange={(e) => setInviteCode(e.target.value)}
+            />
+            <button
+              onClick={onCheckHandler}
+              className="ml-4 px-2 rounded shadow bg-gray-200 text-indogoDye"
+            >
+              Check
+            </button>
+          </div>
         </div>
 
         <p className="mt-10 text-gray-600">

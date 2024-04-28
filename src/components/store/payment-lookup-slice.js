@@ -57,7 +57,7 @@ const defaultState = {
   user: {
     request_id: 0,
     paymentMade: false,
-    analysisDone: false, //TODO change to false. true is only for testing purpose until script connected
+    analysisDone: false,
   },
   paymentDetails: {
     request_id: 0,
@@ -67,6 +67,7 @@ const defaultState = {
     tx_id: "",
     analysis_type: "lookup",
   },
+  invite: { code: "", user: "", redeemed: false },
   paymentSent: false,
 };
 
