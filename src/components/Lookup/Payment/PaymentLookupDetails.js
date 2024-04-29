@@ -101,6 +101,7 @@ const PaymentLookupDetails = ({ closeModal, paymentAddress }) => {
         .from("invite_codes")
         .update({
           redeemed: true,
+          redeem_date: new Date(),
           user_address: paymentAddress,
         })
         .match({ code: invite.code });
