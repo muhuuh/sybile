@@ -27,64 +27,94 @@ function LookupMain() {
       const file = acceptedFiles[0];
       setErrorMessage("");
 
-      if (file && (file.type === "text/csv" || file.name.endsWith(".xlsx"))) {
+      if (file && file.type === "text/csv") {
         setIsUploading(true);
 
-        const fileExtension = file.name.split(".").pop();
-        const filePath = `lookup/${Math.random()}.${fileExtension}`;
+        // Read the file using FileReader
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          const text = e.target.result;
+          const firstLine = text.split("\n")[0]; // Get the first line to check columns
+          const numColumns = firstLine.split(",").length;
 
-        let { error: uploadError, data: fileData } = await supabase.storage
-          .from("sybile")
-          .upload(filePath, file);
+          // Check if the file has more than one column
+          if (numColumns > 1) {
+            setIsUploading(false);
+            setErrorMessage(
+              "The file format is not correct. Please upload a CSV file with exactly one column."
+            );
+            return;
+          }
 
-        if (uploadError) {
+          // If validation passes, proceed to upload the file to Supabase
+          const fileExtension = file.name.split(".").pop();
+          const filePath = `lookup/${Math.random()}.${fileExtension}`;
+
+          let { error: uploadError, data: fileData } = await supabase.storage
+            .from("sybile")
+            .upload(filePath, file);
+
+          if (uploadError) {
+            setIsUploading(false);
+            setErrorMessage("Failed to upload file.");
+            console.error(uploadError);
+            return;
+          }
+
+          const projectUrl = "https://sgtpfbliixxaqtnajnek.supabase.co";
+          const storageUrl = `${projectUrl}/storage/v1/object/public/sybile/${filePath}`;
+
+          let { data: insertData, error: insertError } = await supabase
+            .from("lookup_uploads")
+            .insert([{ storage_url: storageUrl }])
+            .select("id");
+
+          if (insertError) {
+            console.error(
+              "Failed to insert storage URL into uploads table",
+              insertError
+            );
+            setFileUploaded(false);
+          } else if (insertData && insertData.length > 0) {
+            const newRequestId = insertData[0].id;
+            setRequestId(insertData[0].id);
+            // Dispatch actions to update request_id in Redux store
+            dispatch(
+              paymentLookupActions.updatePaymentData({
+                request_id: newRequestId,
+              })
+            );
+            dispatch(
+              paymentLookupActions.updatePaymentDetails({
+                request_id: newRequestId,
+              })
+            );
+            setFileUploaded(true);
+          }
+
           setIsUploading(false);
-          setErrorMessage("Failed to upload file.");
-          console.error(uploadError);
-          return;
-        }
+          setShowSnackbar(true);
+          setTimeout(() => setShowSnackbar(false), 3000);
+        };
 
-        const projectUrl = "https://sgtpfbliixxaqtnajnek.supabase.co";
-        const storageUrl = `${projectUrl}/storage/v1/object/public/sybile/${filePath}`;
+        reader.onerror = () => {
+          setIsUploading(false);
+          setErrorMessage("Failed to read file.");
+        };
 
-        let { data: insertData, error: insertError } = await supabase
-          .from("lookup_uploads")
-          .insert([{ storage_url: storageUrl }])
-          .select("id");
-
-        console.log("Insert response:", insertData, insertError);
-
-        if (insertError) {
-          console.error(
-            "Failed to insert storage URL into uploads table",
-            insertError
-          );
-          setFileUploaded(false);
-        } else if (insertData && insertData.length > 0) {
-          const newRequestId = insertData[0].id;
-          setRequestId(insertData[0].id);
-          // Dispatch actions to update request_id in Redux store
-          dispatch(
-            paymentLookupActions.updatePaymentData({ request_id: newRequestId })
-          );
-          dispatch(
-            paymentLookupActions.updatePaymentDetails({
-              request_id: newRequestId,
-            })
-          );
-          setFileUploaded(true);
-        }
-
-        setIsUploading(false);
-        setShowSnackbar(true);
-        setTimeout(() => setShowSnackbar(false), 2000);
-
-        //navigate("/main/payment/lookup");
+        reader.readAsText(file);
       } else {
-        setErrorMessage("Please upload a CSV or XLSX file.");
+        setErrorMessage("Please upload a CSV file.");
       }
     },
-    [navigate]
+    [
+      dispatch,
+      navigate,
+      setIsUploading,
+      setErrorMessage,
+      setShowSnackbar,
+      setFileUploaded,
+    ]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -167,7 +197,7 @@ function LookupMain() {
 
       {newRequest && (
         <section className="max-w-6xl mx-auto bg-white rounded-lg border-gray-200 border shadow-lg p-8 mt-10">
-          <p className="text-center pb-4 px-24 text-gray-700 font-light">
+          <p className="text-center pb-4 px-24 text-gray-700 font-light text-lg">
             Compare your list of users with our known sybil attackers
           </p>
 
@@ -186,10 +216,10 @@ function LookupMain() {
                 <p className="text-gray-500">Uploading...</p>
               </div>
             ) : (
-              <p className="text-gray-700 font-light">
+              <p className="text-gray-700 font-light text-sm">
                 {isDragActive
                   ? "Drop the files here ..."
-                  : "Drag 'n' drop a CSV or Excel file "}
+                  : "Drag 'n' drop your list of addresses as CSV file (1 column, no header)"}
               </p>
             )}
             {!isUploading && (
