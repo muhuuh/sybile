@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
   paymentLookupActions,
+  updateInviteCode,
   updatePaymentInfo,
 } from "../../store/payment-lookup-slice";
 import CopyIcon from "../../UI/Icons/CopyIcon";
@@ -10,7 +11,10 @@ import QuestionIcon from "../../UI/Icons/QuestionIcon";
 import supabase from "../../../Supabase/supabase";
 
 const PaymentLookupDetails = ({ closeModal, paymentAddress }) => {
-  const paymentDetails = useSelector((state) => state.paymnent.paymentDetails);
+  const paymentDetails = useSelector(
+    (state) => state.paymnentLookup.paymentDetails
+  );
+  const invite = useSelector((state) => state.paymnentLookup.invite);
   const [userAddress, setUserAddress] = useState("");
   const [showExplanation, setShowExplanation] = useState(false);
   const [inviteCode, setInviteCode] = useState("");
@@ -36,66 +40,6 @@ const PaymentLookupDetails = ({ closeModal, paymentAddress }) => {
       .catch((err) => {
         console.error("Failed to copy: ", err);
       });
-  };
-
-  const handlePaymentSubmission = async () => {
-    const invite = paymentDetails.invite;
-    if (invite !== "") {
-      // Re-check if the code is still redeemable before proceeding
-      const { data: inviteData, error: inviteError } = await supabase
-        .from("invite_codes")
-        .select("redeemed")
-        .eq("code", invite.code)
-        .single();
-
-      if (inviteError || !inviteData || inviteData.redeemed) {
-        alert("The invite code is either already redeemed or not valid.");
-        return;
-      }
-
-      // Mark the code as redeemed
-      const { error: redeemError } = await supabase
-        .from("invite_codes")
-        .update({
-          redeemed: true,
-          redeem_date: new Date(),
-          user_address: paymentAddress,
-        })
-        .eq("code", invite.code);
-
-      if (redeemError) {
-        console.error("Failed to redeem invite code:", redeemError);
-        return;
-      }
-
-      //update payment as done
-      const { error: paymentError } = await supabase
-        .from("analysis_lookup_requests")
-        .update({ payment_done: true })
-        .match({ request_id: paymentDetails.request_id });
-
-      if (paymentError) {
-        console.error("Failed to redeem invite code:", redeemError);
-        return;
-      }
-      dispatch(paymentLookupActions.updatePaymentSent(true));
-    } else {
-      setInviteCodeMessage(
-        "The invite code is either already redeemed or not valid."
-      );
-    }
-
-    const updatedPaymentDetails = {
-      ...paymentDetails,
-      addressPayer: userAddress,
-      minValue: amountToPay,
-    };
-
-    dispatch(paymentLookupActions.updatePaymentDetails(updatedPaymentDetails));
-    dispatch(updatePaymentInfo(updatedPaymentDetails));
-    dispatch(paymentLookupActions.updatePaymentSent(true));
-
-    closeModal();
   };
 
   const onCheckHandler = async () => {
@@ -124,6 +68,93 @@ const PaymentLookupDetails = ({ closeModal, paymentAddress }) => {
       setInviteCodeMessage("Code is invalid or already redeemed");
     }
   };
+
+  const handlePaymentSubmission = async () => {
+    if (invite !== "") {
+      console.log("run invde code logic");
+      console.log(invite.code);
+      console.log(paymentAddress);
+      // Re-check if the code is still redeemable before proceeding
+      const { data: inviteData, error: inviteError } = await supabase
+        .from("invite_codes")
+        .select("redeemed")
+        .eq("code", invite.code)
+        .single();
+
+      console.log(inviteData);
+
+      if (inviteError || !inviteData || inviteData.redeemed) {
+        alert("The invite code is either already redeemed or not valid.");
+        return;
+      }
+
+      // Mark the code as redeemed
+      dispatch(
+        updateInviteCode({
+          redeemed: true,
+          user_address: paymentAddress,
+          code: invite.code,
+        })
+      );
+
+      const { data: inviteData2, error: redeemError } = await supabase
+        .from("invite_codes")
+        .update({
+          redeemed: true,
+          user_address: paymentAddress,
+        })
+        .match({ code: invite.code });
+
+      console.log("inviteData2");
+      console.log(inviteData2);
+
+      if (redeemError) {
+        console.error("Failed to redeem invite code:", redeemError);
+        return;
+      }
+
+      //update payment as done
+      const { data: inviteData3, error: paymentError } = await supabase
+        .from("analysis_lookup_requests")
+        .update({ payment_done: true })
+        .match({ request_id: paymentDetails.request_id });
+
+      console.log(inviteData3);
+
+      if (paymentError) {
+        console.error("Failed to redeem invite code:", paymentError);
+        return;
+      }
+      dispatch(paymentLookupActions.updatePaymentSent(true));
+      dispatch(paymentLookupActions.updatePaymentInviteDone(true));
+
+      console.log("done invite logic");
+      return;
+    } else {
+      setInviteCodeMessage(
+        "The invite code is either already redeemed or not valid."
+      );
+    }
+
+    const updatedPaymentDetails = {
+      ...paymentDetails,
+      addressPayer: userAddress,
+      minValue: amountToPay,
+    };
+
+    dispatch(paymentLookupActions.updatePaymentDetails(updatedPaymentDetails));
+    dispatch(updatePaymentInfo(updatedPaymentDetails));
+    dispatch(paymentLookupActions.updatePaymentSent(true));
+
+    closeModal();
+  };
+
+  //reset invite code error message
+  useEffect(() => {
+    if (inviteCode !== "") {
+      setInviteCodeMessage("");
+    }
+  }, [inviteCode]);
 
   return (
     <div
@@ -200,6 +231,7 @@ const PaymentLookupDetails = ({ closeModal, paymentAddress }) => {
               Check
             </button>
           </div>
+          <div>{inviteCodeMessage}</div>
         </div>
 
         <p className="mt-10 text-gray-600">

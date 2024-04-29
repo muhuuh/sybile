@@ -6,7 +6,7 @@ export const updateAnalysisRequest = createAsyncThunk(
   "user/updateAnalysisRequest",
   async (userDetails, { dispatch }) => {
     const { data, error } = await supabase
-      .from("analysislookup_requests")
+      .from("analysis_lookup_requests")
       .update({
         analysis_done: userDetails.analysisDone,
         payment_done: userDetails.paymentMade,
@@ -52,6 +52,25 @@ export const updatePaymentInfo = createAsyncThunk(
   }
 );
 
+export const updateInviteCode = createAsyncThunk(
+  "payment/updatePaymentInfo",
+  async (inviteDetails, { dispatch }) => {
+    const { redeemed, user_address, code } = inviteDetails;
+
+    const { data, error } = await supabase
+      .from("invite_codes")
+      .update({
+        redeemed: redeemed,
+        user_address: user_address,
+      })
+      .match({ code: code });
+
+    if (error) throw error;
+    console.log("Payment info updated in Supabase:", data);
+    return data;
+  }
+);
+
 //update redux store
 const defaultState = {
   user: {
@@ -83,6 +102,12 @@ const paymentLookupSlice = createSlice({
     },
     updatePaymentSent(state, action) {
       state.paymentSent = action.payload;
+    },
+    updatePaymentInviteDone(state, action) {
+      state.user.paymentMade = action.payload;
+    },
+    updateInvite(state, action) {
+      state.invite = action.payload;
     },
     updateConfidence(state, action) {
       state.confidenceInterval = action.payload;
