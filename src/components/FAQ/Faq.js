@@ -68,6 +68,8 @@ const Faq = () => {
             <a
               href="https://many-me.gitbook.io/manyme/"
               className="text-blue-600 hover:text-blue-800 hover:underline visited:text-purple-600"
+              target="_blank" // This makes the link open in a new tab
+              rel="noopener noreferrer" // This is for security reasons when using target='_blank'
             >
               ManyMe GitBook
             </a>
