@@ -194,8 +194,15 @@ function LookupMain() {
             )}
             {!isUploading && (
               <div className="flex flex-row items-center gap-x-4">
-                <button className="mt-4 tracking-wider shadow-lg bg-honoluluBlue text-gray-200 px-4 py-2 rounded-md hover:bg-salmon hover:text-gray-800 transition duration-200">
-                  Upload addresses
+                <button
+                  disabled={fileUploaded}
+                  className={`mt-4 tracking-wider shadow-lg px-4 py-2 rounded-md ${
+                    !fileUploaded
+                      ? "bg-honoluluBlue text-gray-200  hover:bg-salmon hover:text-gray-800 transition duration-200"
+                      : "bg-gray-300 text-gray-700"
+                  } `}
+                >
+                  {!fileUploaded ? "Upload addresses" : "Uploaded"}
                 </button>
                 {fileUploaded && (
                   <svg

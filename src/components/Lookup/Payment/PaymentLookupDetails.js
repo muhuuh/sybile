@@ -42,6 +42,7 @@ const PaymentLookupDetails = ({ closeModal, paymentAddress }) => {
       });
   };
 
+  //check if code is available
   const onCheckHandler = async () => {
     const { data, error } = await supabase
       .from("invite_codes")
@@ -51,7 +52,7 @@ const PaymentLookupDetails = ({ closeModal, paymentAddress }) => {
 
     if (error) {
       console.error("Error fetching invite code:", error);
-      setInviteCodeMessage("Error fetching invite code");
+      setInviteCodeMessage("Code is invalid or already redeemed");
       return;
     }
 
@@ -69,19 +70,16 @@ const PaymentLookupDetails = ({ closeModal, paymentAddress }) => {
     }
   };
 
+  //------- handle the code redeeming and payment upadting part -------------
+
   const handlePaymentSubmission = async () => {
     if (invite !== "") {
-      console.log("run invde code logic");
-      console.log(invite.code);
-      console.log(paymentAddress);
       // Re-check if the code is still redeemable before proceeding
       const { data: inviteData, error: inviteError } = await supabase
         .from("invite_codes")
         .select("redeemed")
         .eq("code", invite.code)
         .single();
-
-      console.log(inviteData);
 
       if (inviteError || !inviteData || inviteData.redeemed) {
         alert("The invite code is either already redeemed or not valid.");
@@ -106,9 +104,6 @@ const PaymentLookupDetails = ({ closeModal, paymentAddress }) => {
         })
         .match({ code: invite.code });
 
-      console.log("inviteData2");
-      console.log(inviteData2);
-
       if (redeemError) {
         console.error("Failed to redeem invite code:", redeemError);
         return;
@@ -128,8 +123,6 @@ const PaymentLookupDetails = ({ closeModal, paymentAddress }) => {
       }
       dispatch(paymentLookupActions.updatePaymentSent(true));
       dispatch(paymentLookupActions.updatePaymentInviteDone(true));
-
-      console.log("done invite logic");
       return;
     } else {
       setInviteCodeMessage(
@@ -227,7 +220,7 @@ const PaymentLookupDetails = ({ closeModal, paymentAddress }) => {
             />
             <button
               onClick={onCheckHandler}
-              className="ml-4 px-2 rounded shadow bg-gray-200 text-indogoDye"
+              className="ml-4 px-2 rounded shadow bg-gray-200 text-indogoDye hover:bg-salmon hover:text-gray-800 transition duration-200"
             >
               Check
             </button>

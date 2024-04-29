@@ -53,7 +53,7 @@ export const updatePaymentInfo = createAsyncThunk(
 );
 
 export const updateInviteCode = createAsyncThunk(
-  "payment/updatePaymentInfo",
+  "payment/updateInviteCode",
   async (inviteDetails, { dispatch }) => {
     const { redeemed, user_address, code } = inviteDetails;
 
