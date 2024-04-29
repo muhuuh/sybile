@@ -29,7 +29,7 @@ const PaymentLookupMain = () => {
     (state) => state.analysisLookup.dataAnalysis
   );
   const [openModal, setOpenModal] = useState(false);
-  const [estimatedMcap, setEstimatedMcap] = useState("");
+  const [estimatedMcap, setEstimatedMcap] = useState("3000000");
   const [subscription, setSubscription] = useState(null);
   const [showAnalysisExplanation, setShowAnalysisExplanation] = useState(false);
   const [showMcapExplanation, setShowMcapExplanation] = useState(false);
@@ -105,8 +105,8 @@ const PaymentLookupMain = () => {
   };
 
   const message = analysisDone ? (
-    <div className="mb-3 ">
-      <span className=" text-gray-800 text-lg  font-light tracking-wider">
+    <div className=" ">
+      <span className=" text-gray-800 text-lg  tracking-wider">
         Your Lookup Analysis is complete!
       </span>
       <button
@@ -131,12 +131,10 @@ const PaymentLookupMain = () => {
       }}
     >
       <div className="text-center mt-6">
-        <h1 className="text-3xl font-bold text-indogoDye mb-4 tracking-wider">
+        <h1 className="text-3xl font-bold text-indogoDye tracking-wider">
           Payment and Analysis
         </h1>
-        <p className="mb-3 text-gray-800 text-lg mt-6 font-light tracking-wider">
-          {message}
-        </p>
+        <p className="mb-3 text-gray-800 text-lg  tracking-wider">{message}</p>
         {!analysisDone && (
           <>
             <div className="mt-12">
@@ -176,30 +174,32 @@ const PaymentLookupMain = () => {
               )}
             </div>
             <div className=" my-10 mx-auto max-w-6xl  bg-white rounded-lg shadow-lg border py-10 px-32">
-              <h1 className="text-lg font-bold underline decoration-salmon text-indogoDye mb-4 tracking-wider">
+              <h1 className="text-2xl font-bold underline decoration-salmon text-indogoDye mb-4 tracking-wider">
                 Lookup Analysis
               </h1>
-              <p className="font-light mb-4">
+              <p className=" mb-4">
                 Based only on known sybil attackers, your list of users
                 contains:{" "}
               </p>
-              <div className="text-gray-700">
-                Total <span className="text-honoluluBlue">Sybil clusters</span>:{" "}
-                {dataAnalysis.sybiledTokenPercentage}%
+              <div className="p-6 border rounded shadow">
+                <div className="text-gray-700">
+                  Total{" "}
+                  <span className="text-honoluluBlue">Sybil clusters</span>:{" "}
+                  {dataAnalysis.sybiledTokenPercentage}%
+                </div>
+                <div className="text-gray-700">
+                  Total number of{" "}
+                  <span className="text-honoluluBlue">Sybile addresses</span>:{" "}
+                  {dataAnalysis.totalSybilAddresses}
+                </div>
+                <div className="text-gray-700">
+                  Total number of{" "}
+                  <span className="text-honoluluBlue">
+                    Sybil Addresses Percentage
+                  </span>
+                  : {dataAnalysis.sybilAddressPercentage}%
+                </div>
               </div>
-              <div className="text-gray-700">
-                Total number of{" "}
-                <span className="text-honoluluBlue">Sybile addresses</span>:{" "}
-                {dataAnalysis.totalSybilAddresses}
-              </div>
-              <div className="text-gray-700">
-                Total number of{" "}
-                <span className="text-honoluluBlue">
-                  Sybil Addresses Percentage
-                </span>
-                : {dataAnalysis.sybilAddressPercentage}%
-              </div>
-
               <div className=" mt-10 text-lg">
                 <div className="text-center">
                   <div className="flex flex-col justify-center text-center">
@@ -223,7 +223,7 @@ const PaymentLookupMain = () => {
                   </div>
                   {estimatedMcap && (
                     <div className="flex flex-col items-center justify-center">
-                      <p className="flex flex-row items-center text-center">
+                      <p className="flex flex-row items-center text-center font-light">
                         In total, the{" "}
                         <span className="mx-1 font-bold text-indogoDye tracking-wider">
                           financial loss
@@ -241,10 +241,10 @@ const PaymentLookupMain = () => {
                       </p>
                       {showMcapExplanation && (
                         <div className=" font-light text-sm w-96">
-                          Financial impat is a rough estimation based on the
-                          entered marketcap and the percentage of sybil
-                          addresses, assuming sybil attackers receive on avg the
-                          same amount of tokens that other users
+                          The financial impact is a rough estimation based on
+                          the entered marketcap and the percentage of sybil
+                          addresses, assuming sybil attackers receive on average
+                          the same amount of tokens that other users
                         </div>
                       )}
                     </div>
