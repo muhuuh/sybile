@@ -18,6 +18,7 @@ const PaymentLookupDetails = ({ closeModal, paymentAddress }) => {
   const [userAddress, setUserAddress] = useState("");
   const [showExplanation, setShowExplanation] = useState(false);
   const [inviteCode, setInviteCode] = useState("");
+  const [codeIsValid, setCodeIsValid] = useState(false);
   const [inviteCodeMessage, setInviteCodeMessage] = useState("");
 
   const dispatch = useDispatch();
@@ -53,6 +54,7 @@ const PaymentLookupDetails = ({ closeModal, paymentAddress }) => {
     if (error) {
       console.error("Error fetching invite code:", error);
       setInviteCodeMessage("Code is invalid or already redeemed");
+      setCodeIsValid(false);
       return;
     }
 
@@ -64,9 +66,11 @@ const PaymentLookupDetails = ({ closeModal, paymentAddress }) => {
           user: data.user_address,
         })
       );
-      setInviteCodeMessage("Code is valid and not redeemed.");
+      setInviteCodeMessage("Code is valid and not yet redeemed.");
+      setCodeIsValid(true);
     } else {
       setInviteCodeMessage("Code is invalid or already redeemed");
+      setCodeIsValid(false);
     }
   };
 
@@ -128,6 +132,7 @@ const PaymentLookupDetails = ({ closeModal, paymentAddress }) => {
       setInviteCodeMessage(
         "The invite code is either already redeemed or not valid."
       );
+      setCodeIsValid(false);
     }
 
     const updatedPaymentDetails = {
@@ -225,31 +230,47 @@ const PaymentLookupDetails = ({ closeModal, paymentAddress }) => {
               Check
             </button>
           </div>
-          <div>{inviteCodeMessage}</div>
+          <div
+            className={`itlaic ${
+              codeIsValid ? "text-green-700" : "text-red-700"
+            }`}
+          >
+            {inviteCodeMessage}
+          </div>
         </div>
 
-        <p className="mt-10 text-gray-600">
-          Amount to pay:{" "}
-          <span className="font-medium text-indogoDye">{amountToPay}</span> USDT
-        </p>
-        <div className="mt-2 text-gray-600">
-          Send payment to:{" "}
-          <span className="font-medium text-indogoDye">
-            {shortPaymentAddress}
-          </span>
-          <button
-            onClick={() => copyToClipboard(paymentAddress)}
-            className="ml-2 text-indogoDye hover:text-salmon "
-          >
-            <CopyIcon />
-          </button>
-        </div>
+        {!codeIsValid && (
+          <div>
+            <p className="mt-10 text-gray-600">
+              Amount to pay:{" "}
+              <span className="font-medium text-indogoDye">{amountToPay}</span>{" "}
+              USDT
+            </p>
+            <div className="mt-2 text-gray-600">
+              Send payment to:{" "}
+              <span className="font-medium text-indogoDye">
+                {shortPaymentAddress}
+              </span>
+              <button
+                onClick={() => copyToClipboard(paymentAddress)}
+                className="ml-2 text-indogoDye hover:text-salmon "
+              >
+                <CopyIcon />
+              </button>
+            </div>
+          </div>
+        )}
         <div className="text-center">
           <button
             onClick={handlePaymentSubmission}
-            className="bg-honoluluBlue text-gray-200 px-4 py-2 mt-10 shadow-lg rounded ml-2 hover:bg-salmon hover:text-gray-800 transition duration-200"
+            disabled={userAddress == ""}
+            className={` ${
+              !(userAddress == "") || codeIsValid
+                ? "bg-honoluluBlue text-gray-200  hover:bg-salmon hover:text-gray-800 transition duration-200"
+                : "bg-gray-300 text-gray-700"
+            } px-4 py-2 mt-10 shadow-lg rounded ml-2`}
           >
-            Submit Payment Info
+            {codeIsValid ? "Redeem invite code" : "Submit Payment Info"}
           </button>
         </div>
       </div>
