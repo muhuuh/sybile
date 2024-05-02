@@ -126,15 +126,27 @@ function LookupMain() {
   });
 
   //------------- Handle Analysis call ---------
-  const onGetAnalysisHandler = () => {
+  const onGetAnalysisHandler = async () => {
     if (fileUploaded) {
-      //TODO call external analysis function
       /*
-      performLookupAnalysis(requestId, projectUrlBuilt).catch((error) => {
-        console.error("Error during lookup analysis:", error);
-      });
-      */
-      navigate("/main/payment/lookup");
+        try {
+            const response = await fetch('YOUR_CLOUD_FUNCTION_ENDPOINT', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    requestId: requestId,
+                    storageUrl: projectUrlBuilt,
+                }),
+            });
+            const responseData = await response.json();
+            console.log(responseData);
+            navigate("/main/payment/lookup");
+        } catch (error) {
+            console.error("Error during lookup analysis:", error);
+        }
+        */
     }
   };
 
