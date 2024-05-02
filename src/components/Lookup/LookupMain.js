@@ -18,6 +18,7 @@ function LookupMain() {
   const [showExplanation, setShowExplanation] = useState(false);
 
   const [requestId, setRequestId] = useState("");
+  const [projectUrlBuilt, setProjectUrlBuilt] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -63,6 +64,7 @@ function LookupMain() {
 
           const projectUrl = "https://sgtpfbliixxaqtnajnek.supabase.co";
           const storageUrl = `${projectUrl}/storage/v1/object/public/sybile/${filePath}`;
+          setProjectUrlBuilt(storageUrl);
 
           let { data: insertData, error: insertError } = await supabase
             .from("lookup_uploads")
@@ -128,7 +130,7 @@ function LookupMain() {
     if (fileUploaded) {
       //TODO call external analysis function
       /*
-      performLookupAnalysis(requestId).catch((error) => {
+      performLookupAnalysis(requestId, projectUrlBuilt).catch((error) => {
         console.error("Error during lookup analysis:", error);
       });
       */
