@@ -1,3 +1,6 @@
+////PS C:\Users\valen\Documents\Coding\Website\sybile\sybile> supabase functions deploy lookup_supabase
+
+
 /// <reference types="https://esm.sh/@supabase/functions-js/src/edge-runtime.d.ts" />
 
 let rateLimitStore = {};
