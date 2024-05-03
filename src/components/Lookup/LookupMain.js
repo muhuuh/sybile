@@ -126,9 +126,36 @@ function LookupMain() {
   });
 
   //------------- Handle Analysis call ---------
+  //calling gcloud script via supabase serverless function
+  const onGetAnalysisHandler = async () => {
+    /*
+  if (fileUploaded) {
+      try {
+          const response = await fetch('YOUR_SUPABASE_FUNCTION_ENDPOINT', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                  requestId: requestId,
+                  storageUrl: projectUrlBuilt,
+              }),
+          });
+          const responseData = await response.json();
+          console.log(responseData);
+          navigate("/main/payment/lookup");
+      } catch (error) {
+          console.error("Error during lookup analysis:", error);
+      }
+  }
+  */
+  };
+
+  //calling gcloud directly
+  /*
   const onGetAnalysisHandler = async () => {
     if (fileUploaded) {
-      /*
+      
         try {
             const response = await fetch('YOUR_CLOUD_FUNCTION_ENDPOINT', {
                 method: 'POST',
@@ -146,9 +173,9 @@ function LookupMain() {
         } catch (error) {
             console.error("Error during lookup analysis:", error);
         }
-        */
+        
     }
-  };
+  };*/
 
   //-----------handle UI ---------------
 
