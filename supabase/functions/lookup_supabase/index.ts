@@ -6,17 +6,33 @@
 let rateLimitStore = {};
 
 function rateLimit(ip: string): boolean {
-  // Implement rate limiting logic here, similar to previous examples
-  return true; // Placeholder for simplicity
+  const limit = 2; // Limit per 15 minutes
+  const duration = 900000; // 15 minutes in milliseconds
+  const now = Date.now();
+  
+  if (!rateLimitStore[ip]) {
+    rateLimitStore[ip] = [];
+  }
+
+  // Remove timestamps outside of the current rate limit window
+  rateLimitStore[ip] = rateLimitStore[ip].filter(timestamp => now - timestamp < duration);
+
+  if (rateLimitStore[ip].length >= limit) {
+    return false; // Rate limit exceeded
+  }
+
+  rateLimitStore[ip].push(now); // Log the current request time
+  return true;
 }
 
 Deno.serve(async (req) => {
   const { requestId, storageUrl } = await req.json();
+  
   if (!requestId || !storageUrl) {
     return new Response(JSON.stringify({ error: "Missing parameters" }), { status: 400 });
   }
 
-  const ip = req.headers.get("x-forwarded-for") || "";
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() || req.ip;
   if (!rateLimit(ip)) {
     return new Response(JSON.stringify({ error: "Rate limit exceeded" }), { status: 429 });
   }
