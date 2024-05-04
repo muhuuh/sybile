@@ -26,15 +26,30 @@ function rateLimit(ip: string): boolean {
 }
 
 Deno.serve(async (req) => {
+  const headers = new Headers({
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*", // Adjust this to be more restrictive for production
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type"
+  });
+
+  if (req.method === "OPTIONS") {
+    // Handle CORS preflight requests
+    return new Response(null, { status: 204, headers });
+  }
+
   const { requestId, storageUrl } = await req.json();
+  console.log("serverless parameter")
+  console.log(requestId)
+  console.log(storageUrl)
   
   if (!requestId || !storageUrl) {
-    return new Response(JSON.stringify({ error: "Missing parameters" }), { status: 400 });
+    return new Response(JSON.stringify({ error: "Missing parameters" }), { status: 400, headers });
   }
 
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() || req.ip;
   if (!rateLimit(ip)) {
-    return new Response(JSON.stringify({ error: "Rate limit exceeded" }), { status: 429 });
+    return new Response(JSON.stringify({ error: "Rate limit exceeded" }), { status: 429, headers });
   }
 
   try {
@@ -44,16 +59,19 @@ Deno.serve(async (req) => {
       body: JSON.stringify({ requestId, storageUrl })
     });
 
+    
+
     if (!response.ok) {
       throw new Error(`Failed to fetch from Google Cloud Function: ${response.statusText}`);
     }
 
+    const responseData = await response.text(); // Use text() instead of json() for debugging
+    console.log("responseData serverless function");
+    console.log(responseData);
     const data = await response.json();
-    return new Response(JSON.stringify(data), {
-      headers: { "Content-Type": "application/json" }
-    });
+    return new Response(JSON.stringify(data), { status: 200, headers });
   } catch (error) {
     console.error("Error calling Google Cloud Function:", error);
-    return new Response(JSON.stringify({ error: "Internal server error" }), { status: 500 });
+    return new Response(JSON.stringify({ error: "Internal server error" }), { status: 500, headers });
   }
 });

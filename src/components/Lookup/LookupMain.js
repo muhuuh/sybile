@@ -128,27 +128,33 @@ function LookupMain() {
   //------------- Handle Analysis call ---------
   //calling gcloud script via supabase serverless function
   const onGetAnalysisHandler = async () => {
-    /*
-  if (fileUploaded) {
+    if (fileUploaded) {
       try {
-          const response = await fetch('https://sgtpfbliixxaqtnajnek.supabase.co/functions/v1/lookup_supabase', { //YOUR_SUPABASE_FUNCTION_ENDPOINT
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                  requestId: requestId,
-                  storageUrl: projectUrlBuilt,
-              }),
-          });
-          const responseData = await response.json();
-          console.log(responseData);
-          navigate("/main/payment/lookup");
+        console.log("calling function");
+        const response = await fetch(
+          "https://sgtpfbliixxaqtnajnek.supabase.co/functions/v1/lookup_supabase",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              //Authorization: `Bearer YOUR_SUPABASE_JWT`, is user is logged in, we can enable JWT token for the serverless function
+            },
+            body: JSON.stringify({
+              requestId: requestId,
+              storageUrl: projectUrlBuilt,
+            }),
+          }
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP status ${response.status}`);
+        }
+        const responseData = await response.json();
+        console.log(responseData);
+        navigate("/main/payment/lookup");
       } catch (error) {
-          console.error("Error during lookup analysis:", error);
+        console.error("Error during lookup analysis:", error);
       }
-  }
-  */
+    }
   };
 
   //calling gcloud directly
