@@ -131,7 +131,7 @@ function LookupMain() {
     /*
   if (fileUploaded) {
       try {
-          const response = await fetch('YOUR_SUPABASE_FUNCTION_ENDPOINT', {
+          const response = await fetch('https://sgtpfbliixxaqtnajnek.supabase.co/functions/v1/lookup_supabase', { //YOUR_SUPABASE_FUNCTION_ENDPOINT
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
