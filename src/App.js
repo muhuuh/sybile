@@ -8,6 +8,7 @@ import PaymentLookupMain from "./components/Lookup/Payment/PaymentLookupMain";
 import PaymentLookupDetails from "./components/Lookup/Payment/PaymentLookupDetails";
 import AnalysisLookupMain from "./components/Lookup/Analysis/AnalysisLookupMain";
 import Faq from "./components/FAQ/Faq";
+import LayerZeroMain from "./components/Special/LayerZero/LayerZeroMain";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
         />
 
         <Route path="/main/analysis/lookup" element={<AnalysisLookupMain />} />
+        <Route path="/special/layerzero" element={<LayerZeroMain />} />
       </Routes>
     </div>
   );
