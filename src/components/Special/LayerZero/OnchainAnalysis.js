@@ -14,7 +14,7 @@ const OnchainAnalysis = () => {
       <a
         href={downloadUrl}
         download
-        className="bg-blue-500 text-white px-4 py-2 rounded-md"
+        className="tracking-wider shadow-lg px-4 py-2 rounded-md transition duration-200 bg-honoluluBlue text-gray-200 hover:bg-salmon hover:text-gray-800 "
       >
         Download Report
       </a>
