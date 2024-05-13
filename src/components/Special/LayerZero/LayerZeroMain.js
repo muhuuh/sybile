@@ -46,7 +46,7 @@ const LayerZeroMain = () => {
   if (!isAuthenticated) {
     return (
       <div
-        className="min-h-screen p-8 mx-auto text-center pt-"
+        className="min-h-screen p-8 mx-auto text-center"
         style={{
           background: "linear-gradient(to bottom right, #f7f7f7, #f0f8f9)",
         }}
@@ -54,21 +54,23 @@ const LayerZeroMain = () => {
         <h1 className="text-3xl font-bold text-indogoDye mb-2 tracking-wider">
           LayerZero Sybil Analysis
         </h1>
-        <h1 className="text-xl font-bold mb-6 mt-14">Enter Access Code</h1>
+        <h1 className="text-xl text-gray-700 tracking-wider font-bold mb-6 mt-14">
+          Enter Access Code
+        </h1>
         <input
           type="text"
           value={accessCode}
           onChange={(e) => setAccessCode(e.target.value)}
-          className="text-center p-2 border border-gray-300 rounded-l"
+          className="text-center p-2 border border-gray-300 rounded focus:border-gray-500 focus:outline-none"
           placeholder="Access Code"
         />
         <button
           onClick={handleCodeSubmit}
-          className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="ml-2 bg-honoluluBlue text-gray-200 hover:bg-salmon hover:text-gray-800 tracking-wider py-2 px-4 rounded"
         >
           Submit
         </button>
-        {error && <p className="text-red-500 mt-2">{error}</p>}
+        {error && <p className="text-red-700 mt-2">{error}</p>}
       </div>
     );
   }
