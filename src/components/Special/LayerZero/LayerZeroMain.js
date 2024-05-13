@@ -3,9 +3,32 @@ import React, { useState } from "react";
 import PredictiveAnalysis from "./PredictiveAnalysis";
 import LookupAnalysis from "./LookupAnalysis";
 import OnchainAnalysis from "./OnchainAnalysis";
+import supabase from "../../../Supabase/supabase";
 
 const LayerZeroMain = () => {
   const [activeAnalysis, setActiveAnalysis] = useState("predictive");
+  const [accessCode, setAccessCode] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleCodeSubmit = async () => {
+    const { data, error } = await supabase
+      .from("invite_codes")
+      .select("redeemed")
+      .eq("code", accessCode)
+      .single();
+
+    if (error) {
+      setError("Failed to validate code. Please try again.");
+      return;
+    }
+
+    if (data && !data.redeemed) {
+      setIsAuthenticated(true);
+    } else {
+      setError("Invalid access code.");
+    }
+  };
 
   const renderActiveAnalysis = () => {
     switch (activeAnalysis) {
@@ -19,6 +42,36 @@ const LayerZeroMain = () => {
         return null;
     }
   };
+
+  if (!isAuthenticated) {
+    return (
+      <div
+        className="min-h-screen p-8 mx-auto text-center pt-"
+        style={{
+          background: "linear-gradient(to bottom right, #f7f7f7, #f0f8f9)",
+        }}
+      >
+        <h1 className="text-3xl font-bold text-indogoDye mb-2 tracking-wider">
+          LayerZero Sybil Analysis
+        </h1>
+        <h1 className="text-xl font-bold mb-6 mt-14">Enter Access Code</h1>
+        <input
+          type="text"
+          value={accessCode}
+          onChange={(e) => setAccessCode(e.target.value)}
+          className="text-center p-2 border border-gray-300 rounded-l"
+          placeholder="Access Code"
+        />
+        <button
+          onClick={handleCodeSubmit}
+          className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Submit
+        </button>
+        {error && <p className="text-red-500 mt-2">{error}</p>}
+      </div>
+    );
+  }
 
   return (
     <main
