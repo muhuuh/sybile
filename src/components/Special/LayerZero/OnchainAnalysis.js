@@ -2,7 +2,8 @@
 import React from "react";
 
 const OnchainAnalysis = () => {
-  const downloadUrl = "https://your-supabase-url/onchain-analysis-report.pdf"; // Replace with your URL
+  const downloadUrl =
+    "https://sgtpfbliixxaqtnajnek.supabase.co/storage/v1/object/public/sybile/lookup/onchain_analysis.csv"; // Replace with your URL
 
   return (
     <div className="text-center">
