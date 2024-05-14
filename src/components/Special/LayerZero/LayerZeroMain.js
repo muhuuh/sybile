@@ -114,7 +114,7 @@ const LayerZeroMain = () => {
         <h3 className="text-gray-700 font-semibold tracking-wider text-xl underline mb-10">
           Analysis Details
         </h3>
-        <div className="mb-6">
+        <div className="mb-6 italic">
           Please select the analysis you would like to deep dive on
         </div>
         <div className="flex justify-center space-x-2 mb-8">
