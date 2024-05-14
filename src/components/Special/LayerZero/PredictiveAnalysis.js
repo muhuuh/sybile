@@ -11,9 +11,9 @@ const PredictiveAnalysis = () => {
   };
 
   return (
-    <div className="text-center">
+    <div className="text-center max-w-6xl mx-auto bg-white rounded-lg border-gray-200 border shadow-lg p-8 mt-10">
       <h4 className="text-xl font-semibold mb-4">Predictive Analysis</h4>
-      <p className="text-gray-700 mb-6">
+      <p className="text-gray-700 mb-12">
         Predictive analysis focuses on forecasting future trends by identifying
         patterns in current and historical data.
       </p>

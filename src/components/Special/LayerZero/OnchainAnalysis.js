@@ -10,9 +10,9 @@ const OnchainAnalysis = () => {
   };
 
   return (
-    <div className="text-center">
+    <div className="text-center max-w-6xl mx-auto bg-white rounded-lg border-gray-200 border shadow-lg p-8 mt-10">
       <h4 className="text-xl font-semibold mb-4">Onchain Analysis</h4>
-      <p className="text-gray-700 mb-6">
+      <p className="text-gray-700 mb-12">
         On-chain analysis studies blockchain transaction data to detect
         suspicious activity and anomalous behavior.
       </p>

@@ -11,9 +11,9 @@ const LookupAnalysis = () => {
   };
 
   return (
-    <div className="text-center">
+    <div className="text-center max-w-6xl mx-auto bg-white rounded-lg border-gray-200 border shadow-lg p-8 mt-10">
       <h4 className="text-xl font-semibold mb-4">Lookup Analysis</h4>
-      <p className="text-gray-700 mb-6">
+      <p className="text-gray-700 mb-12">
         Lookup analysis offers detailed cross-checking of data points to verify
         identities and detect patterns of suspicious behavior.
       </p>

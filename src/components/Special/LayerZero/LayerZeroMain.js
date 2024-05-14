@@ -31,6 +31,7 @@ const LayerZeroMain = () => {
       setIsUploading(false);
     } else {
       setError("Invalid access code.");
+      setIsUploading(false);
     }
   };
 
@@ -76,7 +77,7 @@ const LayerZeroMain = () => {
         </button>
 
         {isUploading ? (
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center mt-6">
             <LoadingSpinner />
             <p className="text-gray-500">Loading...</p>
           </div>
@@ -97,10 +98,12 @@ const LayerZeroMain = () => {
     >
       <div className="container mx-auto p-8 text-center">
         <div className="max-w-2xl mx-auto mb-10">
-          <h1 className="text-3xl font-bold text-indogoDye mb-2 tracking-wider nb-3">
+          <h1 className="text-3xl font-bold text-indogoDye mb-6 tracking-wider">
             LayerZero Sybil Analysis
           </h1>
-          <h2 className="text-gray-800  text-lg mb-10">Main Insights</h2>
+          <h2 className="text-gray-700 font-semibold tracking-wider text-xl underline mb-10">
+            Main Insights
+          </h2>
           <p className="text-lg text-gray-800 mb-10">
             In-depth analysis of Sybil trends and the impact on the LayerZero
             network. Discover how each type of analysis provides unique insights
@@ -108,9 +111,11 @@ const LayerZeroMain = () => {
           </p>
         </div>
 
-        <h3 className="text-2xl font-semibold mb-2">Analysis Details</h3>
+        <h3 className="text-gray-700 font-semibold tracking-wider text-xl underline mb-10">
+          Analysis Details
+        </h3>
         <div className="mb-6">
-          Please select the Analysis you would like to deep dive on
+          Please select the analysis you would like to deep dive on
         </div>
         <div className="flex justify-center space-x-2 mb-8">
           <button
