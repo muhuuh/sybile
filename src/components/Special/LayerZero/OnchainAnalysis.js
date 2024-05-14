@@ -13,9 +13,20 @@ const OnchainAnalysis = () => {
   return (
     <div className="text-center max-w-6xl mx-auto bg-white rounded-lg border-gray-200 border shadow-lg p-8 mt-10">
       <h4 className="text-xl font-semibold mb-4">Onchain Analysis</h4>
-      <p className="text-gray-700 mb-12">
-        On-chain analysis studies blockchain transaction data to detect
-        suspicious activity and anomalous behavior.
+      <p className="text-gray-700 mb-4 px-10">
+        The on-chain analysis studies transaction data to detect suspicious
+        activity and anomalous behavior that typically indicates non-organic
+        user activity (i.e. airdrop farmers). Depending on how sophisticated and
+        experienced these users are, they will use different methods to cover
+        their tracks.
+      </p>
+      <p className="text-gray-700 mb-12 px-10">
+        Our onchain analysis aims to catch all airdrop farmers, from beginners
+        to expert, by covering a wide range of activity patterns (see table
+        description column), for each of which you can download a specifc report
+        that let's you further finetune the exact KPI threshold in case you want
+        them stricter. You can also directly download the merged report without
+        duplicate addresses.
       </p>
 
       <a

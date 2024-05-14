@@ -62,41 +62,45 @@ const FileTable = () => {
         <tbody>
           {files.map((file, index) => (
             <tr key={index}>
-              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm font-light">
                 <p className="text-gray-900 whitespace-no-wrap">
                   {file.description}
                 </p>
               </td>
               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                <a
-                  href={file.url}
-                  onClick={() => handleDownload(index)}
-                  download
-                  className={`tracking-wider shadow-lg px-4 py-2 rounded-md transition duration-200 ${
-                    downloaded[index]
-                      ? "bg-gray-400 text-gray-200 cursor-not-allowed"
-                      : "bg-honoluluBlue text-gray-200 hover:bg-salmon hover:text-gray-800"
-                  }`}
-                  style={{ pointerEvents: downloaded[index] ? "none" : "auto" }}
-                >
-                  Download
-                </a>
-                {downloaded[index] && (
-                  <svg
-                    className="w-6 h-6 ml-2 inline-block text-green-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
+                <div className="flex flex-row">
+                  <a
+                    href={file.url}
+                    onClick={() => handleDownload(index)}
+                    download
+                    className={`tracking-wider shadow-lg px-4 py-2 rounded-md transition duration-200 ${
+                      downloaded[index]
+                        ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+                        : "bg-honoluluBlue text-gray-200 hover:bg-salmon hover:text-gray-800"
+                    }`}
+                    style={{
+                      pointerEvents: downloaded[index] ? "none" : "auto",
+                    }}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M5 13l4 4L19 7"
-                    ></path>
-                  </svg>
-                )}
+                    Download
+                  </a>
+                  {downloaded[index] && (
+                    <svg
+                      className="w-6 h-6 ml-2 inline-block text-green-500"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M5 13l4 4L19 7"
+                      ></path>
+                    </svg>
+                  )}
+                </div>
               </td>
             </tr>
           ))}
