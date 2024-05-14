@@ -4,14 +4,17 @@ import PredictiveAnalysis from "./PredictiveAnalysis";
 import LookupAnalysis from "./LookupAnalysis";
 import OnchainAnalysis from "./OnchainAnalysis";
 import supabase from "../../../Supabase/supabase";
+import LoadingSpinner from "../../UI/LoadingSpinner";
 
 const LayerZeroMain = () => {
   const [activeAnalysis, setActiveAnalysis] = useState("predictive");
   const [accessCode, setAccessCode] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleCodeSubmit = async () => {
+    setIsUploading(true);
     const { data, error } = await supabase
       .from("invite_codes")
       .select("redeemed")
@@ -25,6 +28,7 @@ const LayerZeroMain = () => {
 
     if (data && !data.redeemed) {
       setIsAuthenticated(true);
+      setIsUploading(false);
     } else {
       setError("Invalid access code.");
     }
@@ -70,6 +74,15 @@ const LayerZeroMain = () => {
         >
           Submit
         </button>
+
+        {isUploading ? (
+          <div className="flex flex-col items-center">
+            <LoadingSpinner />
+            <p className="text-gray-500">Loading...</p>
+          </div>
+        ) : (
+          ""
+        )}
         {error && <p className="text-red-700 mt-2">{error}</p>}
       </div>
     );
