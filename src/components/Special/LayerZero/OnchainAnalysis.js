@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import FileTable from "./FileTable";
 
 const OnchainAnalysis = () => {
   const [downloaded, setDownloaded] = useState(false);
@@ -16,6 +17,7 @@ const OnchainAnalysis = () => {
         On-chain analysis studies blockchain transaction data to detect
         suspicious activity and anomalous behavior.
       </p>
+
       <a
         href={downloadUrl}
         onClick={handleDownload}
@@ -27,7 +29,7 @@ const OnchainAnalysis = () => {
         }`}
         style={{ pointerEvents: downloaded ? "none" : "auto" }}
       >
-        Download Report
+        Download merged reports
       </a>
       {downloaded && (
         <svg
@@ -45,6 +47,7 @@ const OnchainAnalysis = () => {
           ></path>
         </svg>
       )}
+      <FileTable />
     </div>
   );
 };
